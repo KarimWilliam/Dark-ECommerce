@@ -1,6 +1,5 @@
 const products = [
   {
-    _id: "1",
     name: "Airpods wireless",
     image: "/images/airpods.jpg",
     description: "some description about something or other",
@@ -12,7 +11,6 @@ const products = [
     numReviews: 4,
   },
   {
-    _id: "2",
     name: "alexa wireless",
     image: "/images/alexa.jpg",
     description: "some description about something or other",
@@ -24,7 +22,6 @@ const products = [
     numReviews: 1,
   },
   {
-    _id: "3",
     name: "Camera pro1",
     image: "/images/camera.jpg",
     description: "some description about something or other",
@@ -36,7 +33,6 @@ const products = [
     numReviews: 30,
   },
   {
-    _id: "4",
     name: "wireless mouse",
     image: "/images/mouse.jpg",
     description: "some description about something or other",
@@ -48,7 +44,6 @@ const products = [
     numReviews: 1,
   },
   {
-    _id: "5",
     name: "iphone 7",
     image: "/images/phone.jpg",
     description: "some description about something or other",
