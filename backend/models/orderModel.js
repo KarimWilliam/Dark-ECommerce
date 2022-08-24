@@ -26,7 +26,7 @@ const orderSchema = mongoose.Schema(
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
     },
-    //comes from payment serve IE:Paypal
+    //comes from payment server IE:Paypal
     paymentMethod: {
       type: String,
       required: true,

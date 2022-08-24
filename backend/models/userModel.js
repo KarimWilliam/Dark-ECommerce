@@ -1,5 +1,43 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+
+const cartSchema = mongoose.Schema({
+  qty: { type: Number, required: true },
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+  },
+});
+
+const addressSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  postalCode: {
+    type: Number,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: Number,
+    required: true,
+  },
+  default: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const userSchema = mongoose.Schema(
   {
@@ -21,25 +59,15 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    cartItems: [cartSchema],
+    addressList: [addressSchema],
   },
   {
     timestamps: true,
   }
 );
 
-userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
-
 const User = mongoose.model("User", userSchema);
+export const Address = mongoose.model("Address", addressSchema);
 
 export default User;

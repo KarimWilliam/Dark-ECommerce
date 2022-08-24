@@ -9,6 +9,7 @@ const products = [
     countInStock: 3,
     rating: 4.5,
     numReviews: 4,
+    visiblity: true,
   },
   {
     name: "alexa wireless",
@@ -20,6 +21,7 @@ const products = [
     countInStock: 33,
     rating: 4.2,
     numReviews: 1,
+    visiblity: true,
   },
   {
     name: "Camera pro1",
@@ -31,6 +33,7 @@ const products = [
     countInStock: 7,
     rating: 5,
     numReviews: 30,
+    visiblity: true,
   },
   {
     name: "wireless mouse",
@@ -42,6 +45,7 @@ const products = [
     countInStock: 7,
     rating: 3.2,
     numReviews: 1,
+    visiblity: true,
   },
   {
     name: "iphone 7",
@@ -53,6 +57,7 @@ const products = [
     countInStock: 3,
     rating: 4.5,
     numReviews: 4,
+    visiblity: true,
   },
 ];
 

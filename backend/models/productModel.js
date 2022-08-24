@@ -16,7 +16,7 @@ const reviewSchema = mongoose.Schema(
   }
 );
 
-const productSchema = mongoose.Schema(
+export const productSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -63,6 +63,11 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
+    },
+    visibility: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   {
