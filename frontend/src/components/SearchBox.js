@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 const SearchBox = () => {
-  let [setSearchParams] = useSearchParams();
+  let [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -12,11 +12,13 @@ const SearchBox = () => {
     e.preventDefault();
     if (keyword.trim()) {
       setSearchParams({ keyword: keyword });
+
       //navigate("/search");
-      //navigate(`/search/${keyword}`);
-      //navigate({ pathname: "/search", search: `?keyword=${keyword}` });
+      //navigate(`/${keyword}`);
+      // navigate({ pathname: "/", search: `?keyword=${keyword}` });
     } else {
       navigate(location.pathname);
+      window.location.reload(false); //iffy
     }
   };
 

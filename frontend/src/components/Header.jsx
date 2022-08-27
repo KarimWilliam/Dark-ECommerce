@@ -25,6 +25,8 @@ const Header = () => {
     navigate("/");
   };
 
+  const { cartItems } = useSelector((state) => state.cart);
+
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -38,7 +40,11 @@ const Header = () => {
           <nav className="ml-auto">
             <LinkContainer to="/cart">
               <Nav.Link>
-                <i className="fas fa-shopping-cart"></i> cart
+                <i className="fas fa-shopping-cart "></i>
+                <span class="badge badge-warning" id="lblCartCount">
+                  {cartItems.length}
+                </span>
+                cart
               </Nav.Link>
             </LinkContainer>
             {user ? (

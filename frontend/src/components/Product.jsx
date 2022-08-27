@@ -6,7 +6,11 @@ import { Link } from "react-router-dom";
 function Product({ product }) {
   return (
     <Card className="my-3 p-3 rounded ">
-      <Link to={`/product/${product._id}`}>
+      <Link
+        onClick={() =>
+          sessionStorage.setItem("scrollPosition", window.pageYOffset)
+        }
+        to={`/product/${product._id}`}>
         <Card.Img src={product.image} variant="top" />
       </Link>
       <Card.Body>
@@ -19,7 +23,9 @@ function Product({ product }) {
         <Card.Text as="div">
           <Rating
             value={product.rating}
-            text={`${product.numReviews} reviews`}
+            text={`(${product.numReviews}) ${
+              product.numReviews != 1 ? "reviews" : "review"
+            }`}
           />
         </Card.Text>
         <Card.Text as="h3">${product.price}</Card.Text>

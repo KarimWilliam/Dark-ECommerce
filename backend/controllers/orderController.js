@@ -27,8 +27,41 @@ const addOrderItems = asyncHandler(async (req, res) => {
     throw new Error("No order items");
     return;
   } else {
+    console.log("hi");
+
+    const flattenObject = (obj) => {
+      const flattened = {};
+
+      Object.keys(obj).forEach((key) => {
+        const value = obj[key];
+
+        if (
+          typeof value === "object" &&
+          value !== null &&
+          !Array.isArray(value)
+        ) {
+          Object.assign(flattened, flattenObject(value));
+        } else {
+          flattened[key] = value;
+        }
+      });
+
+      return flattened;
+    };
+
+    let orderItemss = [];
+    orderItems.forEach((element) => {
+      orderItemss.push(flattenObject(element));
+    });
+
+    orderItemss.forEach((element) => {
+      delete Object.assign(element, { ["product"]: element["_id"] })["_id"];
+    });
+
+    console.log("order items after renaming");
+
     const order = new Order({
-      orderItems,
+      orderItems: orderItemss,
       user: req.user._id,
       shippingAddress,
       paymentMethod,

@@ -9,6 +9,7 @@ const initialState = {
   currentAddress: currentAddress ? currentAddress : null,
   addresses: [],
   defaultAddress: {},
+  getAddressTarget: "",
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -29,6 +30,10 @@ const initialState = {
   defaultAddressSuccess: false,
   defaultAddressLoading: false,
   defaultAddressMessage: "",
+  getAddressError: false,
+  getAddressSuccess: false,
+  getAddressMessage: false,
+  getAddressLoading: false,
 };
 
 // create a new address
@@ -110,8 +115,8 @@ export const deleteAddress = createAsyncThunk(
 // edit an address
 export const editAddress = createAsyncThunk(
   "shipping/editAddress",
-  async ({ data }, thunkAPI) => {
-    const { address, id } = data;
+  async (data, thunkAPI) => {
+    const { id, address } = data;
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await shippingService.editAddress(address, token, id);
@@ -130,10 +135,29 @@ export const editAddress = createAsyncThunk(
 // get all user addresses
 export const getAllAddresses = createAsyncThunk(
   "shipping/getAllAddresses",
-  async ({ data }, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await shippingService.getAllAddresses(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// get address by id
+export const getAddress = createAsyncThunk(
+  "shipping/getAddress",
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await shippingService.getAddress(id, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -186,6 +210,15 @@ export const shippingSlice = createSlice({
       state.editAddressLoading = false;
       state.editAddressSuccess = false;
       state.editAddressMessage = "";
+    },
+    getAddressReset: (state) => {
+      state.getAddressLoading = false;
+      state.getAddressError = false;
+      state.getAddressSuccess = false;
+      state.getAddressMessage = "";
+    },
+    setCurrentAddress: (state, action) => {
+      state.currentAddress = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -271,6 +304,20 @@ export const shippingSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        console.log(action.payload);
+      })
+      .addCase(getAddress.pending, (state) => {
+        state.getAddressLoading = true;
+      })
+      .addCase(getAddress.fulfilled, (state, action) => {
+        state.getAddressLoading = false;
+        state.getAddressSuccess = true;
+        state.getAddressTarget = action.payload;
+      })
+      .addCase(getAddress.rejected, (state, action) => {
+        state.getAddressLoading = false;
+        state.getAddressError = true;
+        state.getAddressMessage = action.payload;
       });
   },
 });
@@ -282,5 +329,7 @@ export const {
   deleteReset,
   createReset,
   saveShippingAddress,
+  getAddressReset,
+  setCurrentAddress,
 } = shippingSlice.actions;
 export default shippingSlice.reducer;

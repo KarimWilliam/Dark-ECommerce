@@ -10,6 +10,8 @@ import {
   getTopProducts,
   getProductsAdmin,
   getProductsPage,
+  hideProduct,
+  unHideProduct,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -22,6 +24,7 @@ router
   .route("/:id")
   .get(getProductById)
   .delete(protect, admin, deleteProduct)
-  .put(protect, admin, updateProduct);
-
+  .put(protect, admin, updateProduct)
+  .post(protect, admin, hideProduct);
+router.post("/hide/:id", protect, admin, unHideProduct);
 export default router;

@@ -9,6 +9,7 @@ import Order from "../models/orderModel.js";
 const getProductsPage = asyncHandler(async (req, res) => {
   const pageSize = 3;
   const page = Number(req.query.pageNumber) || 1;
+  console.log(page);
 
   const keyword = req.query.keyword
     ? {
@@ -18,7 +19,7 @@ const getProductsPage = asyncHandler(async (req, res) => {
         },
       }
     : {};
-
+  console.log(keyword);
   const count = await Product.countDocuments({ ...keyword, visibility: true });
   const products = await Product.find({ ...keyword, visibility: true }) //visibility: true
     .limit(pageSize)
@@ -84,6 +85,38 @@ const deleteProduct = asyncHandler(async (req, res) => {
   if (product) {
     await product.remove();
     res.json({ message: "Product removed" });
+  } else {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+});
+
+// @desc    Hide a product
+// @route   Post /api/products/:id
+// @access  Private/Admin
+const hideProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  console.log("commencing product hiding");
+  if (product) {
+    product.visibility = false;
+    await product.save();
+    res.json({ message: "Product Hidden" });
+  } else {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+});
+
+// @desc    Hide a product
+// @route   Post /api/products/hide/:id
+// @access  Private/Admin
+const unHideProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    product.visibility = true;
+    await product.save();
+    res.json({ message: "Product Visible" });
   } else {
     res.status(404);
     throw new Error("Product not found");
@@ -203,4 +236,6 @@ export {
   updateProduct,
   createProductReview,
   getTopProducts,
+  hideProduct,
+  unHideProduct,
 };

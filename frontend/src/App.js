@@ -19,6 +19,8 @@ import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import AddressScreen from "./screens/AddressScreen";
+import AddAddressScreen from "./screens/AddAddressScreen";
+import EditAddressScreen from "./screens/EditAddressScreen";
 
 function App() {
   const payPalOptions = {
@@ -45,6 +47,8 @@ function App() {
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/cart/:id" element={<CartScreen />} />
               <Route path="/admin/userlist" element={<UserListScreen />} />
+              <Route path="/Address/add" element={<AddAddressScreen />} />
+              <Route path="/Address/edit/:id" element={<EditAddressScreen />} />
               <Route path="/Address" element={<AddressScreen />} />
               <Route
                 path="/admin/productlist/:id"

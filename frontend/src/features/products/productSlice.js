@@ -4,6 +4,10 @@ import productService from "./productService";
 const initialState = {
   products: [],
   topProducts: [],
+  homeProducts: [],
+  page: 1,
+  pages: 1,
+  hasMore: true,
   product: "", // { reviews: [] },
   isError: false,
   isSuccess: false,
@@ -17,8 +21,6 @@ const initialState = {
   errorCreate: false,
   successCreate: false,
   messageCreate: "",
-  page: 1,
-  pages: 0,
   productListError: false,
   productListMessage: "",
   productListLoading: false,
@@ -35,6 +37,10 @@ const initialState = {
   topProductsSuccess: false,
   topProductsMessage: "",
   topProductsError: false,
+  hideProductError: false,
+  hideProductSuccess: false,
+  hideProductLoading: false,
+  hideProductMessage: "",
 };
 
 // listProductDetails,
@@ -137,10 +143,8 @@ export const listProducts = createAsyncThunk(
   async (params, thunkAPI) => {
     try {
       //set this
-      const pageNumber = 1;
-      const keyword = "";
-      const token = thunkAPI.getState().auth.user.token;
-      return await productService.listProducts(pageNumber, keyword, token);
+      const { currentPage, keyword } = params;
+      return await productService.listProducts(currentPage, keyword);
     } catch (error) {
       const message =
         (error.response &&
@@ -228,6 +232,44 @@ export const createProductReview = createAsyncThunk(
   }
 );
 
+// hide a product
+export const hideProduct = createAsyncThunk(
+  "products/hideProduct",
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await productService.hideProduct(id, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// unhide a product
+export const unHideProduct = createAsyncThunk(
+  "products/unHideProduct",
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await productService.unHideProduct(id, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const productSlice = createSlice({
   name: "products",
   initialState,
@@ -268,6 +310,24 @@ export const productSlice = createSlice({
       state.topProductsError = false;
       state.topProductsLoading = false;
     },
+    hideProductsReset: (state) => {
+      state.hideProductError = false;
+      state.hideProductLoading = false;
+      state.hideProductSuccess = false;
+    },
+    resetPage: (state) => {
+      state.page = 1;
+      state.homeProducts = [];
+    },
+    incPage: (state) => {
+      state.page = state.page + 1;
+    },
+    resetHomeProducts: (state) => {
+      state.homeProducts = [];
+    },
+    resetHasMore: (state) => {
+      state.hasMore = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -301,19 +361,30 @@ export const productSlice = createSlice({
       })
       .addCase(listProducts.pending, (state) => {
         state.productListLoading = true;
+        state.isLoading = true;
       })
       .addCase(listProducts.fulfilled, (state, action) => {
         state.productListLoading = false;
-        // console.log(action.payload)
+        state.isSuccess = true;
+        state.isLoading = false;
         state.productListMessage = "success";
-        console.log(action.payload);
+        // console.log(action.payload);
         state.products = action.payload.products;
+        //////////////////////////////////////////////////////
         state.pages = action.payload.pages;
         state.page = action.payload.page;
+        action.payload.pages > action.payload.page
+          ? (state.hasMore = true)
+          : (state.hasMore = false);
+        state.homeProducts = [
+          ...state.homeProducts,
+          ...action.payload.products,
+        ];
       })
       .addCase(listProducts.rejected, (state, action) => {
         state.productListLoading = false;
         state.productListError = true;
+        state.isLoading = false;
         state.productListMessage = action.payload;
       })
       .addCase(deleteProduct.pending, (state) => {
@@ -394,6 +465,32 @@ export const productSlice = createSlice({
         state.topProductsLoading = false;
         state.topProductsError = true;
         state.topProductsMessage = action.payload;
+      })
+      .addCase(hideProduct.pending, (state) => {
+        state.hideProductLoading = true;
+      })
+      .addCase(hideProduct.fulfilled, (state, action) => {
+        state.hideProductLoading = false;
+        state.hideProductSuccess = true;
+        state.hideProductMessage = action.payload;
+      })
+      .addCase(hideProduct.rejected, (state, action) => {
+        state.hideProductLoading = false;
+        state.hideProductError = true;
+        state.hideProductMessage = action.payload;
+      })
+      .addCase(unHideProduct.pending, (state) => {
+        state.hideProductLoading = true;
+      })
+      .addCase(unHideProduct.fulfilled, (state, action) => {
+        state.hideProductLoading = false;
+        state.hideProductSuccess = true;
+        state.hideProductMessage = action.payload;
+      })
+      .addCase(unHideProduct.rejected, (state, action) => {
+        state.hideProductLoading = false;
+        state.hideProductError = true;
+        state.hideProductMessage = action.payload;
       });
   },
 });
@@ -405,5 +502,10 @@ export const {
   resetUpdate,
   createReviewReset,
   topProductsReset,
+  hideProductsReset,
+  resetPage,
+  incPage,
+  resetHomeProducts,
+  resetHasMore,
 } = productSlice.actions;
 export default productSlice.reducer;

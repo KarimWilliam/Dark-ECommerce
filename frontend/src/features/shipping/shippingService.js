@@ -76,12 +76,14 @@ const deleteAddress = async (token, id) => {
 
 // edits one of the addresses
 const editAddress = async (address, token, id) => {
+  console.log("Edit Address from shipping service");
   const config = {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   };
+
   const response = await axios.post(API_URL + id, address, config);
   response.data.forEach((element) => {
     if (element.default === true) {
@@ -99,7 +101,19 @@ const getAllAddresses = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(API_URL, config);
+  const response = await axios.get(API_URL + "all", config);
+  return response.data;
+};
+
+// gets address by id
+const getAddress = async (id, token) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL + id, config);
   return response.data;
 };
 
@@ -110,6 +124,7 @@ const shippingService = {
   deleteAddress,
   editAddress,
   getAllAddresses,
+  getAddress,
 };
 
 export default shippingService;

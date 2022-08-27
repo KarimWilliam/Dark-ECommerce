@@ -4,18 +4,28 @@ import FormContainer from "../components/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
-import { getAllAddresses } from "../features/shipping/shippingSlice";
+import {
+  getAllAddresses,
+  setCurrentAddress,
+} from "../features/shipping/shippingSlice";
+import { useLocation } from "react-router-dom";
+import AddressForm from "../components/AddressForm";
+import AddressItem from "../components/AddressItem";
+import { Link } from "react-router-dom";
+import AddressButton from "../components/AddressButton";
 
 function ShippingScreen() {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
 
-  const { addresses } = useSelector((state) => state.shipping);
+  const { addresses, defaultAddress } = useSelector((state) => state.shipping);
 
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
+
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
   const [country, setCountry] = useState(shippingAddress.country);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,58 +37,32 @@ function ShippingScreen() {
   useEffect(() => {
     dispatch(getAllAddresses());
   }, [dispatch]);
+  const prevRoute = useLocation();
 
   return (
     <>
-      <FormContainer>
-        <CheckoutSteps step1 step2 />
-        <h3>Add a new address</h3>
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="address">
-            <Form.Label>Address</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter address"
-              value={address}
-              required
-              onChange={(e) => setAddress(e.target.value)}></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="city">
-            <Form.Label>City</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter city"
-              value={city}
-              required
-              onChange={(e) => setCity(e.target.value)}></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="postalCode">
-            <Form.Label>Postal Code</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter postal code"
-              value={postalCode}
-              required
-              onChange={(e) => setPostalCode(e.target.value)}></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="country">
-            <Form.Label>Country</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter country"
-              value={country}
-              required
-              onChange={(e) => setCountry(e.target.value)}></Form.Control>
-          </Form.Group>
-
-          <Button type="submit" variant="primary">
-            Confirm
-          </Button>
-        </Form>
-      </FormContainer>
+      <CheckoutSteps step1 step2 step3 />
+      <div>
+        Your Addresses
+        <Link to="/Address/add" state={{ prevRoute }}>
+          <br></br>
+          <br></br>
+          <button>Create New Address</button>
+        </Link>
+        <div className=" align-items-center  justify-content-between p-5 custombgcolor container-xxl">
+          {addresses.length > 0 ? (
+            <div className="addressess">
+              {addresses.map((address) => (
+                <AddressButton
+                  key={address._id}
+                  address={address}></AddressButton>
+              ))}
+            </div>
+          ) : (
+            <h3>There are no addresses to see</h3>
+          )}
+        </div>
+      </div>
     </>
   );
 }

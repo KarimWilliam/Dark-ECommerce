@@ -145,6 +145,25 @@ export const mergeCarts = createAsyncThunk(
   }
 );
 
+// edits item qty of item in cart
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await cartService.clearCart(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -190,10 +209,10 @@ export const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addItem.pending, (state) => {
-        state.isLoading = true;
+        // state.isLoading = true;
       })
       .addCase(addItem.fulfilled, (state, action) => {
-        state.isLoading = false;
+        // state.isLoading = false;
         state.isSuccess = true;
 
         const item = action.payload;
@@ -220,21 +239,21 @@ export const cartSlice = createSlice({
         );
       })
       .addCase(addItem.rejected, (state, action) => {
-        state.isLoading = false;
+        // state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
 
       .addCase(editItem.rejected, (state, action) => {
-        state.isLoading = false;
+        //  state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
       .addCase(editItem.pending, (state) => {
-        state.isLoading = true;
+        //   state.isLoading = true;
       })
       .addCase(editItem.fulfilled, (state, action) => {
-        state.isLoading = false;
+        //   state.isLoading = false;
         state.isSuccess = true;
 
         const item = action.payload;
@@ -330,6 +349,17 @@ export const cartSlice = createSlice({
       })
       .addCase(mergeCarts.fulfilled, (state, action) => {})
       .addCase(mergeCarts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(clearCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(clearCart.fulfilled, (state, action) => {
+        state.cartItems = [];
+      })
+      .addCase(clearCart.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

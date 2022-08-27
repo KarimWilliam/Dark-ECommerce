@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  useSearchParams,
+  useLocation,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItem,
@@ -16,6 +21,9 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 
 function CartScreen() {
+  const { defaultAddress, currentAddress } = useSelector(
+    (state) => state.shipping
+  );
   const { id } = useParams(); //get id from the paramaters of the url
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +42,7 @@ function CartScreen() {
   } = useSelector((state) => state.cart);
 
   const { user } = useSelector((state) => state.auth);
-
+  const prevRoute = useLocation();
   useEffect(() => {
     dispatch(getItems());
     dispatch(reset());
@@ -55,7 +63,14 @@ function CartScreen() {
 
   const checkoutHandler = () => {
     if (user) {
-      navigate("/shipping");
+      console.log(currentAddress);
+      if (!Object.keys(currentAddress).length > 0 || !currentAddress) {
+        // navigate("/shipping");
+        console.log(Object.keys(currentAddress).length);
+        navigate("/shipping", { state: { prevRoute } });
+      } else {
+        navigate("/placeorder");
+      }
     } else {
       navigate("/login");
     }
@@ -151,6 +166,7 @@ function CartScreen() {
           </Card>
         </Col>
       </Row>
+      {isLoading && <Loader />}
     </>
   );
 }

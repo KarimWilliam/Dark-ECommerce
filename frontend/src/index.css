@@ -61,3 +61,18 @@ h5 {font-size: 1.2rem;}
     font-size: 2.5vw;
   }
 }
+
+html {
+
+  scroll-behavior: auto !important;
+
+}
+
+#lblCartCount {
+  font-size: 12px;
+  /* background: #ff0000; */
+  color: rgba(255, 255, 255, 0.452);
+  padding: 0 10px;
+  vertical-align: top;
+  margin-left: -10px;
+}

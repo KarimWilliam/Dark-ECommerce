@@ -76,12 +76,25 @@ const mergeCarts = async (tempCart, token) => {
   return payload.data;
 };
 
+// check if item exists and store it in the DB cart
+const clearCart = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const payload = await axios.delete(API_URL_CART, config);
+
+  return payload.data;
+};
+
 const cartService = {
   addToCart,
   addToLoggedCart,
   getItems,
   deleteItem,
   mergeCarts,
+  clearCart,
 };
 
 export default cartService;

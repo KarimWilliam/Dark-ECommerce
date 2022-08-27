@@ -50,6 +50,12 @@ export const deleteItem = asyncHandler(async (req, res) => {
   res.json("ok");
 });
 
+//delete item from cart
+export const clearCart = asyncHandler(async (req, res) => {
+  await User.updateOne({ _id: req.user.id }, { $pull: { cartItems: {} } });
+  res.json("ok");
+});
+
 //Merge carts
 export const mergeCarts = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);

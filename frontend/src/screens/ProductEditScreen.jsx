@@ -16,6 +16,8 @@ import {
 const ProductEditScreen = () => {
   const { id: productId } = useParams(); //get id from the paramaters of the url
 
+  const [imgFile, setImgFile] = useState("");
+  const [imgFileName, setImgFileName] = useState("choose File");
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
@@ -39,6 +41,38 @@ const ProductEditScreen = () => {
     messageUpdate,
   } = useSelector((state) => state.product);
 
+  const { user } = useSelector((state) => state.auth);
+
+  // On file select (from the pop up)
+  const onFileChange = async (event) => {
+    // Update the state
+    setImgFile(event.target.files[0]);
+    setImgFileName(event.target.files[0].name);
+    /////////////////////////
+    const file = event.target.files[0];
+    const fileName = event.target.files[0].name;
+    let formdata = new FormData();
+    formdata.append("image", file);
+    setUploading(true);
+
+    //upload the multifile to the backend
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.post("/api/upload", formdata, config);
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
+  };
+
   useEffect(() => {
     if (successUpdate) {
       dispatch(resetUpdate());
@@ -59,15 +93,24 @@ const ProductEditScreen = () => {
   }, [dispatch, navigate, productId, product, successUpdate]);
 
   const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
+    const file = imgFile;
+    const fileName = imgFileName;
+    let formData = new FormData();
     formData.append("image", file);
     setUploading(true);
 
+    //upload the multifile to the backend
     try {
       const config = {
+        onUploadProgress: (progressEvent) => {
+          var percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          console.log(percentCompleted);
+        },
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
         },
       };
 
@@ -129,20 +172,15 @@ const ProductEditScreen = () => {
                 onChange={(e) => setPrice(e.target.value)}></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="image">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter image url"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}></Form.Control>
-              <Form.Control
-                type="file"
-                controlid="image-file"
-                label="Choose File"
-                onChange={uploadFileHandler}></Form.Control>
-              {uploading && <Loader />}
-            </Form.Group>
+            <label htmlFor="text"></label>
+            <input
+              type="file"
+              name="Image"
+              id="customFile"
+              encType="multipart/form-data"
+              onChange={onFileChange}
+            />
+            {uploading && <Loader />}
 
             <Form.Group controlId="brand">
               <Form.Label>Brand</Form.Label>

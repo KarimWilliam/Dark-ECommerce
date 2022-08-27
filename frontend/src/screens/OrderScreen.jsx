@@ -205,7 +205,7 @@ const OrderScreen = () => {
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
-                  <Button onClick={onPayClick}>Pay</Button>
+                  <Button onClick={onPayClick}>Pay with Credit Card</Button>
                 </ListGroup.Item>
               )}
               {/* {orderDeliverLoading && <Loader />} */}

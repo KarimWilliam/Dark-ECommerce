@@ -2,7 +2,14 @@ import axios from "axios";
 const API_URL = "/api/products/";
 
 // Get  reviews with pagination
-const listProducts = async (pageNumber, keyword, token) => {
+const listProducts = async (pageNumber, keyword) => {
+  // const CancelToken = axios.CancelToken;
+  // const source = CancelToken.source();
+  // const config = {
+  //   cancelToken: source.token,
+  //   headers: {},
+  // };
+  console.log(pageNumber);
   if (!keyword) {
     keyword = "";
   }
@@ -64,16 +71,6 @@ const getProduct = async (id) => {
   return response.data;
 };
 
-// delete a product
-const deleteProduct = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  await axios.delete(API_URL + id, config);
-};
-
 // create a product
 const createProduct = async (token) => {
   const config = {
@@ -116,6 +113,40 @@ const getTopProducts = async () => {
   return response.data;
 };
 
+// delete a product
+const deleteProduct = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  await axios.delete(API_URL + id, config);
+};
+
+// hide a product from customers
+const hideProduct = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(API_URL + id, {}, config);
+  return response.data;
+};
+
+// show a product to customers
+const unHideProduct = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(API_URL + "hide/" + id, {}, config);
+  return response.data;
+};
+
 const productService = {
   getProducts,
   getProduct,
@@ -127,6 +158,8 @@ const productService = {
   listProductDetails,
   createProductReview,
   getTopProducts,
+  hideProduct,
+  unHideProduct,
 };
 
 export default productService;

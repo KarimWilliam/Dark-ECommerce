@@ -13,18 +13,20 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import bodyParser from "body-parser";
 import Stripe from "stripe";
 import shippingRoutes from "./routes/shippingRoutes.js";
+import fileUpload from "express-fileupload";
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY);
-
 dotenv.config();
 connectDB();
-
+const __dirname = path.resolve();
 const app = express();
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(fileUpload());
 app.use(express.json());
+
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -47,7 +49,7 @@ app.use("/api/shipping", shippingRoutes);
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
-const __dirname = path.resolve();
+
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.use(notFound);
