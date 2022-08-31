@@ -23,6 +23,13 @@ const initialState = {
   allOdersSuccess: false,
   allOrdersMessage: "",
   allOrdersLoading: false,
+  paypalPay: false,
+  cartSteal: "",
+  finalizeSuccess: false,
+  finalizeSuccess: false,
+  finalizeLoading: false,
+  finalizeError: false,
+  finalizeSallGoodMan: true,
 };
 
 //  create a new order
@@ -139,6 +146,25 @@ export const deliverOrder = createAsyncThunk(
   }
 );
 
+//  Finalize Order
+export const finalizeOrder = createAsyncThunk(
+  "order/finalizeOrder",
+  async (orderID, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await orderService.finalizeOrder(orderID, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -172,6 +198,17 @@ export const orderSlice = createSlice({
       state.allOrdersLoading = false;
       state.allOdersSuccess = false;
       state.allOrdersMessage = "";
+    },
+    paymentComplete: (state) => {
+      state.paypalPay = true;
+    },
+    paymentCompleteReset: (state) => {
+      state.paypalPay = false;
+    },
+    finalizeReset: (state) => {
+      state.finalizeSuccess = false;
+      state.finalizeError = false;
+      state.finalizeSallGoodMan = true;
     },
   },
   extraReducers: (builder) => {
@@ -253,6 +290,22 @@ export const orderSlice = createSlice({
         state.orderDeliverLoading = false;
         state.orderDeliverError = true;
         state.orderDeliverMessage = action.payload;
+      })
+      .addCase(finalizeOrder.pending, (state) => {
+        state.finalizeLoading = true;
+      })
+      .addCase(finalizeOrder.fulfilled, (state, action) => {
+        state.cartSteal = action.payload;
+        console.log(action.payload);
+        if (action.payload.length !== 0) {
+          state.finalizeSallGoodMan = false;
+        }
+        state.finalizeSuccess = true;
+        state.finalizeLoading = false;
+      })
+      .addCase(finalizeOrder.rejected, (state, action) => {
+        state.finalizeError = true;
+        state.finalizeLoading = false;
       });
   },
 });
@@ -264,5 +317,8 @@ export const {
   reset,
   orderDeliverReset,
   allOrdersReset,
+  paymentComplete,
+  paymentCompleteReset,
+  finalizeReset,
 } = orderSlice.actions;
 export default orderSlice.reducer;

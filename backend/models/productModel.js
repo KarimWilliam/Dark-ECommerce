@@ -69,6 +69,11 @@ export const productSchema = mongoose.Schema(
       required: true,
       default: true,
     },
+    archived: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   {
     timestamps: true,

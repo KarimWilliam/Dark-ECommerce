@@ -76,6 +76,18 @@ const deliverOrder = async (id, token) => {
   return response.data;
 };
 
+// Get orders for logged in user by id
+const finalizeOrder = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(API_URL + id + "/finalize", config);
+  return response.data;
+};
+
 const orderService = {
   createOrder,
   getOrderDetails,
@@ -83,6 +95,7 @@ const orderService = {
   getAllUserOrders,
   listOrders,
   deliverOrder,
+  finalizeOrder,
 };
 
 export default orderService;

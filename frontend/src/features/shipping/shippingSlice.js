@@ -1,14 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import shippingService from "./shippingService";
 
-const currentAddress = JSON.parse(
-  window.sessionStorage.getItem("currentAddress")
-);
+let currentAddress = "";
+try {
+  currentAddress = JSON.parse(localStorage.getItem("currentAddress"));
+} catch (error) {
+  console.log(error);
+}
+
+const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
 
 const initialState = {
   currentAddress: currentAddress ? currentAddress : null,
   addresses: [],
-  defaultAddress: {},
+  defaultAddress: defaultAddress ? defaultAddress : null,
   getAddressTarget: "",
   isError: false,
   isSuccess: false,
@@ -219,6 +224,10 @@ export const shippingSlice = createSlice({
     },
     setCurrentAddress: (state, action) => {
       state.currentAddress = action.payload;
+      window.localStorage.setItem(
+        "currentAddress",
+        JSON.stringify(action.payload)
+      );
     },
   },
   extraReducers: (builder) => {
@@ -242,7 +251,10 @@ export const shippingSlice = createSlice({
       .addCase(setDefaultAddress.fulfilled, (state, action) => {
         state.defaultAddressLoading = false;
         state.defaultAddressSuccess = true;
+        state.defaultAddress = action.payload;
+        state.currentAddress = action.payload;
         state.defaultAddressMessage = action.payload;
+        localStorage.setItem("defaultAddress", JSON.stringify(action.payload));
       })
       .addCase(setDefaultAddress.rejected, (state, action) => {
         state.defaultAddressLoading = false;
@@ -255,7 +267,7 @@ export const shippingSlice = createSlice({
       .addCase(getDefaultAddress.fulfilled, (state, action) => {
         state.defaultAddressLoading = false;
         state.defaultAddressSuccess = true;
-        state.defaultAddress = action.payload;
+        localStorage.setItem("defaultAddress", JSON.stringify(action.payload));
         if (!state.currentAddress) {
           //TODO
           state.currentAddress = action.payload;
@@ -270,6 +282,14 @@ export const shippingSlice = createSlice({
         state.deleteAddressLoading = true;
       })
       .addCase(deleteAddress.fulfilled, (state, action) => {
+        console.log(action.payload);
+        console.log(state.currentAddress._id);
+        if (action.payload == state.currentAddress._id) {
+          state.currentAddress = null;
+        }
+        if (action.payload == state.defaultAddress._id) {
+          state.defaultAddress = null;
+        }
         state.deleteAddressLoading = false;
         state.deleteAddressSuccess = true;
         state.deleteAddressMessage = action.payload;

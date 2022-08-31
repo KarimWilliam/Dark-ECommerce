@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -11,12 +12,21 @@ import {
   orderPayReset,
   deliverOrder,
   orderDeliverReset,
+  paymentComplete,
+  paymentCompleteReset,
+  finalizeOrder,
+  finalizeReset,
 } from "../features/order/orderSlice";
+import { clearCart, getItems } from "../features/cart/cartSlice";
 import { stripePay } from "../features/stripe/stripeSlice";
+import axios from "axios";
 
 const OrderScreen = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams(); //get id from the paramaters of the url
+
+  const [payWith, setPayWith] = useState("");
 
   const userLogin = useSelector((state) => state.auth);
   const { user: userInfo } = userLogin;
@@ -30,16 +40,27 @@ const OrderScreen = () => {
     message,
     isLoading,
     isSuccess,
+    paypalPay,
     createOrderError,
     createOrderLoading,
     createOrderSuccess,
     createOrderMessage,
+    finalizeSuccess,
+    finalizeError,
+    finalizeLoading,
     orderpayLoading: loadingPay,
     orderPaySuccess: successPay,
     orderDeliverSuccess,
     orderDeliverLoading,
+    finalizeSallGoodMan,
   } = orderDetails;
   let itemPrice = 0;
+  let totalPrice = 0;
+
+  const PayPalButton = window.paypal.Buttons.driver("react", {
+    React,
+    ReactDOM,
+  });
 
   useEffect(() => {
     if (!order || order._id !== id || orderDeliverSuccess) {
@@ -50,11 +71,9 @@ const OrderScreen = () => {
     }
   }, [dispatch, order, id, successPay, orderDeliverSuccess]);
 
-  //   Calculate prices
+  //////////   Calculate prices
 
   if (isSuccess) {
-    console.log(isSuccess);
-    console.log(order);
     const addDecimals = (num) => {
       return (Math.round(num * 100) / 100).toFixed(2);
     };
@@ -62,21 +81,38 @@ const OrderScreen = () => {
     itemPrice = addDecimals(
       order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     );
-  }
 
-  const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
-    dispatch(payOrder(id));
-  };
+    totalPrice = order.totalPrice;
+  }
 
   const deliverHandler = () => {
     dispatch(deliverOrder(id));
   };
+  ///////////////////////////////  FINALIZE //////////////////////////////
 
+  useEffect(() => {
+    if (finalizeSuccess) {
+      //clear the cart
+      dispatch(finalizeReset());
+      if (finalizeSallGoodMan) {
+        dispatch(clearCart());
+        if (payWith == "stripe") {
+          dispatch(clearCart());
+          dispatch(stripePay(order._id));
+        } else if (payWith == "paypal") {
+          dispatch(clearCart());
+        }
+      } else {
+        dispatch(getItems());
+        navigate("/cart");
+      }
+    }
+  }, [finalizeSuccess]);
   //////////////////////////////   STRIPE PAYMENT ////////////////////////////////////
 
   const onPayClick = () => {
-    dispatch(stripePay(order._id));
+    setPayWith("stripe");
+    dispatch(finalizeOrder(id));
   };
 
   useEffect(() => {
@@ -90,7 +126,46 @@ const OrderScreen = () => {
     dispatch(getOrderDetails(id));
   }, [id, dispatch]);
 
-  /////////////////////////////////////    VISUAL    ////////////////////////////////////////////////////////////
+  //////////////////////////////////////   PAYPAL    ////////////////////////////////////
+  const createOrderPaypal = async () => {
+    dispatch(finalizeOrder(id));
+    console.log("executing paypal");
+    const url = "/api/orders/paypal/";
+    const config = {
+      headers: {
+        "content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const payload = await axios.get(url + id, config);
+
+    if (payload.data.id) {
+      return payload.data.id;
+    } else {
+      console.log(payload.data);
+    }
+  };
+
+  const onApprove = async (data, actions) => {
+    const paypalID = data.orderID;
+    const url = "/api/orders/paypal/";
+    const config = {
+      headers: {
+        "content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const payload = await axios.post(url + id, { paypalID: paypalID }, config);
+    console.log(payload);
+    dispatch(paymentComplete());
+  };
+
+  useEffect(() => {
+    dispatch(getOrderDetails(id));
+    dispatch(paymentCompleteReset());
+  }, [paypalPay]);
+
+  /////////////////////////////////////    VISUAL    //////////////////////////////////////
 
   return isLoading ? (
     <Loader />
@@ -113,13 +188,13 @@ const OrderScreen = () => {
               </p>
               <p>
                 <strong>Address:</strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city}
+                {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
                 {order.shippingAddress.postalCode},
                 {order.shippingAddress.country}
               </p>
               {order.isDelivered ? (
                 <Message variant="success">
-                  Delivered on {order.deliveredAt}
+                  Delivered on {order.deliveredAt.split("T")[0]}
                 </Message>
               ) : (
                 <Message variant="info">Not Delivered</Message>
@@ -127,13 +202,10 @@ const OrderScreen = () => {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-                <strong>Method: </strong>
-                {order.paymentMethod}
-              </p>
               {order.isPaid ? (
-                <Message variant="success">Paid on {order.paidAt}</Message>
+                <Message variant="success">
+                  Paid on {order.paidAt.split("T")[0]}
+                </Message>
               ) : (
                 <Message variant="info">Not Paid</Message>
               )}
@@ -205,7 +277,18 @@ const OrderScreen = () => {
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
-                  <Button onClick={onPayClick}>Pay with Credit Card</Button>
+                  <div className="d-grid gap-2">
+                    <Button className="btn btn-block" onClick={onPayClick}>
+                      Pay with Credit Card
+                    </Button>
+                    <PayPalButton
+                      fundingSource={"paypal"}
+                      createOrder={(data, actions) =>
+                        createOrderPaypal(data, actions)
+                      }
+                      onApprove={(data, actions) => onApprove(data, actions)}
+                    />
+                  </div>
                 </ListGroup.Item>
               )}
               {/* {orderDeliverLoading && <Loader />} */}

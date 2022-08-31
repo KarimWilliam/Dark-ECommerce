@@ -1,19 +1,14 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
-import {
-  deleteAddress,
-  setDefaultAddress,
-  setCurrentAddress,
-} from "../features/shipping/shippingSlice";
+import { useDispatch } from "react-redux";
+import { setCurrentAddress } from "../features/shipping/shippingSlice";
 
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function AddressButton({ address }) {
   const prevRoute = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentAddress = JSON.parse(
-    window.sessionStorage.getItem("currentAddress")
+    window.localStorage.getItem("currentAddress")
   );
   const onClick = (e) => {
     e.preventDefault();

@@ -11,7 +11,7 @@ function AddressItem({ address }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentAddress = JSON.parse(
-    window.sessionStorage.getItem("currentAddress")
+    window.localStorage.getItem("currentAddress")
   );
   const onDelete = (e) => {
     e.preventDefault();

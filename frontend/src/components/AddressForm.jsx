@@ -50,7 +50,6 @@ function AddressForm({ prevPage }) {
   const [country, setCountry] = useState("");
   const [phone, setPhone] = useState("");
   const [postal, setPostal] = useState("");
-  console.log(prevPage);
 
   const onSubmit = (e) => {
     e.preventDefault();

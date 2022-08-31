@@ -6,9 +6,7 @@ import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createOrder, createOrderReset } from "../features/order/orderSlice";
-import { clearCart } from "../features/cart/cartSlice";
-// import { ORDER_CREATE_RESET } from '../constants/orderConstants'
-// import { USER_DETAILS_RESET } from '../constants/userConstants'
+import { clearCart, getItems } from "../features/cart/cartSlice";
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();
@@ -70,9 +68,6 @@ const PlaceOrderScreen = () => {
         totalPrice: cart.totalPrice,
       })
     );
-
-    //clear the cart
-    dispatch(clearCart());
   };
 
   return (

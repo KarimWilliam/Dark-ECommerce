@@ -39,20 +39,24 @@ function CartScreen() {
     isSuccess,
     isLoading,
     addToLoggedCartSuccess,
+    addToLoggedCartLoading,
   } = useSelector((state) => state.cart);
 
+  const { cartSteal } = useSelector((state) => state.order);
   const { user } = useSelector((state) => state.auth);
   const prevRoute = useLocation();
   useEffect(() => {
-    dispatch(getItems());
-    dispatch(reset());
+    if (addToLoggedCartSuccess) {
+      dispatch(getItems());
+      dispatch(reset());
+    }
   }, [dispatch, addToLoggedCartSuccess, deleteSuccess]);
 
   useEffect(() => {
     if (id) {
       dispatch(addToLoggedCart({ id, qty }));
       navigate("/cart");
-      dispatch(getItems());
+      // dispatch(getItems());  DID THIS SO LOADING IS CONSISTANT REVERT IF THINGS BREAK
     }
   }, [dispatch, qty, id, navigate]);
 
@@ -64,7 +68,9 @@ function CartScreen() {
   const checkoutHandler = () => {
     if (user) {
       console.log(currentAddress);
-      if (!Object.keys(currentAddress).length > 0 || !currentAddress) {
+      if (!currentAddress) {
+        navigate("/shipping", { state: { prevRoute } });
+      } else if (!Object.keys(currentAddress).length > 0 || !currentAddress) {
         // navigate("/shipping");
         console.log(Object.keys(currentAddress).length);
         navigate("/shipping", { state: { prevRoute } });
@@ -85,6 +91,14 @@ function CartScreen() {
 
   return (
     <>
+      {cartSteal &&
+        cartSteal.map((item) => (
+          <Message>
+            {" "}
+            {item.name} was removed from your cart because we didnt have enough
+            supply{" "}
+          </Message>
+        ))}
       <Row>
         <Col md={8}>
           <h1>Shopping Cart</h1>
@@ -166,7 +180,7 @@ function CartScreen() {
           </Card>
         </Col>
       </Row>
-      {isLoading && <Loader />}
+      {(isLoading || addToLoggedCartLoading) && <Loader />}
     </>
   );
 }

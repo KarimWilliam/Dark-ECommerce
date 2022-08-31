@@ -169,12 +169,10 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.isLoading = false;
       state.isSuccess = false;
       state.isError = false;
       state.message = "";
       state.addToLoggedCartSuccess = false;
-      state.addToLoggedCartLoading = false;
       state.deleteLoading = false;
       state.deleteSuccess = false;
     },
@@ -279,30 +277,43 @@ export const cartSlice = createSlice({
         state.addToLoggedCartLoading = true;
       })
       .addCase(addToLoggedCart.fulfilled, (state, action) => {
-        console.log(action.payload.temp);
-        if (action.payload.temp) {
-          console.log("temp");
-          const item = action.payload;
-          const existItem = state.cartItems.find(
-            (x) => x.product._id === item.product._id
-          );
+        // console.log(action.payload.temp);
+        // if (action.payload.temp) {
+        //   console.log("temp");
+        //   const item = action.payload;
+        //   const existItem = state.cartItems.find(
+        //     (x) => x.product._id === item.product._id
+        //   );
 
-          if (existItem) {
-            //does not add onto the existing quantity. instead it replaces the quantity with the new quantity
-            state.cartItems = state.cartItems.map((x) =>
-              x.product === existItem.product ? item : x
-            );
-          } else {
-            state.cartItems.push(item);
-          }
+        //   if (existItem) {
+        //     //does not add onto the existing quantity. instead it replaces the quantity with the new quantity
+        //     state.cartItems = state.cartItems.map((x) =>
+        //       x.product === existItem.product ? item : x
+        //     );
+        //   } else {
+        //     state.cartItems.push(item);
+        //   }
 
-          window.sessionStorage.setItem(
-            "cartItems",
-            JSON.stringify(state.cartItems)
-          );
-        }
+        //   window.sessionStorage.setItem(
+        //     "cartItems",
+        //     JSON.stringify(state.cartItems)
+        //   );
+        // }
+        // state.addToLoggedCartLoading = false;
+        // state.addToLoggedCartSuccess = true;
+
         state.addToLoggedCartLoading = false;
         state.addToLoggedCartSuccess = true;
+        console.log(action.payload);
+        if (action.payload) {
+          state.cartItems = action.payload;
+        } else {
+          state.cartItems = [];
+        }
+        window.sessionStorage.setItem(
+          "cartItems",
+          JSON.stringify(state.cartItems)
+        );
       })
       .addCase(addToLoggedCart.rejected, (state, action) => {
         state.addToLoggedCartLoading = false;
@@ -347,7 +358,19 @@ export const cartSlice = createSlice({
       .addCase(mergeCarts.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(mergeCarts.fulfilled, (state, action) => {})
+      .addCase(mergeCarts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        if (action.payload) {
+          state.cartItems = action.payload;
+        } else {
+          state.cartItems = [];
+        }
+        window.sessionStorage.setItem(
+          "cartItems",
+          JSON.stringify(state.cartItems)
+        );
+      })
       .addCase(mergeCarts.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
@@ -358,6 +381,10 @@ export const cartSlice = createSlice({
       })
       .addCase(clearCart.fulfilled, (state, action) => {
         state.cartItems = [];
+        window.sessionStorage.setItem(
+          "cartItems",
+          JSON.stringify(state.cartItems)
+        );
       })
       .addCase(clearCart.rejected, (state, action) => {
         state.isLoading = false;

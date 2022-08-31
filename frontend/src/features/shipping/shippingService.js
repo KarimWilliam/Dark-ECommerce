@@ -13,7 +13,7 @@ const createAddress = async (address, token) => {
 
   response.data.forEach((element) => {
     if (element.default === true) {
-      window.sessionStorage.setItem("currentAddress", JSON.stringify(element));
+      window.localStorage.setItem("currentAddress", JSON.stringify(element));
     }
   });
   return response.data;
@@ -30,7 +30,7 @@ const setDefaultAddress = async (id, token) => {
   const response = await axios.put(API_URL + id, {}, config);
 
   if (response.data) {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       "currentAddress",
       JSON.stringify(response.data)
     );
@@ -50,7 +50,7 @@ const getDefaultAddress = async (token) => {
   const response = await axios.get(API_URL, config);
 
   if (response.data) {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       "currentAddress",
       JSON.stringify(response.data)
     );
@@ -67,9 +67,15 @@ const deleteAddress = async (token, id) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  if (id === window.sessionStorage.getItem("currentAddress")._id) {
-    window.sessionStorage.setItem("currentAddress", null);
+  console.log(id);
+  console.log(localStorage.getItem("currentAddress"));
+  if (id == JSON.parse(localStorage.getItem("currentAddress"))._id) {
+    localStorage.setItem("currentAddress", null);
   }
+  if (id == JSON.parse(localStorage.getItem("defaultAddress"))._id) {
+    localStorage.setItem("defaultAddress", null);
+  }
+
   const response = await axios.delete(API_URL + id, config);
   return response.data;
 };
@@ -87,7 +93,7 @@ const editAddress = async (address, token, id) => {
   const response = await axios.post(API_URL + id, address, config);
   response.data.forEach((element) => {
     if (element.default === true) {
-      window.sessionStorage.setItem("currentAddress", JSON.stringify(element));
+      window.localStorage.setItem("currentAddress", JSON.stringify(element));
     }
   });
   return response.data;

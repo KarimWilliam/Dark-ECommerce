@@ -21,9 +21,13 @@ import {
   createReviewReset,
 } from "../features/products/productSlice";
 import Message from "../components/Message";
+import { addToLoggedCart, reset, getItems } from "../features/cart/cartSlice";
 
 function ProductScreen() {
   const { user } = useSelector((state) => state.auth);
+  const { addToLoggedCartSuccess, addToLoggedCartLoading } = useSelector(
+    (state) => state.cart
+  );
   const { id } = useParams(); //get id from the paramaters of the url
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,8 +45,15 @@ function ProductScreen() {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [sucMsg, setsucMsg] = useState("");
   const [productReviews, setProductReviews] = useState([]);
-
+  useEffect(() => {
+    if (addToLoggedCartSuccess) {
+      setsucMsg(<Message variant={"success"}>Item added to cart</Message>);
+      dispatch(reset());
+      dispatch(getItems());
+    }
+  }, [addToLoggedCartSuccess]);
   useEffect(() => {
     dispatch(createReviewReset());
     if (createReviewSuccess) {
@@ -69,6 +80,10 @@ function ProductScreen() {
     navigate(`/cart/${id}?qty=${qty}`);
   };
 
+  const addToCartHandlerLater = () => {
+    dispatch(addToLoggedCart({ id, qty }));
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(createProductReview({ id: id, review: { rating, comment } }));
@@ -76,9 +91,12 @@ function ProductScreen() {
 
   return (
     <>
+      {sucMsg}
+
       <Link className="btn btn-light my-3" to="/">
         Go Back
       </Link>
+
       {isError ? (
         <Message variant="danger">{message}</Message>
       ) : isLoading ? (
@@ -138,13 +156,19 @@ function ProductScreen() {
                             as="select"
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}>
-                            {[...Array(product.countInStock).keys()].map(
-                              (x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              )
-                            )}
+                            {product.countInStock <= 30
+                              ? [...Array(product.countInStock).keys()].map(
+                                  (x) => (
+                                    <option key={x + 1} value={x + 1}>
+                                      {x + 1}
+                                    </option>
+                                  )
+                                )
+                              : [...Array(30).keys()].map((x) => (
+                                  <option key={x + 1} value={x + 1}>
+                                    {x + 1}
+                                  </option>
+                                ))}
                           </Form.Control>
                         </Col>
                       </Row>
@@ -160,7 +184,17 @@ function ProductScreen() {
                         product.countInStock === 0 ||
                         product.visibility === false
                       }>
-                      Add To Cart
+                      Buy Now
+                    </Button>
+                    <Button
+                      onClick={addToCartHandlerLater}
+                      className="btn-block"
+                      type="button"
+                      disabled={
+                        product.countInStock === 0 ||
+                        product.visibility === false
+                      }>
+                      {addToLoggedCartLoading ? <Loader /> : "Add To Cart"}
                     </Button>
                   </ListGroup.Item>
                 </ListGroup>

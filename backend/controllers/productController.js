@@ -20,8 +20,16 @@ const getProductsPage = asyncHandler(async (req, res) => {
       }
     : {};
   console.log(keyword);
-  const count = await Product.countDocuments({ ...keyword, visibility: true });
-  const products = await Product.find({ ...keyword, visibility: true }) //visibility: true
+  const count = await Product.countDocuments({
+    ...keyword,
+    visibility: true,
+    archived: false,
+  });
+  const products = await Product.find({
+    ...keyword,
+    visibility: true,
+    archived: false,
+  }) //visibility: true
     .limit(pageSize)
     .skip(pageSize * (page - 1));
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
@@ -39,7 +47,11 @@ export const getProducts = asyncHandler(async (req, res) => {
         },
       }
     : {};
-  const products = await Product.find({ visibility: true, ...keyword });
+  const products = await Product.find({
+    visibility: true,
+    ...keyword,
+    archived: false,
+  });
   const adminproducts = await Product.find({});
 
   res.json(products);
@@ -57,7 +69,7 @@ export const getProductsAdmin = asyncHandler(async (req, res) => {
     : {};
 
   const user = await User.findById(req.user.id);
-  const products = await Product.find({ ...keyword });
+  const products = await Product.find({ ...keyword, archived: false });
 
   res.json(products);
 });
@@ -82,9 +94,18 @@ const getProductById = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
+  // if (product) {
+  //   await product.remove();
+  //   res.json({ message: "Product removed" });
+  // } else {
+  //   res.status(404);
+  //   throw new Error("Product not found");
+  // }
   if (product) {
-    await product.remove();
-    res.json({ message: "Product removed" });
+    product.archived = true;
+    product.visibility = false;
+    await product.save();
+    res.json({ message: "Product Hidden" });
   } else {
     res.status(404);
     throw new Error("Product not found");
@@ -138,6 +159,7 @@ const createProduct = asyncHandler(async (req, res) => {
     numReviews: 0,
     description: "Sample description",
     visibility: false,
+    archived: false,
   });
 
   const createdProduct = await product.save();
@@ -162,6 +184,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.category = category;
     product.countInStock = countInStock;
     product.visibility = true;
+    product.archived = false;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);
@@ -223,7 +246,9 @@ const createProductReview = asyncHandler(async (req, res) => {
 // @route   GET /api/products/top
 // @access  Public
 const getTopProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+  const products = await Product.find({ visiblity: true, archive: false })
+    .sort({ rating: -1 })
+    .limit(3);
 
   res.json(products);
 });

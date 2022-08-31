@@ -10,6 +10,7 @@ import {
   defaultReset,
   editReset,
   createReset,
+  setCurrentAddress,
 } from "../features/shipping/shippingSlice";
 import AddressForm from "../components/AddressForm";
 import Loader from "../components/Loader";
@@ -24,10 +25,8 @@ function AddressScreen() {
     editAddressSuccess,
     createAddressSuccess,
     defaultAddressSuccess,
+    defaultAddress,
   } = useSelector((state) => state.shipping);
-  const currentAddress = JSON.parse(
-    window.sessionStorage.getItem("currentAddress")
-  );
 
   useEffect(() => {
     dispatch(getAllAddresses());
@@ -38,6 +37,11 @@ function AddressScreen() {
       dispatch(editReset());
     }
     if (defaultAddressSuccess) {
+      setCurrentAddress(defaultAddress);
+      window.localStorage.setItem(
+        "currentAddress",
+        JSON.stringify(defaultAddress)
+      );
       dispatch(defaultReset());
     }
     if (createAddressSuccess) {

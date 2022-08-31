@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -9,13 +9,12 @@ import { login, reset, resetLogInSuccess } from "../features/auth/authSlice";
 import { resetCartItems, mergeCarts } from "../features/cart/cartSlice";
 import { getDefaultAddress } from "../features/shipping/shippingSlice";
 
-const LoginScreen = () => {
+const LoginScreen = ({ prevPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //let [searchParams, setSearchParams] = useSearchParams(); //get the search paramaters from the url
 
   const userLogin = useSelector((state) => state.auth);
   const { message, isLoading, isError, user, loggedInSuccess } = userLogin;
@@ -27,7 +26,12 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (prevPage) {
+        console.log("routing to: " + prevPage.prevRoute.pathname);
+        navigate(prevPage.prevRoute.pathname);
+      } else {
+        navigate("/");
+      }
     }
   }, [user, navigate]);
 

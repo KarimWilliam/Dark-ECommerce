@@ -37,7 +37,7 @@ const addToLoggedCart = async (token, id, qty) => {
     countInStock: data.countInStock,
     qty,
   };
-  return payload;
+  return data;
 };
 
 // get all items in cart

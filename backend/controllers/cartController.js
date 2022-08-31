@@ -13,7 +13,7 @@ export const addItem = asyncHandler(async (req, res) => {
     (x) => JSON.stringify(x.product) == JSON.stringify(product._id)
   );
   const qty = req.body.qty;
-  if (product.visibility) {
+  if (product.visibility && !product.archived) {
     if (existItem) {
       //does not add onto the existing quantity. instead it replaces the quantity with the new quantity
       user.cartItems = user.cartItems.map((x) =>
@@ -25,7 +25,12 @@ export const addItem = asyncHandler(async (req, res) => {
       user.cartItems.push({ product: product._id, qty: Number(qty) });
     }
     await user.save();
-    res.json(product);
+    const user2 = await User.findById(req.user.id).populate(
+      "cartItems.product",
+      "name image price countInStock "
+    );
+    res.json(user2.cartItems);
+    //res.json(product);
   } else {
     res.status(404);
     throw new Error("Product not found");
@@ -36,8 +41,19 @@ export const addItem = asyncHandler(async (req, res) => {
 export const getItems = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).populate(
     "cartItems.product",
-    "name image price countInStock "
+    "name image price countInStock archived visibility "
   );
+  //remove removed items from user's cart
+  let i = user.cartItems.length;
+  while (i--) {
+    if (
+      user.cartItems[i].product.visibility != true ||
+      user.cartItems[i].product.archived
+    ) {
+      user.cartItems.splice(i, 1);
+    }
+  }
+  await user.save();
   res.json(user.cartItems);
 });
 
@@ -50,7 +66,7 @@ export const deleteItem = asyncHandler(async (req, res) => {
   res.json("ok");
 });
 
-//delete item from cart
+//delete all items from cart
 export const clearCart = asyncHandler(async (req, res) => {
   await User.updateOne({ _id: req.user.id }, { $pull: { cartItems: {} } });
   res.json("ok");
@@ -61,6 +77,7 @@ export const mergeCarts = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   if (req.body.tempCart) {
     const tempCartProducts = req.body.tempCart;
+    //console.log(req.body);
     // console.log(tempCartProducts);
     let newCartItems = user.cartItems;
     let exist = false;
@@ -82,8 +99,17 @@ export const mergeCarts = asyncHandler(async (req, res) => {
       j = 0;
     }
     await User.updateOne({ _id: req.user.id }, { cartItems: newCartItems });
-    res.json("newCartItems");
+    const useritems = await User.findById(req.user.id).populate(
+      "cartItems.product",
+      "name image price countInStock "
+    );
+    res.json(useritems.cartItems);
   } else {
-    res.json("user.cartItems");
+    const useritems = await User.findById(req.user.id).populate(
+      "cartItems.product",
+      "name image price countInStock "
+    );
+
+    res.json(useritems.cartItems);
   }
 });

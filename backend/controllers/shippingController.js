@@ -6,7 +6,7 @@ import { Address } from "../models/userModel.js";
 // @route POST /api/shipping/
 // @access private
 export const createAddress = asyncHandler(async (req, res) => {
-  const defaulty = false;
+  let defaulty = false;
   const user = await User.findById(req.user.id);
   if (user.addressList.length === 0) {
     defaulty = true;
@@ -160,5 +160,5 @@ export const deleteAddress = asyncHandler(async (req, res) => {
     { _id: req.user.id },
     { $pull: { addressList: { _id: req.params.id } } }
   );
-  res.json("deleted Successfully");
+  res.json(req.params.id);
 });
