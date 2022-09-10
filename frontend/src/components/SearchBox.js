@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 const SearchBox = () => {
+  // eslint-disable-next-line
   let [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const SearchBox = () => {
       //navigate("/search");
       //navigate(`/${keyword}`);
       // navigate({ pathname: "/", search: `?keyword=${keyword}` });
+      //window.location.reload(false);
     } else {
       navigate(location.pathname);
       window.location.reload(false); //iffy
@@ -23,17 +24,27 @@ const SearchBox = () => {
   };
 
   return (
-    <Form onSubmit={submitHandler}>
-      <Form.Control
-        type="text"
-        name="q"
-        onChange={(e) => setKeyword(e.target.value)}
-        placeholder="Search Products..."
-        className="mr-sm-2 ml-sm-5"></Form.Control>
-      <Button type="submit" variant="outline-success" className="p-2">
-        Search
-      </Button>
-    </Form>
+    <form onSubmit={submitHandler} style={{ flex: 1 }}>
+      <div
+        className="input-group "
+        style={{
+          flexWrap: "nowrap",
+          minWidth: "200px",
+        }}>
+        <input
+          type="text"
+          name="q"
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="Search Products..."
+          maxLength="100"
+          className="form-control"
+          style={{ float: "right" }}
+        />
+        <button className="btn p-2 secondary-color" type="submit">
+          <i className="fa-solid fa-magnifying-glass black-color-in"></i>
+        </button>
+      </div>
+    </form>
   );
 };
 

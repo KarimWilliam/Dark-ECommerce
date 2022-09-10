@@ -6,7 +6,6 @@ import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createOrder, createOrderReset } from "../features/order/orderSlice";
-import { clearCart, getItems } from "../features/cart/cartSlice";
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();

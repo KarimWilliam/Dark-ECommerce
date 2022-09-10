@@ -2,27 +2,20 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getProducts,
-  listProducts,
-  resetHomeProducts,
-  restPage,
-  incPage,
-  resetPage,
-} from "../features/products/productSlice"; //listproducts pagination
+import { listProducts, resetPage } from "../features/products/productSlice"; //listproducts pagination
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useSearchParams } from "react-router-dom";
 import ProductCarousel from "../components/ProductsCarousel";
 import Meta from "../components/Meta";
 import { Link } from "react-router-dom";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function HomeScreen() {
   const observer = useRef();
   const [searchParams] = useSearchParams({});
   const keyword = searchParams.get("keyword");
-  const pageNumber = searchParams.get("pageNumber") || 1;
+  // const pageNumber = searchParams.get("pageNumber") || 1;
   const dispatch = useDispatch();
   const [alert, setAlert] = useState("");
 
@@ -37,7 +30,9 @@ function HomeScreen() {
       } else {
         didMount.current = true;
       }
-    }, [dispatch, keyword]);
+      //this is why i had to do the whole mounting thing presumebly. keyword is not being read
+      // eslint-disable-next-line
+    }, [keyword]);
   };
 
   useDidMountEffect(() => {
@@ -58,15 +53,17 @@ function HomeScreen() {
       }
     }
     // dispatch(getProducts(keyword));
-    if (homeProducts.length == 0) {
+    if (homeProducts.length === 0) {
       dispatch(resetPage());
       const x = 1;
       dispatch(listProducts({ currentPage: x, keyword }));
     }
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const { products, isLoading, error, page, pages, homeProducts, hasMore } =
-    useSelector((state) => state.product);
+  const { isLoading, error, page, homeProducts, hasMore } = useSelector(
+    (state) => state.product
+  );
 
   const lastProductRef = useCallback(
     (node) => {
@@ -82,9 +79,9 @@ function HomeScreen() {
         }
       });
       if (node) observer.current.observe(node);
-      console.log(node);
+      //console.log(node);
     },
-    [isLoading, hasMore, page]
+    [isLoading, hasMore, page, dispatch, keyword]
   );
   return (
     <>

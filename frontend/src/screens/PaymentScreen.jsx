@@ -6,7 +6,7 @@ import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
 import { savePaymentMethod } from "../features/cart/cartSlice";
 
-const PaymentScreen = ({ history }) => {
+const PaymentScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);

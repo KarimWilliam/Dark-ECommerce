@@ -1,6 +1,11 @@
-html {font-size: 100%;} /*16px*/
+html {font-size: 100%;
+} /*16px*/
 main {
   min-height: 80vh;
+}
+
+body strong  {
+  font-family: 'Poppins', sans-serif;
 }
 
 .rating span{
@@ -37,21 +42,22 @@ h5 {font-size: 1.2rem;}
   display: flex;
 }
 .carousel-caption {
-  position: absolute;
+  position: sticky;
   top: 0;
 }
 
-.carousel-caption h2 {
-  color: #fff;
+.carousel-caption h5 {
+  color: rgb(0, 0, 0);
 }
 
 .carousel img {
-  height: 300px;
-  padding: 30px;
-  margin: 40px;
-  border-radius: 20%;
-  margin-left: auto;
-  margin-right: auto;
+  max-height: 300px;
+  padding: 00px;
+  margin: 30px;
+  max-width: 90vw;
+  border-radius: 10%;
+  margin: auto;
+
 }
 .carousel a {
   margin: 0 auto;
@@ -76,3 +82,50 @@ html {
   vertical-align: top;
   margin-left: -10px;
 }
+
+.main-color {
+  background-color: rgba(75, 148, 184, 1) !important
+}
+
+.secondary-color {
+  background-color: #f3a847 !important
+}
+
+.black-color {
+  background-color:rgba(33, 82, 107, 1) !important
+}
+
+.main-color-in {
+  color: rgba(75, 148, 184, 1) !important
+}
+
+.secondary-color-in {
+  color: #f3a847!important ; 
+
+}
+
+.black-color-in {
+  color:rgba(33, 82, 107, 1) !important;
+
+}
+
+.main-color-border {
+  border-color: rgba(75, 148, 184, 1)  !important;
+}
+
+.secondary-color-border {
+  border-color:  #f3a847 !important;
+
+}
+
+.black-color-border {
+
+  border-color:  rgba(33, 82, 107, 1) !important;
+}
+
+
+input:focus {
+  box-shadow: 0 0 0px  !important;
+  border: 1px solid rgba(81, 204, 238, 0) !important;
+}
+

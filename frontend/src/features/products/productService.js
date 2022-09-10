@@ -9,7 +9,7 @@ const listProducts = async (pageNumber, keyword) => {
   //   cancelToken: source.token,
   //   headers: {},
   // };
-  console.log(pageNumber);
+  const currentDate = new Date();
   if (!keyword) {
     keyword = "";
   }
@@ -18,7 +18,8 @@ const listProducts = async (pageNumber, keyword) => {
   }
 
   const response = await axios.get(
-    API_URL + `page/?keyword=${keyword}&pageNumber=${pageNumber}`
+    API_URL +
+      `page/?keyword=${keyword}&pageNumber=${pageNumber}&currentDate=${currentDate}`
   );
   return response.data;
 };

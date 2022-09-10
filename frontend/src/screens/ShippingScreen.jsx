@@ -1,39 +1,22 @@
-import { useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import FormContainer from "../components/FormContainer";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
-import {
-  getAllAddresses,
-  setCurrentAddress,
-} from "../features/shipping/shippingSlice";
+import { getAllAddresses } from "../features/shipping/shippingSlice";
 import { useLocation } from "react-router-dom";
-import AddressForm from "../components/AddressForm";
-import AddressItem from "../components/AddressItem";
 import { Link } from "react-router-dom";
 import AddressButton from "../components/AddressButton";
 
 function ShippingScreen() {
-  const cart = useSelector((state) => state.cart);
-  const { shippingAddress } = cart;
+  const { addresses } = useSelector((state) => state.shipping);
 
-  const { addresses, defaultAddress } = useSelector((state) => state.shipping);
-
-  const [address, setAddress] = useState(shippingAddress.address);
-  const [city, setCity] = useState(shippingAddress.city);
-
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
-  const [country, setCountry] = useState(shippingAddress.country);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    // dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    navigate("/payment");
-  };
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
+  //   // dispatch(saveShippingAddress({ address, city, postalCode, country }));
+  //   navigate("/payment");
+  // };
+
   useEffect(() => {
     dispatch(getAllAddresses());
   }, [dispatch]);

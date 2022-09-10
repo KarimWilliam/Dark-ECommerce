@@ -16,7 +16,9 @@ import {
 const ProductEditScreen = () => {
   const { id: productId } = useParams(); //get id from the paramaters of the url
 
+  // eslint-disable-next-line
   const [imgFile, setImgFile] = useState("");
+  // eslint-disable-next-line
   const [imgFileName, setImgFileName] = useState("choose File");
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -50,7 +52,6 @@ const ProductEditScreen = () => {
     setImgFileName(event.target.files[0].name);
     /////////////////////////
     const file = event.target.files[0];
-    const fileName = event.target.files[0].name;
     let formdata = new FormData();
     formdata.append("image", file);
     setUploading(true);
@@ -92,36 +93,35 @@ const ProductEditScreen = () => {
     }
   }, [dispatch, navigate, productId, product, successUpdate]);
 
-  const uploadFileHandler = async (e) => {
-    const file = imgFile;
-    const fileName = imgFileName;
-    let formData = new FormData();
-    formData.append("image", file);
-    setUploading(true);
+  // const uploadFileHandler = async (e) => {
+  //   const file = imgFile;
+  //   let formData = new FormData();
+  //   formData.append("image", file);
+  //   setUploading(true);
 
-    //upload the multifile to the backend
-    try {
-      const config = {
-        onUploadProgress: (progressEvent) => {
-          var percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          console.log(percentCompleted);
-        },
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
+  //   //upload the multifile to the backend
+  //   try {
+  //     const config = {
+  //       onUploadProgress: (progressEvent) => {
+  //         var percentCompleted = Math.round(
+  //           (progressEvent.loaded * 100) / progressEvent.total
+  //         );
+  //         console.log(percentCompleted);
+  //       },
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         Authorization: `Bearer ${user.token}`,
+  //       },
+  //     };
 
-      const { data } = await axios.post("/api/upload", formData, config);
-      setImage(data);
-      setUploading(false);
-    } catch (error) {
-      console.error(error);
-      setUploading(false);
-    }
-  };
+  //     const { data } = await axios.post("/api/upload", formData, config);
+  //     setImage(data);
+  //     setUploading(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setUploading(false);
+  //   }
+  // };
 
   const submitHandler = (e) => {
     e.preventDefault();

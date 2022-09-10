@@ -9,7 +9,9 @@ import { login, reset, resetLogInSuccess } from "../features/auth/authSlice";
 import { resetCartItems, mergeCarts } from "../features/cart/cartSlice";
 import { getDefaultAddress } from "../features/shipping/shippingSlice";
 
-const LoginScreen = ({ prevPage }) => {
+const LoginScreen = () => {
+  const { prevPage } = useLocation();
+  console.log(prevPage);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,9 +27,10 @@ const LoginScreen = ({ prevPage }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log(prevPage);
     if (user) {
       if (prevPage) {
-        console.log("routing to: " + prevPage.prevRoute.pathname);
+        console.log("routing to: " + prevPage.pathname);
         navigate(prevPage.prevRoute.pathname);
       } else {
         navigate("/");
@@ -88,6 +91,10 @@ const LoginScreen = ({ prevPage }) => {
       <Row className="py-3">
         <Col>
           New Customer? <Link to={"/register"}>Register</Link>
+        </Col>
+
+        <Col>
+          Forgot Password? <Link to={"/forgotPassword"}>Reset Password</Link>
         </Col>
       </Row>
     </FormContainer>

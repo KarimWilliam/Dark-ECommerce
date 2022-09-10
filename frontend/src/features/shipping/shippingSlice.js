@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import shippingService from "./shippingService";
 
 let currentAddress = "";
+let defaultAddress = "";
 try {
   currentAddress = JSON.parse(localStorage.getItem("currentAddress"));
-} catch (error) {
-  console.log(error);
-}
-
-const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+} catch (error) {}
+try {
+  defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+} catch (error) {}
 
 const initialState = {
   currentAddress: currentAddress ? currentAddress : null,
@@ -192,6 +192,12 @@ export const shippingSlice = createSlice({
       state.isError = false;
       state.message = "";
     },
+    shippingReset: (state) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = false;
+      state.message = "";
+    },
     createReset: (state) => {
       state.createAddressLoading = false;
       state.createAddressSuccess = false;
@@ -239,6 +245,13 @@ export const shippingSlice = createSlice({
         state.createAddressLoading = false;
         state.createAddressSuccess = true;
         state.addresses = action.payload;
+        if (!currentAddress) {
+          try {
+            state.currentAddress = JSON.parse(
+              localStorage.getItem("currentAddress")
+            );
+          } catch (error) {}
+        }
       })
       .addCase(createAddress.rejected, (state, action) => {
         state.createAddressLoading = false;
@@ -324,7 +337,6 @@ export const shippingSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        console.log(action.payload);
       })
       .addCase(getAddress.pending, (state) => {
         state.getAddressLoading = true;
@@ -344,6 +356,7 @@ export const shippingSlice = createSlice({
 
 export const {
   reset,
+  shippingReset,
   editReset,
   defaultReset,
   deleteReset,

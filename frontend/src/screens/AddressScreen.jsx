@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddressItem from "../components/AddressItem";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getAllAddresses,
   deleteReset,
@@ -12,11 +12,12 @@ import {
   createReset,
   setCurrentAddress,
 } from "../features/shipping/shippingSlice";
-import AddressForm from "../components/AddressForm";
 import Loader from "../components/Loader";
-import Message from "../components/Message";
 
 function AddressScreen() {
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const prevRoute = useLocation();
   const dispatch = useDispatch();
   const {
     addresses,
@@ -29,6 +30,9 @@ function AddressScreen() {
   } = useSelector((state) => state.shipping);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/login", { prevPage: prevRoute });
+    }
     dispatch(getAllAddresses());
     if (deleteAddressSuccess) {
       dispatch(deleteReset());
@@ -48,13 +52,16 @@ function AddressScreen() {
       dispatch(createReset());
     }
   }, [
+    user,
+    navigate,
     dispatch,
+    prevRoute,
+    defaultAddress,
     deleteAddressSuccess,
     editAddressSuccess,
     createAddressSuccess,
     defaultAddressSuccess,
   ]);
-  const prevRoute = useLocation();
 
   if (isLoading) {
     return (

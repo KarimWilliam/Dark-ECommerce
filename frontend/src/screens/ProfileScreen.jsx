@@ -7,7 +7,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserProfile } from "../features/user/userSlice";
 import { updateUserProfile, reset } from "../features/auth/authSlice";
-import { getAllUserOrders } from "../features/order/orderSlice";
+import { getAllUserOrders, orderReset } from "../features/order/orderSlice";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -36,6 +36,10 @@ const ProfileScreen = () => {
   useEffect(() => {
     dispatch(reset());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(orderReset());
+  }, [dispatch, successOrders]);
 
   useEffect(() => {
     console.log("useeffect");

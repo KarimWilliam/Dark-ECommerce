@@ -176,6 +176,13 @@ export const orderSlice = createSlice({
       state.isError = false;
       state.message = "";
     },
+    orderReset: (state) => {
+      //state.order = null;   DONT DO THIS
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = false;
+      state.message = "";
+    },
     orderPayReset: (state) => {
       state.orderPay = false;
     },
@@ -320,5 +327,6 @@ export const {
   paymentComplete,
   paymentCompleteReset,
   finalizeReset,
+  orderReset,
 } = orderSlice.actions;
 export default orderSlice.reducer;

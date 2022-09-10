@@ -2,15 +2,20 @@ import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 import Order from "../models/orderModel.js";
+import matchSorter from "match-sorter";
 
-// @desc    Fetch all products
+// @desc    Fetch 20 products based on search term
 // @route   GET /api/products
 // @access  Public
 const getProductsPage = asyncHandler(async (req, res) => {
-  const pageSize = 3;
+  // const list = ["hi", "hey", "hello", "sup", "yo"];
+  // console.log(matchSorter.matchSorter(list, "h"));
+
+  const pageSize = 20;
   const page = Number(req.query.pageNumber) || 1;
   console.log(page);
-
+  const currentDate = req.query.currentDate;
+  console.log("current Date: " + currentDate);
   const keyword = req.query.keyword
     ? {
         name: {
@@ -20,19 +25,32 @@ const getProductsPage = asyncHandler(async (req, res) => {
       }
     : {};
   console.log(keyword);
-  const count = await Product.countDocuments({
-    ...keyword,
+  // const count = await Product.countDocuments({
+  //   //...keyword,
+  //   visibility: true,
+  //   archived: false,
+  //   createdAt: { $lt: currentDate },
+  // });
+  let products = await Product.find({
+    // ...keyword,
     visibility: true,
     archived: false,
+    createdAt: { $lt: currentDate },
+  }).lean();
+  //  .limit(pageSize)
+  //  .skip(pageSize * (page - 1));
+  let newlist = matchSorter.matchSorter(products, req.query.keyword, {
+    keys: ["name", "brand", "desciption"],
   });
-  const products = await Product.find({
-    ...keyword,
-    visibility: true,
-    archived: false,
-  }) //visibility: true
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
-  res.json({ products, page, pages: Math.ceil(count / pageSize) });
+
+  let end = pageSize * (page - 1) + pageSize;
+
+  if (end > newlist.length) {
+    end = newlist.length;
+  }
+
+  products = newlist.slice(pageSize * (page - 1), end);
+  res.json({ products, page, pages: Math.ceil(newlist.length / pageSize) });
 });
 
 // @desc Fetch all products
@@ -57,19 +75,28 @@ export const getProducts = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
-// @desc Fetch all producnts // @route Get /api/products // @access Public
+// @desc Fetch all producnts
+// @route Get /api/products
+// @access Public
 export const getProductsAdmin = asyncHandler(async (req, res) => {
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: "i",
-        },
-      }
-    : {};
+  // const keyword = req.query.keyword
+  //   ? {
+  //       name: {
+  //         $regex: req.query.keyword,
+  //         $options: "i",
+  //       },
+  //     }
+  //   : {};
 
   const user = await User.findById(req.user.id);
-  const products = await Product.find({ ...keyword, archived: false });
+  //const products = await Product.find({ ...keyword, archived: false });
+  let products = await Product.find({ archived: false }).lean();
+  console.log(req.query.keyword);
+  if (req.query.keyword) {
+    products = matchSorter.matchSorter(products, req.query.keyword, {
+      keys: ["name", "category", "brand"],
+    });
+  }
 
   res.json(products);
 });
@@ -199,6 +226,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 // @access  Private
 const createProductReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
+  const user = await User.findById(req.user.id);
   const product = await Product.findById(req.params.id);
   const userOrders = await Order.findOne({
     user: req.user._id,
@@ -209,14 +237,16 @@ const createProductReview = asyncHandler(async (req, res) => {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
-
-    if (!userOrders) {
-      res.status(400);
-      throw new Error("You must purchase an item before you review!");
-    }
-    if (alreadyReviewed) {
-      res.status(400);
-      throw new Error("Product already reviewed");
+    console.log(user);
+    if (!user.isAdmin) {
+      if (!userOrders) {
+        res.status(400);
+        throw new Error("You must purchase an item before you review!");
+      }
+      if (alreadyReviewed) {
+        res.status(400);
+        throw new Error("Product already reviewed");
+      }
     }
 
     const review = {
@@ -246,9 +276,9 @@ const createProductReview = asyncHandler(async (req, res) => {
 // @route   GET /api/products/top
 // @access  Public
 const getTopProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({ visiblity: true, archive: false })
+  const products = await Product.find({ visiblity: true, archived: false })
     .sort({ rating: -1 })
-    .limit(3);
+    .limit(5);
 
   res.json(products);
 });

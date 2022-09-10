@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   useParams,
@@ -8,8 +8,6 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addItem,
-  editItem,
   removeItem,
   addToLoggedCart,
   getItems,
@@ -21,9 +19,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 
 function CartScreen() {
-  const { defaultAddress, currentAddress } = useSelector(
-    (state) => state.shipping
-  );
+  const { currentAddress } = useSelector((state) => state.shipping);
   const { id } = useParams(); //get id from the paramaters of the url
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,7 +32,6 @@ function CartScreen() {
   const {
     deleteSuccess,
     cartItems,
-    isSuccess,
     isLoading,
     addToLoggedCartSuccess,
     addToLoggedCartLoading,

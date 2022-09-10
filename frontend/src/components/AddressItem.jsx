@@ -1,18 +1,15 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   deleteAddress,
   setDefaultAddress,
 } from "../features/shipping/shippingSlice";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function AddressItem({ address }) {
   const prevRoute = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentAddress = JSON.parse(
-    window.localStorage.getItem("currentAddress")
-  );
+
   const onDelete = (e) => {
     e.preventDefault();
     dispatch(deleteAddress(address._id));

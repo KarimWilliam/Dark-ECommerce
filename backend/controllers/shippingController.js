@@ -127,7 +127,7 @@ export const getDefaultAddress = asyncHandler(async (req, res) => {
   if (address) {
     res.json(address);
   } else {
-    res.status(400);
+    res.status(300);
     throw new Error("no Default found");
   }
 });
@@ -152,7 +152,7 @@ export const getAddress = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc create a new address for the user
+// @desc delete an address
 // @route Delete /api/shipping/:id
 // @access private
 export const deleteAddress = asyncHandler(async (req, res) => {

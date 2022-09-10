@@ -4,7 +4,6 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import Paginate from "../components/Paginate";
 import {
   deleteProduct,
   createProduct,
@@ -32,8 +31,6 @@ const ProductListScreen = () => {
     productListError: error,
     // productsList: products, //PAGINATED
     products,
-    page,
-    pages,
     message,
     isSuccess,
     loadingCreate,
@@ -48,15 +45,9 @@ const ProductListScreen = () => {
     hideProductSuccess,
     hideProductsMessage,
     hideProductsError,
-    hideProductLoading,
-    isLoading,
   } = useSelector((state) => state.product);
 
   const { user } = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   dispatch(hideProductsReset());
-  // }, [dispatch, hideProductSuccess]);
 
   useEffect(() => {
     dispatch(createProductReset());
@@ -120,21 +111,12 @@ const ProductListScreen = () => {
     });
 
     setfrontVis(x);
-  }, [isSuccess, dispatch]);
+    //remove products if break
+  }, [isSuccess, dispatch, products]);
 
   return (
     <>
-      <Row className="align-items-center">
-        <Col>
-          <h1>Products</h1>
-          {hideProductsError && <Message>{hideProductsMessage}</Message>}
-        </Col>
-        <Col className="text-right">
-          <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create Product
-          </Button>
-        </Col>
-      </Row>
+      <h1>Products</h1>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger">{messageDelete}</Message>}
       {loadingCreate && <Loader />}
@@ -145,6 +127,16 @@ const ProductListScreen = () => {
         <Message variant="danger">{message}</Message>
       ) : (
         <>
+          <Row className="align-items-center">
+            <Col>
+              {hideProductsError && <Message>{hideProductsMessage}</Message>}
+            </Col>
+            <Col className="text-right">
+              <Button className="my-3" onClick={createProductHandler}>
+                <i className="fas fa-plus"></i> Create Product
+              </Button>
+            </Col>
+          </Row>
           <Table bordered hover responsive className="table-sm">
             <thead>
               <tr>
@@ -154,6 +146,7 @@ const ProductListScreen = () => {
                 <th>CATEGORY</th>
                 <th>BRAND</th>
                 <th>Visibility</th>
+                <th>archived</th>
                 <th></th>
               </tr>
             </thead>
@@ -168,6 +161,7 @@ const ProductListScreen = () => {
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>{product.visibility ? "Visible" : "Hidden"}</td>
+                  <td>{product.archived ? "Archived" : "Active"}</td>
                   <td>
                     <Button
                       variant="info"

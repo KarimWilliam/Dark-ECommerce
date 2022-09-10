@@ -376,6 +376,7 @@ export const productSlice = createSlice({
         action.payload.pages > action.payload.page
           ? (state.hasMore = true)
           : (state.hasMore = false);
+        console.log(action.payload.products);
         state.homeProducts = [
           ...state.homeProducts,
           ...action.payload.products,
@@ -416,15 +417,15 @@ export const productSlice = createSlice({
         state.messageCreate = action.payload;
       })
       .addCase(getProductsAdmin.pending, (state) => {
-        state.isLoading = true;
+        state.productListLoading = true;
       })
       .addCase(getProductsAdmin.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.productListLoading = false;
         state.isSuccess = true;
         state.products = action.payload;
       })
       .addCase(getProductsAdmin.rejected, (state, action) => {
-        state.isLoading = false;
+        state.productListLoading = false;
         state.isError = true;
         state.message = action.payload;
       })

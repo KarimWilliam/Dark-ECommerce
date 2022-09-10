@@ -2,6 +2,9 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 import bcrypt from "bcryptjs";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
 // @desc Auth user and get token
 // @route POST /api/users/login
@@ -171,5 +174,73 @@ export const updateUser = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error("User not found");
+  }
+});
+
+// @desc    send forgot password link to user email
+// @route   post  /api/users/forgotPassword
+// @access  Public
+export const forgotPassword = asyncHandler(async (req, res) => {
+  if (!req.body.email) {
+    res.status(404).json({ message: "Please enter a proper email" });
+    throw new Error("Email not found");
+  }
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    //generate the OT link
+
+    const secret = process.env.JWT_SECRET + user.password;
+    console.log(secret);
+    const token = jwt.sign({ email: user.email, id: user._id }, secret, {
+      expiresIn: "15m",
+    });
+    const link = process.env.RESET_URL + `${user._id}/${token}`;
+    console.log("link: " + link);
+    //Send the OT link in an email
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "karim.william7@gmail.com", // generated ethereal user
+        pass: process.env.MAIL_PASSWORD, // generated ethereal password
+      },
+    });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: "karim.william7@gmail.com", // sender address
+      to: req.body.email, // list of receivers
+      subject: "Dark-Commerce Password Reset", // Subject line
+      text: `Link is valid for 15 minutes and one use only. Link: ${link}`, // plain text body
+    });
+
+    res.send("password reset link has been sent to your email");
+  } else {
+    res.status(404).json({ message: "Email not found" });
+    throw new Error("Email not found");
+  }
+});
+
+// @desc    reset the user password to his desginated new password
+// @route   post  /api/users/resetPassword/:id/:token
+// @access  Public
+export const resetPassword = asyncHandler(async (req, res) => {
+  const { id, token } = req.params;
+  const newPassword = req.body.password;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+  const user = await User.findById(id);
+  const secret = process.env.JWT_SECRET + user.password;
+  try {
+    const payload = jwt.verify(token, secret);
+    user.password = hashedPassword;
+    await user.save();
+    res.json("password Changed successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(401);
+    throw new Error("Invalid reset Link");
   }
 });

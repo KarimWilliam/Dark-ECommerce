@@ -11,6 +11,8 @@ const initialState = {
   isLoading: false,
   message: "",
   loggedInSuccess: false,
+  isResetSuccess: false,
+  timeOfLastSearch: "",
 };
 
 //login user
@@ -67,6 +69,43 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+//update  forgotpassword link to email
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async (email, thunkAPI) => {
+    try {
+      return await authService.forgotPassword(email);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//update  reset password in the DB
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (user, thunkAPI) => {
+    try {
+      console.log(user);
+      return await authService.resetPassword(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -80,8 +119,14 @@ export const authSlice = createSlice({
     resetUser: (state) => {
       state.user = null;
     },
+    resetResetLink: (state) => {
+      state.message = "";
+    },
     resetLogInSuccess: (state) => {
       state.loggedInSuccess = false;
+    },
+    setTimeOfLastSearch: (state, action) => {
+      state.timeOfLastSearch = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -132,9 +177,41 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.user = null;
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isResetSuccess = true;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.user = null;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isResetSuccess = true;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.user = null;
       });
   },
 });
 
-export const { reset, resetUser, resetLogInSuccess } = authSlice.actions;
+export const {
+  reset,
+  resetUser,
+  resetLogInSuccess,
+  resetResetLink,
+  setTimeOfLastSearch,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -1,15 +1,11 @@
 import { useDispatch } from "react-redux";
 import { setCurrentAddress } from "../features/shipping/shippingSlice";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AddressButton({ address }) {
-  const prevRoute = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentAddress = JSON.parse(
-    window.localStorage.getItem("currentAddress")
-  );
   const onClick = (e) => {
     e.preventDefault();
     dispatch(setCurrentAddress(address));

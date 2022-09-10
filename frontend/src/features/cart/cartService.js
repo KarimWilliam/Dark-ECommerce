@@ -29,14 +29,6 @@ const addToLoggedCart = async (token, id, qty) => {
     },
   };
   const { data } = await axios.post(API_URL_CART + id, { qty: qty }, config);
-  const payload = {
-    product: data._id,
-    name: data.name,
-    image: data.image,
-    price: data.price,
-    countInStock: data.countInStock,
-    qty,
-  };
   return data;
 };
 

@@ -21,6 +21,9 @@ import OrderListScreen from "./screens/OrderListScreen";
 import AddressScreen from "./screens/AddressScreen";
 import AddAddressScreen from "./screens/AddAddressScreen";
 import EditAddressScreen from "./screens/EditAddressScreen";
+import DoesNotExist from "./screens/DoesNotExist";
+import ForgotPassword from "./screens/ForgotPassword";
+import ResetPassword from "./screens/ResetPassword";
 
 function App() {
   const payPalOptions = {
@@ -60,7 +63,12 @@ function App() {
               />
               <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
               <Route path="/admin/orderlist" element={<OrderListScreen />} />
-              <Route path="/cart/" element={<CartScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
+              <Route path="/forgotPassword" element={<ForgotPassword />} />
+              <Route
+                path="/resetPassword/:id/:token"
+                element={<ResetPassword />}
+              />
               <Route
                 path="/admin/productlist"
                 element={<ProductListScreen />}
@@ -71,6 +79,7 @@ function App() {
                 element={<ProductListScreen />}
                 exact
               />
+              <Route path="*" element={<DoesNotExist />} />
             </Routes>
           </Container>
         </main>

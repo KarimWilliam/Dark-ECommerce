@@ -22,7 +22,6 @@ const RegisterScreen = () => {
 
   useEffect(() => {
     if (user) {
-      //localStorage.setItem("alert", "Please logout before creating a new user");
       navigate("/");
     }
   }, [navigate, user]);
