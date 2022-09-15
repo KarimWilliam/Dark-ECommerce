@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -16,6 +15,7 @@ import {
   reset,
 } from "../features/products/productSlice";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import SortFunction from "../components/SortFunction";
 
 const ProductListScreen = () => {
   const [searchParams] = useSearchParams({});
@@ -49,6 +49,14 @@ const ProductListScreen = () => {
 
   const { user } = useSelector((state) => state.auth);
 
+  const [displayProducts, setDisplayProducts] = useState([]);
+  const [sortDirectionName, setSortDirectionName] = useState(false);
+  const [sortDirectionPrice, setSortDirectionPrice] = useState(false);
+  const [sortDirectionID, setSortDirectionID] = useState(false);
+  const [sortDirectionCategory, setSortDirectionCategory] = useState(false);
+  const [sortDirectionBrand, setSortDirectionBrand] = useState(false);
+  const [sortDirectionVisibility, setSortDirectionVisibility] = useState(false);
+
   useEffect(() => {
     dispatch(createProductReset());
     dispatch(resetDelete());
@@ -76,8 +84,15 @@ const ProductListScreen = () => {
     hideProductSuccess,
   ]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      setDisplayProducts(products);
+    }
+    dispatch(reset());
+  }, [isSuccess]);
+
   const deleteHandler = (id) => {
-    if (window.confirm("Are you sure")) {
+    if (window.confirm("Are you sure you want to delete this product?")) {
       dispatch(deleteProduct(id));
       // dispatch(getProducts()); //CHANGE PAGINATE
     }
@@ -114,9 +129,46 @@ const ProductListScreen = () => {
     //remove products if break
   }, [isSuccess, dispatch, products]);
 
+  const sortByName = () => {
+    setSortDirectionName(!sortDirectionName);
+    setDisplayProducts(
+      SortFunction(displayProducts, sortDirectionName, "name")
+    );
+  };
+
+  const sortByID = () => {
+    setSortDirectionID(!sortDirectionID);
+    setDisplayProducts(SortFunction(displayProducts, sortDirectionID, "_id"));
+  };
+  const sortByPrice = () => {
+    setSortDirectionPrice(!sortDirectionPrice);
+    setDisplayProducts(
+      SortFunction(displayProducts, sortDirectionPrice, "price")
+    );
+  };
+  const sortByCategory = () => {
+    setSortDirectionCategory(!sortDirectionCategory);
+    setDisplayProducts(
+      SortFunction(displayProducts, sortDirectionCategory, "category")
+    );
+  };
+  const sortByBrand = () => {
+    setSortDirectionBrand(!sortDirectionBrand);
+    setDisplayProducts(
+      SortFunction(displayProducts, sortDirectionBrand, "brand")
+    );
+  };
+
+  const sortByVisibility = () => {
+    setSortDirectionVisibility(!sortDirectionVisibility);
+    setDisplayProducts(
+      SortFunction(displayProducts, sortDirectionVisibility, "visibility")
+    );
+  };
+
   return (
     <>
-      <h1>Products</h1>
+      <h1 className="main-color-in"> Products</h1>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger">{messageDelete}</Message>}
       {loadingCreate && <Loader />}
@@ -127,69 +179,124 @@ const ProductListScreen = () => {
         <Message variant="danger">{message}</Message>
       ) : (
         <>
-          <Row className="align-items-center">
-            <Col>
-              {hideProductsError && <Message>{hideProductsMessage}</Message>}
-            </Col>
-            <Col className="text-right">
-              <Button className="my-3" onClick={createProductHandler}>
-                <i className="fas fa-plus"></i> Create Product
-              </Button>
-            </Col>
-          </Row>
-          <Table bordered hover responsive className="table-sm">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
-                <th>Visibility</th>
-                <th>archived</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product, index) => (
-                <tr
-                  key={product._id}
-                  className={product.visibility ? "" : "table-dark"}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
-                  <td>{product.visibility ? "Visible" : "Hidden"}</td>
-                  <td>{product.archived ? "Archived" : "Active"}</td>
-                  <td>
-                    <Button
-                      variant="info"
-                      className="btn-sm"
-                      disabled={!frontVis[index]}
-                      onClick={() => hideHandler(product)}>
-                      {product.visibility ? (
-                        <i className="fa-solid fa-eye"></i>
-                      ) : (
-                        <i className="fa-solid fa-eye-slash"></i>
-                      )}
-                    </Button>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                      <Button variant="light" className="btn-sm">
-                        <i className="fas fa-edit"></i>
-                      </Button>
-                    </LinkContainer>
-                    <Button
-                      variant="danger"
-                      className="btn-sm"
-                      onClick={() => deleteHandler(product._id)}>
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
+          {hideProductsError && <Message>{hideProductsMessage}</Message>}
+
+          <button
+            style={{ margin: "20px" }}
+            className="btn"
+            onClick={createProductHandler}>
+            <i className="fas fa-plus"></i> Create Product
+          </button>
+
+          <div className="table-responsive ">
+            <table className="table table-sm  table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>
+                    <button
+                      className="btn"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        sortByID();
+                      }}>
+                      ID
+                    </button>
+                  </th>
+                  <th>
+                    {" "}
+                    <button
+                      className="btn"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        sortByName();
+                      }}>
+                      Name
+                    </button>
+                  </th>
+                  <th>
+                    <button
+                      className="btn"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        sortByPrice();
+                      }}>
+                      Price
+                    </button>
+                  </th>
+                  <th>
+                    <button
+                      className="btn"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        sortByCategory();
+                      }}>
+                      Category
+                    </button>
+                  </th>
+                  <th>
+                    <button
+                      className="btn"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        sortByBrand();
+                      }}>
+                      Brand
+                    </button>
+                  </th>
+                  <th>
+                    <button
+                      className="btn"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        sortByVisibility();
+                      }}>
+                      Visibility
+                    </button>
+                  </th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {displayProducts.map((product, index) => (
+                  <tr
+                    key={product._id}
+                    className={product.visibility ? "" : "table-dark"}>
+                    <td style={{ maxWidth: "200px" }}> {product._id}</td>
+                    <td style={{ maxWidth: "200px" }}>{product.name}</td>
+                    <td>${product.price}</td>
+                    <td style={{ maxWidth: "200px" }}>{product.category}</td>
+                    <td style={{ maxWidth: "200px" }}>{product.brand}</td>
+                    <td>{product.visibility ? "Visible" : "Hidden"}</td>
+                    <td>
+                      <button
+                        className="btn"
+                        disabled={!frontVis[index]}
+                        onClick={() => hideHandler(product)}>
+                        {product.visibility ? (
+                          <i className="fa-solid fa-eye"></i>
+                        ) : (
+                          <i className="fa-solid fa-eye-slash"></i>
+                        )}
+                      </button>
+                      <Link to={`/admin/product/${product._id}/edit`}>
+                        <button variant="light" className="btn">
+                          <i className="fas fa-edit"></i>
+                        </button>
+                      </Link>
+                      <button
+                        variant="danger"
+                        className="btn trashButton tooltiptrash"
+                        onClick={() => deleteHandler(product._id)}>
+                        <i className=" fas fa-trash ">
+                          <div className="left">delete...</div>
+                        </i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
         </>
       )}

@@ -36,7 +36,7 @@ const Header = () => {
   useEffect(() => {
     try {
       if (user) {
-        setAdd("Add address");
+        setAdd("address");
       }
       if (currentAddress) {
         if (currentAddress.city.length > 0) {
@@ -52,16 +52,22 @@ const Header = () => {
     }
   }, [currentAddress, defaultAddress, user]);
 
+  const sum = cartItems.reduce((accumulator, object) => {
+    return accumulator + object.qty;
+  }, 0);
+
   return (
     <header>
-      <nav className=" navbar navbar-dark black-color navbar-expand-lg fixed-top py-2">
+      <nav className=" navbar navbar-dark black-color navbar-expand-xl fixed-top py-2">
         <div className="container-fluid gap-3" style={{ display: "flex" }}>
           <Link
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
             to="/"
             className="navbar-brand secondary-color-in gap-5"
-            style={{ "font-family": "Quicksand" }}>
+            style={{ fontFamily: "Quicksand" }}>
             Dark-Commerce
-            {window.scrollTo(0, 0)}
           </Link>
           <button
             className="navbar-toggler"
@@ -82,9 +88,14 @@ const Header = () => {
           </div>
 
           <div
-            className="collapse navbar-collapse"
+            className="collapse navbar-collapse "
             id="navmenu"
-            style={{ flexGrow: 0, flexShrink: 1, flexBasis: "auto" }}>
+            style={{
+              flexGrow: 0,
+              flexShrink: 1,
+              flexBasis: "auto",
+              textTransform: "capitalize",
+            }}>
             <ul className="navbar-nav ms-auto ">
               <li className="nav-item">
                 <Link to="/about" className="nav-link">
@@ -167,14 +178,17 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/cart" className="nav-link ">
+                <Link
+                  to="/cart"
+                  className="nav-link "
+                  style={{ whitSpace: "nowrap" }}>
                   <i className="fas fa-shopping-cart  "></i>
                   <span
                     className="badge badge-warning secondary-color-in"
                     id="lblCartCount">
-                    {cartItems.length}
+                    {sum}
                   </span>
-                  cart
+                  Cart
                 </Link>
               </li>
             </ul>

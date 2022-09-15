@@ -1,40 +1,54 @@
 import React from "react";
-import { Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 
-const CheckoutSteps = ({ step1, step2, step4 }) => {
+const CheckoutSteps = ({ step1, step2, step4, high }) => {
+  let y = "underline nav-item";
+  let x = "nav-item";
+  if (high) {
+    x = "underline nav-item";
+    y = "nav-item";
+  }
   return (
-    <Nav className="justify-content-center mb-4">
-      <Nav.Item>
+    <div className=" navbar-expand-lg navbar justify-content-center mb-4">
+      <li className="nav-item" style={{ listStyleType: "none" }}>
         {step1 ? (
-          <LinkContainer to="/login">
-            <Nav.Link>Sign In</Nav.Link>
-          </LinkContainer>
+          <Link style={{ textDecoration: "none" }} to="/login">
+            <div className="nav-link active">Sign In </div>
+          </Link>
         ) : (
-          <Nav.Link disabled>Sign In</Nav.Link>
+          <a className="nav-link disabled">Sign In </a>
         )}
-      </Nav.Item>
+      </li>
 
-      <Nav.Item>
+      <li className="nav-item" style={{ listStyleType: "none" }}>
+        {true ? (
+          <Link style={{ textDecoration: "none" }} to="/cart">
+            <div>Cart</div>
+          </Link>
+        ) : (
+          <a className="nav-link disabled">Cart</a>
+        )}
+      </li>
+
+      <li className={x} style={{ listStyleType: "none" }}>
         {step2 ? (
-          <LinkContainer to="/shipping">
-            <Nav.Link>Ship to</Nav.Link>
-          </LinkContainer>
+          <Link style={{ textDecoration: "none" }} to="/shipping">
+            <div>Ship to</div>
+          </Link>
         ) : (
-          <Nav.Link disabled>Ship to</Nav.Link>
+          <a className="nav-link disabled">Ship to</a>
         )}
-      </Nav.Item>
-
-      <Nav.Item>
+      </li>
+      <li className={y} style={{ listStyleType: "none", y }}>
         {step4 ? (
-          <LinkContainer to="/placeorder">
-            <Nav.Link>Place Order</Nav.Link>
-          </LinkContainer>
+          <Link style={{ textDecoration: "none" }} to="/placeorder">
+            <div className="nav-link active">Place Order</div>
+          </Link>
         ) : (
-          <Nav.Link disabled>Place Order</Nav.Link>
+          <a className="nav-link disabled">Place Order</a>
         )}
-      </Nav.Item>
-    </Nav>
+      </li>
+    </div>
   );
 };
 

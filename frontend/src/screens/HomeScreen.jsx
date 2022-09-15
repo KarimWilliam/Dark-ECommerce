@@ -9,7 +9,6 @@ import { useSearchParams } from "react-router-dom";
 import ProductCarousel from "../components/ProductsCarousel";
 import Meta from "../components/Meta";
 import { Link } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function HomeScreen() {
   const observer = useRef();
@@ -90,37 +89,49 @@ function HomeScreen() {
       {!keyword ? (
         <ProductCarousel />
       ) : (
-        <Link to="/" className="btn btn-light">
+        <Link
+          to="/"
+          className="btn btn-light "
+          style={{ backgroundColor: "white" }}>
           Go Back
         </Link>
       )}
       {alert && <Message variant="danger">{alert}</Message>}
-      <h2>Latest Prodcuts</h2>
+      <h2 className="main-color-in">Prodcuts</h2>
       {false ? (
         <Loader />
       ) : error ? (
         <Message varient="danger">{error}</Message>
       ) : (
-        <Row>
-          {homeProducts.map((product, index) =>
-            homeProducts.length === index + 1 ? (
-              <Col
-                key={product._id}
-                sm={12}
-                md={6}
-                lg={4}
-                xl={3}
-                ref={lastProductRef}>
-                <Product product={product} />
-              </Col>
-            ) : (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={product} />
-              </Col>
-            )
-          )}
-          {isLoading && <Loader />}
-        </Row>
+        <div className="container-fluid pt-3  ">
+          <div className="row  row-cols-sx-1 g-5 row-cols-xxl-4 row-cols-xl-3  row-cols-lg-2">
+            {homeProducts.map((product, index) =>
+              homeProducts.length === index + 1 ? (
+                <div
+                  className="col"
+                  key={product._id}
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={3}
+                  ref={lastProductRef}>
+                  <Product product={product} />
+                </div>
+              ) : (
+                <div
+                  className="col"
+                  key={product._id}
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={3}>
+                  <Product product={product} />
+                </div>
+              )
+            )}
+            {isLoading && <Loader />}
+          </div>
+        </div>
       )}
     </>
   );

@@ -9,8 +9,8 @@ import { login, reset, resetLogInSuccess } from "../features/auth/authSlice";
 import { resetCartItems, mergeCarts } from "../features/cart/cartSlice";
 import { getDefaultAddress } from "../features/shipping/shippingSlice";
 
-const LoginScreen = () => {
-  const { prevPage } = useLocation();
+const LoginScreen = ({ prevPage }) => {
+  // const { prevPage } = useLocation();
   console.log(prevPage);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +30,7 @@ const LoginScreen = () => {
     console.log(prevPage);
     if (user) {
       if (prevPage) {
-        console.log("routing to: " + prevPage.pathname);
+        console.log("routing to: " + prevPage.pathname.pathname);
         navigate(prevPage.prevRoute.pathname);
       } else {
         navigate("/");
@@ -99,6 +99,10 @@ const LoginScreen = () => {
       </Row>
     </FormContainer>
   );
+};
+
+LoginScreen.defaultProps = {
+  prevPage: "",
 };
 
 export default LoginScreen;

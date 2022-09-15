@@ -24,27 +24,34 @@ function ShippingScreen() {
 
   return (
     <>
-      <CheckoutSteps step1 step2 step3 />
+      <CheckoutSteps step1 step2 step4 high />
       <div>
-        Your Addresses
+        <h2 className="main-color-in">Ship Items To:</h2>
         <Link to="/Address/add" state={{ prevRoute }}>
           <br></br>
           <br></br>
-          <button>Create New Address</button>
+          <button className="button-1">Create New Address</button>
         </Link>
-        <div className=" align-items-center  justify-content-between p-5 custombgcolor container-xxl">
-          {addresses.length > 0 ? (
-            <div className="addressess">
-              {addresses.map((address) => (
-                <AddressButton
-                  key={address._id}
-                  address={address}></AddressButton>
-              ))}
-            </div>
-          ) : (
-            <h3>There are no addresses to see</h3>
-          )}
-        </div>
+        {addresses.length > 0 ? (
+          <div className="address-container">
+            {addresses.map((address) => (
+              <AddressButton
+                key={address._id}
+                address={address}></AddressButton>
+            ))}
+          </div>
+        ) : (
+          <h4>
+            You have no address saved.<br></br> Please{" "}
+            <Link
+              className="main-color-in"
+              to="/Address/add"
+              state={{ prevRoute }}>
+              Submit
+            </Link>{" "}
+            a new one.
+          </h4>
+        )}
       </div>
     </>
   );

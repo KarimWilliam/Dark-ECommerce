@@ -22,6 +22,7 @@ const initialState = {
   addToLoggedCartLoading: false,
   deleteLoading: false,
   deleteSuccess: false,
+  addToLoggedCartError: false,
 };
 
 // get all user cart items
@@ -179,6 +180,9 @@ export const cartSlice = createSlice({
     resetCartItems: (state) => {
       state.cartItems = [];
     },
+    resetCartAddError: (state) => {
+      state.addToLoggedCartError = false;
+    },
     removeItem: (state, action) => {
       state.cartItems = state.cartItems.filter(
         (x) => x.product._id !== action.payload
@@ -318,6 +322,7 @@ export const cartSlice = createSlice({
       .addCase(addToLoggedCart.rejected, (state, action) => {
         state.addToLoggedCartLoading = false;
         state.isError = true;
+        state.addToLoggedCartError = true;
         state.message = action.payload;
       })
       .addCase(deleteItem.pending, (state) => {
@@ -400,5 +405,6 @@ export const {
   saveShippingAddress,
   savePaymentMethod,
   resetCartItems,
+  resetCartAddError,
 } = cartSlice.actions;
 export default cartSlice.reducer;

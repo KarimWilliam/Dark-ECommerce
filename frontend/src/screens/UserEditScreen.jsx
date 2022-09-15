@@ -60,11 +60,14 @@ const UserEditScreen = () => {
 
   return (
     <>
-      <Link to="/admin/userlist" className="btn btn-light my-3">
+      <Link
+        to="/admin/userlist"
+        className="btn btn-light my-3"
+        style={{ backgroundColor: "white" }}>
         Go Back
       </Link>
-      <FormContainer>
-        <h1>Edit User</h1>
+      <div className="form-container">
+        <h2 className="main-color-in">Edit User</h2>
         {updateIsLoading && <Loader />}
         {updateIsError && <Message variant="danger">{updateMessage}</Message>}
         {isLoading ? (
@@ -72,39 +75,46 @@ const UserEditScreen = () => {
         ) : isError ? (
           <Message variant="danger">{message}</Message>
         ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
+          <form onSubmit={submitHandler}>
+            <div className="form-floating mb-3">
+              <input
+                id="nameInput"
+                className="form-control"
                 type="name"
                 placeholder="Enter name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}></Form.Control>
-            </Form.Group>
+                onChange={(e) => setName(e.target.value)}></input>
+              <label htmlfor="nameInput">Name</label>
+            </div>
 
-            <Form.Group controlId="email">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
+            <div className="form-floating mb-3">
+              <input
+                id="emailInput"
+                className="form-control"
                 type="email"
                 placeholder="Enter email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}></Form.Control>
-            </Form.Group>
+                onChange={(e) => setEmail(e.target.value)}></input>
+              <label htmlfor="emailInput">Email</label>
+            </div>
+            <div className="form-check">
+              <label className="form-check-label" Htmlfor="is Admin">
+                Admin
+              </label>
 
-            <Form.Group controlId="isadmin">
-              <Form.Check
+              <input
+                className="form-check-input"
                 type="checkbox"
                 label="Is Admin"
                 checked={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.checked)}></Form.Check>
-            </Form.Group>
-
-            <Button type="submit" variant="primary">
+                onChange={(e) => setIsAdmin(e.target.checked)}></input>
+            </div>
+            <button className="btn" type="submit">
               Update
-            </Button>
-          </Form>
+            </button>
+          </form>
         )}
-      </FormContainer>
+      </div>
     </>
   );
 };

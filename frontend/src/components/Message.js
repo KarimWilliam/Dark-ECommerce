@@ -1,8 +1,12 @@
 import React from "react";
-import { Alert } from "react-bootstrap";
 
 const Message = ({ variant, children }) => {
-  return <Alert variant={variant}>{children}</Alert>;
+  variant = " alert alert-" + variant;
+  return (
+    <div className={variant} role="alert" variant={variant}>
+      {children}
+    </div>
+  );
 };
 
 Message.defaultProps = {

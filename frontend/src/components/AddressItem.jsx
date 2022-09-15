@@ -1,9 +1,11 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteAddress,
   setDefaultAddress,
 } from "../features/shipping/shippingSlice";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { defaultReset, reset } from "../features/shipping/shippingSlice";
 
 function AddressItem({ address }) {
   const prevRoute = useLocation();
@@ -19,65 +21,82 @@ function AddressItem({ address }) {
     navigate("/Address/edit/" + address._id, { state: { prevRoute } });
   };
   const onDefault = (e) => {
+    setGreyOut(" grey-out");
     e.preventDefault();
     dispatch(setDefaultAddress(address._id));
   };
+  const [greyOut, setGreyOut] = useState("  ");
+  const { defaultAddressSuccess, isSuccess } = useSelector(
+    (state) => state.shipping
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(isSuccess);
+      setGreyOut(" ");
+    }
+    dispatch(defaultReset());
+    dispatch(reset());
+  }, [isSuccess, dispatch]);
 
   return (
-    <div className="container-lg  p-5 placeholder-glow">
-      {address.default && <div>default</div>}
-      <div className="col-md-8 text-center flex-nowrap ">
-        <div className="row h-25  flex-md-nowrap">
-          <div className="col-md-10 "> {address.name}</div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Address: {address.address}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              City: {address.city}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Country: {address.country}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Postal Code: {address.postalCode}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Phone Number: {address.phoneNumber}
-            </p>
-          </div>
-        </div>
-      </div>
-      <button className="btn  btn-dark " onClick={onDelete}>
-        delete
-      </button>
-      <button className="btn btn-dark " onClick={onEdit}>
-        edit
-      </button>
-      {!address.default && (
-        <button className="btn btn-dark " onClick={onDefault}>
-          set As default
-        </button>
+    <ul className={greyOut + " popping-font address-item "}>
+      {address.default && (
+        <p style={{ fontWeight: "600" }} className="secondary-color-in">
+          Default Address
+        </p>
       )}
-    </div>
+
+      <p style={{ fontWeight: "bold" }}>{address.name}</p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Address:</span> {address.address}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>City:</span> {address.city}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Country: </span>
+        {address.country}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Postal Code: </span>
+        {address.postalCode}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Phone Number: </span>
+        {address.phoneNumber}
+      </p>
+      <div
+        style={{
+          justifyContent: "space-evenly",
+          display: "flex",
+          gap: "10px",
+          whiteSpace: "nowrap",
+        }}>
+        <button
+          className="btn  btn-dark "
+          style={{ flex: 1 }}
+          onClick={onDelete}>
+          delete
+        </button>
+        <button style={{ flex: 1 }} className="btn btn-dark " onClick={onEdit}>
+          edit
+        </button>
+        {!address.default && (
+          <button
+            className="btn btn-dark "
+            style={{ flex: 1 }}
+            onClick={onDefault}>
+            set As default
+          </button>
+        )}
+      </div>
+    </ul>
   );
 }
 

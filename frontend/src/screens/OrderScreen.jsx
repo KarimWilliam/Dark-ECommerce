@@ -20,6 +20,8 @@ import {
 import { clearCart, getItems } from "../features/cart/cartSlice";
 import { stripePay } from "../features/stripe/stripeSlice";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OrderScreen = () => {
   const navigate = useNavigate();
@@ -61,6 +63,13 @@ const OrderScreen = () => {
     React,
     ReactDOM,
   });
+
+  useEffect(() => {
+    toast.info(
+      "Test paying with a credit card using the number 424242... as the credit card number",
+      { position: "top-center" }
+    );
+  }, []);
 
   useEffect(() => {
     if (!order || order._id !== id || orderDeliverSuccess) {
@@ -173,12 +182,26 @@ const OrderScreen = () => {
     <Message variant="danger">{message}</Message>
   ) : isSuccess ? (
     <>
-      <h1>Order {order._id}</h1>
-      <Row>
-        <Col md={8}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h2>Shipping</h2>
+      <ToastContainer
+        theme="colored"
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <h1 className="main-color-in small-screen-small-font popping-font">
+        Order ID: {order._id}
+      </h1>
+      <div className="order-screen-container popping-font">
+        <div className="order-screen-left">
+          <div className="list-group list-group-flush">
+            <div className="list-group-item">
+              <h2 className="main-color-in">Shipping</h2>
               <p>
                 <strong>Name: </strong> {userInfo.name}
               </p>
@@ -187,7 +210,7 @@ const OrderScreen = () => {
                 <a href={`mailto:${userInfo.email}`}>{userInfo.email}</a>
               </p>
               <p>
-                <strong>Address:</strong>
+                <strong>Address: </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
                 {order.shippingAddress.postalCode},
                 {order.shippingAddress.country}
@@ -199,9 +222,9 @@ const OrderScreen = () => {
               ) : (
                 <Message variant="info">Not Delivered</Message>
               )}
-            </ListGroup.Item>
+            </div>
 
-            <ListGroup.Item>
+            <div className="list-group-item">
               {order.isPaid ? (
                 <Message variant="success">
                   Paid on {order.paidAt.split("T")[0]}
@@ -209,78 +232,78 @@ const OrderScreen = () => {
               ) : (
                 <Message variant="info">Not Paid</Message>
               )}
-            </ListGroup.Item>
+            </div>
 
-            <ListGroup.Item>
-              <h2>Order Items</h2>
+            <div className="list-group-item">
+              <h2 className="main-color-in">Order Items</h2>
               {order.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
-                <ListGroup variant="flush">
+                <div className="list-group list-group-flush">
                   {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
-                        </Col>
-                        <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
+                    <div className="place-order-items-container" key={index}>
+                      <div className="placeorder-img-container">
+                        <img
+                          className="fluid-img placeorder-img"
+                          src={item.image}
+                          alt={item.name}
+                        />
+                      </div>
+                      <div className="col">
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          to={`/product/${item.product}`}>
+                          {item.name}
+                        </Link>
+                      </div>
+                      <div className="col col-md-4">
+                        {item.qty} x ${item.price} = ${item.qty * item.price}
+                      </div>
+                    </div>
                   ))}
-                </ListGroup>
+                </div>
               )}
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-        <Col md={4}>
-          <Card>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Items</Col>
-                  <Col>${itemPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Shipping</Col>
-                  <Col>${order.shippingPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Tax</Col>
-                  <Col>${order.taxPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
-                </Row>
-              </ListGroup.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="order-screen-right">
+          <div className="card d-flex">
+            <div className="list-group list-group-flush">
+              <div className="list-group-item">
+                <h2 className="main-color-in">Order Summary</h2>
+              </div>
+              <div className="list-group-item">
+                <div className="row">
+                  <div className="col">Items</div>
+                  <div className="col">${itemPrice}</div>
+                </div>
+              </div>
+              <div className="list-group-item">
+                <div className="row">
+                  <div className="col">Shipping</div>
+                  <div className="col">${order.shippingPrice}</div>
+                </div>
+              </div>
+              <div className="list-group-item">
+                <div className="row">
+                  <div className="col">Tax</div>
+                  <div className="col">${order.taxPrice}</div>
+                </div>
+              </div>
+              <div className="list-group-item">
+                <div className="row">
+                  <div className="col">Total</div>
+                  <div className="col">${order.totalPrice}</div>
+                </div>
+              </div>
               {!order.isPaid && (
-                <ListGroup.Item>
+                <div className="list-group-item">
                   {loadingPay && <Loader />}
                   <div className="d-grid gap-2">
-                    <Button className="btn btn-block" onClick={onPayClick}>
+                    <button className=" btn pay-button" onClick={onPayClick}>
                       Pay with Credit Card
-                    </Button>
+                    </button>
                     <PayPalButton
                       fundingSource={"paypal"}
                       createOrder={(data, actions) =>
@@ -289,26 +312,26 @@ const OrderScreen = () => {
                       onApprove={(data, actions) => onApprove(data, actions)}
                     />
                   </div>
-                </ListGroup.Item>
+                </div>
               )}
               {/* {orderDeliverLoading && <Loader />} */}
               {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDelivered && (
-                  <ListGroup.Item>
-                    <Button
+                  <div className="list-group-item">
+                    <button
                       type="button"
                       className="btn btn-block"
                       onClick={deliverHandler}>
                       Mark As Delivered
-                    </Button>
-                  </ListGroup.Item>
+                    </button>
+                  </div>
                 )}
-            </ListGroup>
-          </Card>
-        </Col>
-      </Row>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   ) : (
     <></>

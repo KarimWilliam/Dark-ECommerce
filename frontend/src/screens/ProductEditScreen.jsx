@@ -141,11 +141,11 @@ const ProductEditScreen = () => {
 
   return (
     <>
-      <Link to="/admin/productlist" className="btn btn-light my-3">
+      <Link to="/admin/productlist" className="btn btn-light my-3 ">
         Go Back
       </Link>
-      <FormContainer>
-        <h1>Edit Product</h1>
+      <div className="form-container">
+        <h1 className="main-color-in">Edit Product</h1>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant="danger">{messageUpdate}</Message>}
         {isLoading ? (
@@ -153,79 +153,87 @@ const ProductEditScreen = () => {
         ) : isError ? (
           <Message variant="danger">{message}</Message>
         ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
+          <form onSubmit={submitHandler}>
+            <div className="form-floating mb-3">
+              <input
+                id="nameInput"
+                className="form-control"
                 type="name"
                 placeholder="Enter name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="price">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
+                onChange={(e) => setName(e.target.value)}></input>
+              <label htmlfor="nameInput">Name</label>
+            </div>
+            <div className="form-floating mb-3">
+              <input
+                id="price-input"
+                className="form-control"
                 type="number"
                 placeholder="Enter price"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}></Form.Control>
-            </Form.Group>
-
-            <label htmlFor="text"></label>
+                onChange={(e) => setPrice(e.target.value)}></input>
+              <label htmlfor="priceInput">Price</label>
+            </div>
+            <label htmlFor="text">Image</label>
             <input
+              className="form-control"
               type="file"
               name="Image"
               id="customFile"
               encType="multipart/form-data"
               onChange={onFileChange}
             />
-            {uploading && <Loader />}
+            <br></br>
+            {uploading && (
+              <span role="status" className="spinner-border"></span>
+            )}
 
-            <Form.Group controlId="brand">
-              <Form.Label>Brand</Form.Label>
-              <Form.Control
+            <div className="form-floating mb-3">
+              <input
+                id="brand-input"
+                className="form-control"
                 type="text"
                 placeholder="Enter brand"
                 value={brand}
-                onChange={(e) => setBrand(e.target.value)}></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="countInStock">
-              <Form.Label>Count In Stock</Form.Label>
-              <Form.Control
+                onChange={(e) => setBrand(e.target.value)}></input>
+              <label htmlfor="brand-input">Brand</label>
+            </div>
+            <div className="form-floating mb-3">
+              <input
+                id="stock-input"
+                className="form-control"
                 type="number"
                 placeholder="Enter countInStock"
                 value={countInStock}
-                onChange={(e) =>
-                  setCountInStock(e.target.value)
-                }></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="category">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
+                onChange={(e) => setCountInStock(e.target.value)}></input>
+              <label htmlfor="count-input">Count In Stock</label>
+            </div>
+            <div className="form-floating mb-3">
+              <input
+                id="category-input"
+                className="form-control"
                 type="text"
                 placeholder="Enter category"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="description">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
+                onChange={(e) => setCategory(e.target.value)}></input>
+              <label htmlfor="category-input">Category</label>
+            </div>
+            <div className="form-floating mb-3">
+              <input
+                id="description-input"
+                className="form-control"
                 type="text"
                 placeholder="Enter description"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}></Form.Control>
-            </Form.Group>
-
-            <Button type="submit" variant="primary">
+                onChange={(e) => setDescription(e.target.value)}></input>
+              <label htmlfor="description-input">Description</label>
+            </div>
+            <button className="button-1" type="submit">
               Update
-            </Button>
-          </Form>
+            </button>
+          </form>
         )}
-      </FormContainer>
+      </div>
     </>
   );
 };

@@ -2,15 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
-import {
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  Form,
-} from "react-bootstrap";
 import Rating from "../components/Rating";
 import { useSelector, useDispatch } from "react-redux";
 import Meta from "../components/Meta";
@@ -93,7 +84,10 @@ function ProductScreen() {
     <>
       {sucMsg}
 
-      <Link className="btn btn-light my-3" to="/">
+      <Link
+        className="btn btn-light my-3"
+        style={{ backgroundColor: "white" }}
+        to="/">
         Go Back
       </Link>
 
@@ -105,55 +99,71 @@ function ProductScreen() {
         <>
           <Meta title={product.name} />
           <div title={product.name} />
-          <Row>
-            <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
-            </Col>
-            <Col md={3}>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
+          <div className="row">
+            <div
+              className="col-md-3 col"
+              style={{ minWidth: "320px", paddingBottom: "20px" }}>
+              <img
+                src={product.image}
+                alt={product.name}
+                style={{ maxWidth: "100%" }}
+              />
+            </div>
+            <div
+              className="col-md-6 col description-container "
+              style={{ textAlign: "justify" }}>
+              <ul className="list-group list-group-flush ">
+                <li className="list-group-item ">
                   <h3>{product.name}</h3>
-                </ListGroup.Item>
-                <ListGroup.Item>
+                </li>
+                <li className="list-group-item">
                   <Rating
                     value={product.rating}
-                    text={`${product.numReviews} reviews`}
+                    text={`(${product.numReviews}) ${
+                      product.numReviews != 1 ? "reviews" : "review"
+                    }`}
                   />
-                </ListGroup.Item>
-                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-                <ListGroup.Item>
+                </li>
+                <li className="list-group-item">Price: ${product.price}</li>
+                <li className="list-group-item">
                   Description: {product.description}
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-            <Col md={3}>
-              <Card>
-                <ListGroup variant="flush">
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Price:</Col>
-                      <Col>
+                </li>
+              </ul>
+            </div>
+            <div
+              className="col col-md-3"
+              style={{
+                minWidth: "320px",
+                marginLeft: "auto",
+                paddingBottom: "30px",
+              }}>
+              <div className="card ">
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
+                    <div className="row">
+                      <div className="col">Price:</div>
+                      <div className="col">
                         <strong>${product.price}</strong>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
+                      </div>
+                    </div>
+                  </li>
 
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Status:</Col>
-                      <Col>
+                  <li className="list-group-item ">
+                    <div className="row">
+                      <div className="col">Status:</div>
+                      <div className="col">
                         {product.countInStock > 0 ? "In Stock" : "Out Of Stock"}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
+                      </div>
+                    </div>
+                  </li>
 
                   {product.countInStock > 0 && (
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Qty</Col>
-                        <Col>
-                          <Form.Control
-                            as="select"
+                    <li className="list-group-item">
+                      <div className="row">
+                        <div className="col">Qty</div>
+                        <div className="col">
+                          <select
+                            className="form-select"
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}>
                             {product.countInStock <= 30
@@ -169,52 +179,71 @@ function ProductScreen() {
                                     {x + 1}
                                   </option>
                                 ))}
-                          </Form.Control>
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
+                          </select>
+                        </div>
+                      </div>
+                    </li>
                   )}
-
-                  <ListGroup.Item>
-                    <Button
-                      onClick={addToCartHandler}
-                      className="btn-block"
-                      type="button"
-                      disabled={
-                        product.countInStock === 0 ||
-                        product.visibility === false
-                      }>
-                      Buy Now
-                    </Button>
-                    <Button
-                      onClick={addToCartHandlerLater}
-                      className="btn-block"
-                      type="button"
-                      disabled={
-                        product.countInStock === 0 ||
-                        product.visibility === false
-                      }>
-                      {addToLoggedCartLoading ? <Loader /> : "Add To Cart"}
-                    </Button>
-                  </ListGroup.Item>
-                </ListGroup>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
+                  {addToLoggedCartLoading ? (
+                    <div
+                      className="spinner-border"
+                      style={{
+                        margin: "auto",
+                        display: "block",
+                      }}
+                      role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                  ) : (
+                    <ul className="list-group-item d-flex flex-nowrap">
+                      <button
+                        onClick={addToCartHandler}
+                        style={{
+                          textTransform: "capitalize",
+                        }}
+                        className=" btn  secondary-color "
+                        // style={{ minWidth: "100px", height: "50px" }}
+                        type="button"
+                        disabled={
+                          product.countInStock === 0 ||
+                          product.visibility === false
+                        }>
+                        Buy Now
+                      </button>
+                      <button
+                        onClick={addToCartHandlerLater}
+                        className="btn btn-dark main-color "
+                        type="button"
+                        style={{
+                          textTransform: "capitalize",
+                          marginLeft: "auto",
+                        }}
+                        disabled={
+                          product.countInStock === 0 ||
+                          product.visibility === false
+                        }>
+                        Add To Cart
+                      </button>
+                    </ul>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col col-md-6">
               <h2>Reviews</h2>
               {productReviews.length === 0 && <Message>No Reviews</Message>}
-              <ListGroup variant="flush">
+              <ul className="list-group review-container list-group-flush">
                 {productReviews.map((review) => (
-                  <ListGroup.Item key={review._id}>
+                  <li className="list-group-item" key={review._id}>
                     <strong>{review.name}</strong>
                     <Rating value={review.rating} />
                     <p>{review.createdAt.substring(0, 10)}</p>
-                    <p>{review.comment}</p>
-                  </ListGroup.Item>
+                    <p style={{ textAlign: "justify" }}>{review.comment}</p>
+                  </li>
                 ))}
-                <ListGroup.Item>
+                <li className="list-group-item">
                   <h2>Write a Review</h2>
                   {createReviewSuccess && (
                     <Message variant="success">
@@ -226,11 +255,11 @@ function ProductScreen() {
                     <Message variant="danger">{createReviewMessage}</Message>
                   )}
                   {user ? (
-                    <Form onSubmit={submitHandler}>
-                      <Form.Group controlId="rating">
-                        <Form.Label>Rating</Form.Label>
-                        <Form.Control
-                          as="select"
+                    <form onSubmit={submitHandler}>
+                      <div className="form-control" id="rating">
+                        <div>Rating</div>
+                        <select
+                          className="form-select"
                           value={rating}
                           onChange={(e) => setRating(e.target.value)}>
                           <option value="">Select...</option>
@@ -239,34 +268,37 @@ function ProductScreen() {
                           <option value="3">3 - Good</option>
                           <option value="4">4 - Very Good</option>
                           <option value="5">5 - Excellent</option>
-                        </Form.Control>
-                      </Form.Group>
-                      <Form.Group controlId="comment">
-                        <Form.Label>Comment</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          row="3"
+                        </select>
+                      </div>
+                      <div id="comment">
+                        <section>Comment</section>
+                        <textarea
+                          className="form-control"
                           value={comment}
                           onChange={(e) =>
                             setComment(e.target.value)
-                          }></Form.Control>
-                      </Form.Group>
-                      <Button
+                          }></textarea>
+                      </div>
+                      <button
+                        style={{
+                          textTransform: "capitalize",
+                        }}
+                        className="btn main-color btn-dark"
                         disabled={createReviewLoading}
                         type="submit"
                         variant="primary">
                         Submit
-                      </Button>
-                    </Form>
+                      </button>
+                    </form>
                   ) : (
                     <Message>
                       Please <Link to="/login">sign in</Link> to write a review
                     </Message>
                   )}
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-          </Row>
+                </li>
+              </ul>
+            </div>
+          </div>
         </>
       )}
     </>

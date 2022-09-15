@@ -1,12 +1,20 @@
 import React from "react";
-import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 function DoesNotExist() {
   return (
     <>
-      <div>Whatever You were looking for doesnt seem to exist</div>
-      <LinkContainer to="/">
-        <button>GO TO HOMEPAGE</button>
-      </LinkContainer>
+      <Link to="/">
+        <button
+          className="btn "
+          style={{ textAlight: "center", backgroundColor: "white" }}>
+          <h5>Back TO HOMEPAGE</h5>
+        </button>
+      </Link>
+      <div style={{ textAlign: "center" }}>
+        <h3 style={{ textTransform: "capitalize" }}>
+          Whatever You were looking for doesnt seem to exist
+        </h3>
+      </div>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setCurrentAddress } from "../features/shipping/shippingSlice";
-
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function AddressButton({ address }) {
@@ -13,49 +13,35 @@ function AddressButton({ address }) {
   };
 
   return (
-    <div className="container-lg  p-5 placeholder-glow">
-      {address.default && <div>default</div>}
-      <button onClick={onClick} className="col-md-8 text-center flex-nowrap ">
-        <div className="row h-25  flex-md-nowrap">
-          <div className="col-md-10 "> {address.name}</div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Address: {address.address}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              City: {address.city}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Country: {address.country}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Postal Code: {address.postalCode}
-            </p>
-          </div>
-        </div>
-        <div className="row h-75  ">
-          <div className="container-lg ">
-            <p className="lead text-center d-flex justify-content-center align-items-center h-100 ">
-              Phone Number: {address.phoneNumber}
-            </p>
-          </div>
-        </div>
-      </button>
-    </div>
+    <Link
+      to="/placeorder"
+      className="address-item popping-font  address-hover-effect"
+      style={{ textDecoration: "none" }}>
+      <p style={{ fontWeight: "bold" }}>{address.name}</p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Address:</span> {address.address}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>City:</span> {address.city}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Country: </span>
+        {address.country}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Postal Code: </span>
+        {address.postalCode}
+      </p>
+
+      <p>
+        <span style={{ fontWeight: "600" }}>Phone Number: </span>
+        {address.phoneNumber}
+      </p>
+    </Link>
   );
 }
 

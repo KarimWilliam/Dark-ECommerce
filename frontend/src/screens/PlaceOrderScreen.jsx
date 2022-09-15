@@ -49,8 +49,6 @@ const PlaceOrderScreen = () => {
       navigate(`/order/${order._id}`);
       dispatch(createOrderReset());
       console.log("reached");
-      // dispatch({ type: USER_DETAILS_RESET });
-      // dispatch({ type: ORDER_CREATE_RESET });
     }
     // eslint-disable-next-line
   }, [navigate, isSuccess, dispatch, createOrderReset]);
@@ -72,104 +70,103 @@ const PlaceOrderScreen = () => {
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
-      <Row>
-        <Col md={8}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h2>Shipping</h2>
+      <div className=" popping-font place-order-container">
+        <div className=" place-order-left ">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
+              <h2 className="main-color-in">Shipping To</h2>
               <p>
-                <strong>Address:</strong>
-                {currentAddress.address}, {currentAddress.city}
-                {currentAddress.postalCode},{currentAddress.country}
+                {currentAddress.address} , {currentAddress.city}{" "}
+                {currentAddress.postalCode} , {currentAddress.country}
               </p>
-            </ListGroup.Item>
+            </li>
 
-            <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <strong>Method: </strong>
-              {cart.paymentMethod}
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Order Items</h2>
+            <li className="list-group-item">
+              <h2 className="main-color-in">Order Items</h2>
               {cart.cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
-                <ListGroup variant="flush">
+                <div className="list-group list-group-flush d-flex">
                   {cart.cartItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={item.product.image}
-                            alt={item.product.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
-                        <Col>
-                          <Link to={`/product/${item.product._id}`}>
-                            {item.product.name}
-                          </Link>
-                        </Col>
-                        <Col md={4}>
-                          {item.qty} x ${item.product.price} = $
-                          {item.qty * item.product.price}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
+                    <div className="place-order-items-container" key={index}>
+                      <div className="placeorder-img-container">
+                        <img
+                          className="placeorder-img"
+                          style={{ paddingRight: "10px" }}
+                          src={item.product.image}
+                          alt={item.product.name}
+                        />
+                      </div>
+                      <div className="col">
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          to={`/product/${item.product._id}`}>
+                          {item.product.name}
+                        </Link>
+                      </div>
+                      <div className="col col-md-4">
+                        {item.qty} x ${item.product.price}={" "}
+                        <span style={{ fontWeight: "600" }}>
+                          ${item.qty * item.product.price}
+                        </span>
+                      </div>
+                    </div>
                   ))}
-                </ListGroup>
+                </div>
               )}
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-        <Col md={4}>
-          <Card>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Items</Col>
-                  <Col>${cart.itemsPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Shipping</Col>
-                  <Col>${cart.shippingPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Tax</Col>
-                  <Col>${cart.taxPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Total</Col>
-                  <Col>${cart.totalPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
+            </li>
+          </ul>
+        </div>
+        <div className="place-order-right">
+          <div className="card">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">
+                <h2 className="main-color-in">Order Summary</h2>
+              </li>
+              <li className="list-group-item">
+                <div className="row">
+                  <div className="col">Items:</div>
+                  <div className="col">${cart.itemsPrice}</div>
+                </div>
+              </li>
+              <li className="list-group-item">
+                <div className="row">
+                  <div className="col">Shipping:</div>
+                  {cart.shippingPrice > 0 ? (
+                    <div className="col">${cart.shippingPrice}</div>
+                  ) : (
+                    <div className="col">Free</div>
+                  )}
+                </div>
+              </li>
+              <li className="list-group-item">
+                <div className="row">
+                  <div className="col">Tax:</div>
+                  <div className="col">${cart.taxPrice}</div>
+                </div>
+              </li>
+              <li className="list-group-item">
+                <div className="row">
+                  <div className="col">Total:</div>
+                  <div className="col">${cart.totalPrice}</div>
+                </div>
+              </li>
+              <li className="list-group-item">
                 {isError && <Message variant="danger">{message}</Message>}
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Button
+              </li>
+              <li className="list-group-item d-flex justify-content-center">
+                <button
                   type="button"
-                  className="btn-block"
+                  className="btn "
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}>
                   Place Order
-                </Button>
-              </ListGroup.Item>
-            </ListGroup>
-          </Card>
-        </Col>
-      </Row>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

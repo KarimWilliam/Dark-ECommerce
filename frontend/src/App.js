@@ -24,6 +24,7 @@ import EditAddressScreen from "./screens/EditAddressScreen";
 import DoesNotExist from "./screens/DoesNotExist";
 import ForgotPassword from "./screens/ForgotPassword";
 import ResetPassword from "./screens/ResetPassword";
+import AboutScreen from "./screens/AboutScreen";
 
 function App() {
   const payPalOptions = {
@@ -36,8 +37,9 @@ function App() {
       <Router>
         <Header />
         <main className="py-3">
-          <Container>
+          <div className="container">
             <Routes>
+              <Route path="/about" element={<AboutScreen />}></Route>
               <Route path="/order/:id" element={<OrderScreen />}></Route>
               <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
               <Route path="/shipping" element={<ShippingScreen />}></Route>
@@ -81,7 +83,7 @@ function App() {
               />
               <Route path="*" element={<DoesNotExist />} />
             </Routes>
-          </Container>
+          </div>
         </main>
         <Footer />
       </Router>

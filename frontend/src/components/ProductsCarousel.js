@@ -34,7 +34,7 @@ const ProductCarousel = () => {
       id="MainCarousel"
       className="carousel slide carousel-dark "
       data-bs-ride="carousel">
-      <div class="carousel-indicators">
+      <div className="carousel-indicators">
         <button
           type="button"
           data-bs-target="#MainCarousel"
@@ -63,11 +63,13 @@ const ProductCarousel = () => {
           data-bs-slide-to="4"
           aria-label="Slide 5"></button>
       </div>
-      <div style={{ "min-height": 520 }} className="carousel-inner">
+      <div style={{ minHeight: 520 }} className="carousel-inner">
         {products[0] && (
           <div className="carousel-item active" data-bs-interval="7000">
-            <Link to={`/product/${products[0]._id}`}>
-              <div className="carousel-caption d-none d-md-block">
+            <Link
+              style={{ textDecoration: "none" }}
+              to={`/product/${products[0]._id}`}>
+              <div className="carousel-caption ">
                 <h5>
                   {products[0].name} (${products[0].price})
                 </h5>
@@ -86,8 +88,10 @@ const ProductCarousel = () => {
             key={product._id}
             className="carousel-item "
             data-bs-interval="7000">
-            <Link to={`/product/${product._id}`}>
-              <div className="carousel-caption d-none d-md-block">
+            <Link
+              style={{ textDecoration: "none" }}
+              to={`/product/${product._id}`}>
+              <div className="carousel-caption ">
                 <h5>
                   {product.name} (${product.price})
                 </h5>

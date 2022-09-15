@@ -38,8 +38,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
     throw new Error("No order items");
     return;
   } else {
-    console.log("hi");
-
     const flattenObject = (obj) => {
       const flattened = {};
 
@@ -62,17 +60,15 @@ const addOrderItems = asyncHandler(async (req, res) => {
     let orderItemss = [];
     orderItems.forEach((element) => {
       element._id = element.product._id;
-      console.log("element: " + JSON.stringify(element));
+      // console.log("element: " + JSON.stringify(element));
       orderItemss.push(flattenObject(element));
-      console.log(
-        "Flattened element: " + JSON.stringify(flattenObject(element))
-      );
+      // console.log(
+      //   "Flattened element: " + JSON.stringify(flattenObject(element))
+      // );
     });
     orderItemss.forEach((element) => {
       delete Object.assign(element, { ["product"]: element["_id"] })["_id"];
     });
-
-    console.log("order items after renaming");
 
     const order = new Order({
       orderItems: orderItemss,
@@ -153,7 +149,7 @@ const updateOrderToPaidPaypal = asyncHandler(async (req, res) => {
   // Call API with your client and get a response for your call
   let response = await paypalClient.execute(request);
   // If call returns body in response, you can get the deserialized version from the result attribute of the response.
-  console.log(`Capture: ${JSON.stringify(response.result)}`);
+  //console.log(`Capture: ${JSON.stringify(response.result)}`);
   if (order) {
     order.paymentResult = {
       id: req.body.paypalID,
@@ -222,9 +218,7 @@ const paypalPayOrder = asyncHandler(async (req, res) => {
 
     while (i--) {
       let prod = await Product.findById(order.orderItems[i].product.toString());
-      console.log(prod);
       prod.countInStock = prod.countInStock - order.orderItems[i].qty;
-      console.log(order.orderItems[i].qty);
       await prod.save();
     }
 
@@ -245,7 +239,11 @@ const paypalPayOrder = asyncHandler(async (req, res) => {
               },
               item_total: {
                 currency_code: "USD",
-                value: order.totalPrice - order.shippingPrice - order.taxPrice,
+                value: (
+                  order.totalPrice -
+                  order.shippingPrice -
+                  order.taxPrice
+                ).toFixed(2),
               },
             },
           },
@@ -259,8 +257,10 @@ const paypalPayOrder = asyncHandler(async (req, res) => {
         },
       ],
     });
+    console.log("order");
     try {
       const paypalOrder = await paypalClient.execute(request);
+      console.log("paypal ID karim " + paypalOrder.result.id);
       res.json({ id: paypalOrder.result.id });
     } catch (error) {
       console.log(error);
@@ -279,13 +279,12 @@ const stripePayOrder = asyncHandler(async (req, res) => {
     "user",
     "name email"
   );
-
+  let i = order.orderItems.length;
   if (order) {
     while (i--) {
       let prod = await Product.findById(order.orderItems[i].product.toString());
-      console.log(prod);
       prod.countInStock = prod.countInStock - order.orderItems[i].qty;
-      console.log(order.orderItems[i].qty);
+      //console.log(order.orderItems[i].qty);
       await prod.save();
     }
 
@@ -363,14 +362,14 @@ const finalizeOrder = asyncHandler(async (req, res) => {
   while (i--) {
     let prod = await Product.findById(order.orderItems[i].product.toString());
     if (prod.countInStock < order.orderItems[i].qty) {
-      console.log(order.orderItems[i].qty);
+      // console.log(order.orderItems[i].qty);
       extraItems.push(order.orderItems[i]);
       order.orderItems.splice(i, 1);
       // if(prod.countInStock===0){}   make it more advanced with setting lower qty
       user.cartItems = user.cartItems.filter(function (item) {
         return item.product != prod._id.toString();
       });
-      console.log(user.cartItems);
+      // console.log(user.cartItems);
     }
   }
   await user.save();

@@ -63,33 +63,30 @@ function AddressScreen() {
     defaultAddressSuccess,
   ]);
 
-  if (isLoading) {
-    return (
-      <>
-        Your Addresses <br></br> <Loader />
-      </>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <>
+  //       Your Addresses <br></br> <Loader />
+  //     </>
+  //   );
+  // }
 
   return (
     <div>
-      Your Addresses
+      <h3>Your Addresses</h3>
       <Link to="/Address/add" state={{ prevRoute }}>
         <br></br>
-        <br></br>
-        <button>Create New Address</button>
+        <button className="button-1">Create New Address</button>
       </Link>
-      <div className=" align-items-center  justify-content-between p-5 custombgcolor container-xxl">
-        {addresses.length > 0 ? (
-          <div className="addressess">
-            {addresses.map((address) => (
-              <AddressItem key={address._id} address={address} />
-            ))}
-          </div>
-        ) : (
-          <h3>There are no addresses to see</h3>
-        )}
-      </div>
+      {addresses.length > 0 ? (
+        <div className="address-container">
+          {addresses.map((address) => (
+            <AddressItem key={address._id} address={address} />
+          ))}
+        </div>
+      ) : (
+        <h4>There are no addresses to see</h4>
+      )}
     </div>
   );
 }
