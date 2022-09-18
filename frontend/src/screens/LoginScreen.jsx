@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -10,8 +9,6 @@ import { resetCartItems, mergeCarts } from "../features/cart/cartSlice";
 import { getDefaultAddress } from "../features/shipping/shippingSlice";
 
 const LoginScreen = ({ prevPage }) => {
-  // const { prevPage } = useLocation();
-  console.log(prevPage);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,15 +24,14 @@ const LoginScreen = ({ prevPage }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(prevPage);
     if (user) {
       if (prevPage) {
-        console.log("routing to: " + prevPage.pathname.pathname);
         navigate(prevPage.prevRoute.pathname);
       } else {
         navigate("/");
       }
     }
+    // eslint-disable-next-line
   }, [user, navigate]);
 
   const submitHandler = (e) => {
@@ -48,7 +44,8 @@ const LoginScreen = ({ prevPage }) => {
       dispatch(getDefaultAddress());
       dispatch(resetLogInSuccess());
     }
-  }, [loggedInSuccess]);
+    // eslint-disable-next-line
+  }, [loggedInSuccess, dispatch]);
 
   function reconcileCarts() {
     const tempCartItems = window.sessionStorage.getItem("cartItems")
@@ -60,44 +57,60 @@ const LoginScreen = ({ prevPage }) => {
   }
 
   return (
-    <FormContainer>
-      <h1>Sign In</h1>
-      {isError && <Message variant="danger">{message}</Message>}
-      {isLoading && <Loader />}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}></Form.Control>
-        </Form.Group>
+    <>
+      <FormContainer>
+        <h2 className="main-color-in">Sign In</h2>
+        {isError && <Message variant="danger">{message}</Message>}
+        {isLoading && <Loader />}
+        <form onSubmit={submitHandler}>
+          <div className="form-floating mb-3">
+            <input
+              className="form-control"
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}></input>
+            <label>Email Address</label>
+          </div>
 
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}></Form.Control>
-        </Form.Group>
+          <div className="form-floating mb-3">
+            <input
+              className="form-control"
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}></input>
+            <label>Password</label>
+          </div>
+          <br></br>
+          <button className="button-1 " type="submit">
+            Sign In
+          </button>
+        </form>
 
-        <Button type="submit" variant="primary">
-          Sign In
-        </Button>
-      </Form>
+        <div className="row py-3">
+          <div className="col">
+            New Customer?{" "}
+            <Link className="main-color-in" to={"/register"}>
+              Register
+            </Link>
+          </div>
 
-      <Row className="py-3">
-        <Col>
-          New Customer? <Link to={"/register"}>Register</Link>
-        </Col>
-
-        <Col>
-          Forgot Password? <Link to={"/forgotPassword"}>Reset Password</Link>
-        </Col>
-      </Row>
-    </FormContainer>
+          <div className="col">
+            Forgot Password?{" "}
+            <Link className="main-color-in" to={"/forgotPassword"}>
+              Reset Password
+            </Link>
+          </div>
+        </div>
+      </FormContainer>
+      <div className="bottom-message">
+        <Message>
+          If you are interested in testing out an Admin account, contact me via
+          the About page!
+        </Message>
+      </div>
+    </>
   );
 };
 

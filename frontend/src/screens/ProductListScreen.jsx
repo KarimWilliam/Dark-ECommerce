@@ -89,7 +89,7 @@ const ProductListScreen = () => {
       setDisplayProducts(products);
     }
     dispatch(reset());
-  }, [isSuccess]);
+  }, [isSuccess, products, dispatch]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {

@@ -216,6 +216,9 @@ export const shippingSlice = createSlice({
       state.defaultAddressSuccess = false;
       state.defaultAddressMessage = "";
     },
+    defaultAddressReset: (state) => {
+      state.defaultAddress = null;
+    },
     editReset: (state) => {
       state.editAddressError = false;
       state.editAddressLoading = false;
@@ -280,6 +283,8 @@ export const shippingSlice = createSlice({
       .addCase(getDefaultAddress.fulfilled, (state, action) => {
         state.defaultAddressLoading = false;
         state.defaultAddressSuccess = true;
+        console.log(action.payload);
+        state.defaultAddress = action.payload;
         localStorage.setItem("defaultAddress", JSON.stringify(action.payload));
         if (!state.currentAddress) {
           //TODO
@@ -295,12 +300,10 @@ export const shippingSlice = createSlice({
         state.deleteAddressLoading = true;
       })
       .addCase(deleteAddress.fulfilled, (state, action) => {
-        console.log(action.payload);
-        console.log(state.currentAddress._id);
-        if (action.payload == state.currentAddress._id) {
+        if (action.payload === state.currentAddress._id) {
           state.currentAddress = null;
         }
-        if (action.payload == state.defaultAddress._id) {
+        if (action.payload === state.defaultAddress._id) {
           state.defaultAddress = null;
         }
         state.deleteAddressLoading = false;
@@ -364,5 +367,6 @@ export const {
   saveShippingAddress,
   getAddressReset,
   setCurrentAddress,
+  defaultAddressReset,
 } = shippingSlice.actions;
 export default shippingSlice.reducer;

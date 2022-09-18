@@ -603,3 +603,23 @@ text-transform: lowercase !important;
     background-position: -200% center;
   }
 }
+
+
+
+@media only screen and (max-width: 767px) {
+  .card{
+    padding:0 !important;
+    width: 80vw !important;
+  }
+}
+
+
+.bottom-message{
+display: flex;
+  bottom: 100px;
+  justify-content: center;
+  padding-top: 250px;
+
+
+
+}

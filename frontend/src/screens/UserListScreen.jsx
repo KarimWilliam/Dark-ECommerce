@@ -49,7 +49,7 @@ const UserListScreen = () => {
       setDisplayUsers(users);
     }
     dispatch(reset());
-  }, [dispatch, isSuccess]);
+  }, [dispatch, isSuccess, users]);
 
   const sortByID = () => {
     setSortDirectionID(!sortDirectionID);

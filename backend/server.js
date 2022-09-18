@@ -35,9 +35,9 @@ app.use(
 
 const PORT = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+// app.get("/", (req, res) => {
+//   res.send("API is running...");
+// });
 
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
@@ -49,6 +49,16 @@ app.use("/api/shipping", shippingRoutes);
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
+
+//Serve frontend
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => res.send("Please set to production"));
+}
 
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 

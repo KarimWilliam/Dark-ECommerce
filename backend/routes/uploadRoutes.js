@@ -8,7 +8,7 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 const __dirname = path.resolve();
-console.log(cloudinary.config().cloud_name); //gets the env variables
+cloudinary.config().cloud_name; //gets the env variables
 
 //TODO remove the file from, local storage after
 router.post(
@@ -16,9 +16,6 @@ router.post(
   protect,
   admin,
   asyncHandler(async (req, res) => {
-    console.log("dirname: " + __dirname);
-    console.log(req.files.image);
-
     if (!req.files) {
       return res.status(400).json({ msg: "no file uploaded" });
     }

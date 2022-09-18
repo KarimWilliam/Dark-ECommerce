@@ -66,11 +66,9 @@ export const registerUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/profile
 // @access private
 export const getUserProfile = asyncHandler(async (req, res) => {
-  console.log(user);
   const user = await User.findById(req.user._id);
 
   if (user) {
-    console.log(user.name);
     res.json({
       _id: user._id,
       name: user.name,
@@ -78,7 +76,6 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
     });
   } else {
-    console.log("user not found");
     res.status(404);
     throw new Error("User not found");
   }
@@ -190,12 +187,10 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     //generate the OT link
 
     const secret = process.env.JWT_SECRET + user.password;
-    console.log(secret);
     const token = jwt.sign({ email: user.email, id: user._id }, secret, {
       expiresIn: "15m",
     });
     const link = process.env.RESET_URL + `${user._id}/${token}`;
-    console.log("link: " + link);
     //Send the OT link in an email
     let transporter = nodemailer.createTransport({
       service: "gmail",

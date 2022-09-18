@@ -13,9 +13,7 @@ const getProductsPage = asyncHandler(async (req, res) => {
 
   const pageSize = 20;
   const page = Number(req.query.pageNumber) || 1;
-  console.log(page);
   const currentDate = req.query.currentDate;
-  console.log("current Date: " + currentDate);
   const keyword = req.query.keyword
     ? {
         name: {
@@ -24,7 +22,6 @@ const getProductsPage = asyncHandler(async (req, res) => {
         },
       }
     : {};
-  console.log(keyword);
   // const count = await Product.countDocuments({
   //   //...keyword,
   //   visibility: true,
@@ -91,7 +88,6 @@ export const getProductsAdmin = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   //const products = await Product.find({ ...keyword, archived: false });
   let products = await Product.find({ archived: false }).lean();
-  console.log(req.query.keyword);
   if (req.query.keyword) {
     products = matchSorter.matchSorter(products, req.query.keyword, {
       keys: ["name", "category", "brand"],
@@ -237,7 +233,6 @@ const createProductReview = asyncHandler(async (req, res) => {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
-    console.log(user);
     if (!user.isAdmin) {
       if (!userOrders) {
         res.status(400);

@@ -33,7 +33,7 @@ function AddressForm({ prevPage }) {
     if (id) {
       dispatch(getAddress(id));
     }
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (getAddressSuccess) {
@@ -45,6 +45,7 @@ function AddressForm({ prevPage }) {
       setPostal(getAddressTarget.postalCode);
     }
     dispatch(getAddressReset());
+    // eslint-disable-next-line
   }, [dispatch, getAddressSuccess]);
 
   const [name, setName] = useState("");
@@ -86,7 +87,7 @@ function AddressForm({ prevPage }) {
 
   useEffect(() => {
     if (createAddressSuccess || editAddressSuccess) {
-      console.log("routing to: " + prevPage.prevRoute.pathname);
+      //console.log("routing to: " + prevPage.prevRoute.pathname);
       navigate(prevPage.prevRoute.pathname);
       dispatch(createReset);
       dispatch(editReset);
@@ -97,6 +98,7 @@ function AddressForm({ prevPage }) {
       setPhone("");
       setPostal("");
     }
+    // eslint-disable-next-line
   }, [createAddressSuccess, navigate, dispatch, editReset, editAddressSuccess]);
 
   const clearFields = () => {

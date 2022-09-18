@@ -12,7 +12,12 @@ import {
   createReviewReset,
 } from "../features/products/productSlice";
 import Message from "../components/Message";
-import { addToLoggedCart, reset, getItems } from "../features/cart/cartSlice";
+import {
+  addToLoggedCart,
+  reset,
+  getItems,
+  addItem,
+} from "../features/cart/cartSlice";
 
 function ProductScreen() {
   const { user } = useSelector((state) => state.auth);
@@ -44,7 +49,7 @@ function ProductScreen() {
       dispatch(reset());
       dispatch(getItems());
     }
-  }, [addToLoggedCartSuccess]);
+  }, [addToLoggedCartSuccess, dispatch]);
   useEffect(() => {
     dispatch(createReviewReset());
     if (createReviewSuccess) {
@@ -63,16 +68,16 @@ function ProductScreen() {
     }
   }, [dispatch, createReviewSuccess, id, product]);
 
-  // useEffect(() => {
-  //   dispatch(getProduct(id));
-  // }, [dispatch, id]);
-
   const addToCartHandler = () => {
     navigate(`/cart/${id}?qty=${qty}`);
   };
 
   const addToCartHandlerLater = () => {
-    dispatch(addToLoggedCart({ id, qty }));
+    if (user) {
+      dispatch(addToLoggedCart({ id, qty }));
+    } else {
+      dispatch(addItem({ id, qty }));
+    }
   };
 
   const submitHandler = (e) => {
@@ -84,10 +89,7 @@ function ProductScreen() {
     <>
       {sucMsg}
 
-      <Link
-        className="btn btn-light my-3"
-        style={{ backgroundColor: "white" }}
-        to="/">
+      <Link className="btn btn-light my-3" to="/">
         Go Back
       </Link>
 
@@ -120,7 +122,7 @@ function ProductScreen() {
                   <Rating
                     value={product.rating}
                     text={`(${product.numReviews}) ${
-                      product.numReviews != 1 ? "reviews" : "review"
+                      product.numReviews !== 1 ? "reviews" : "review"
                     }`}
                   />
                 </li>

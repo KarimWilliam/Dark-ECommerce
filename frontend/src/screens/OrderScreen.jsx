@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -43,21 +42,13 @@ const OrderScreen = () => {
     isLoading,
     isSuccess,
     paypalPay,
-    createOrderError,
-    createOrderLoading,
-    createOrderSuccess,
-    createOrderMessage,
     finalizeSuccess,
-    finalizeError,
-    finalizeLoading,
     orderpayLoading: loadingPay,
     orderPaySuccess: successPay,
     orderDeliverSuccess,
-    orderDeliverLoading,
     finalizeSallGoodMan,
   } = orderDetails;
   let itemPrice = 0;
-  let totalPrice = 0;
 
   const PayPalButton = window.paypal.Buttons.driver("react", {
     React,
@@ -90,8 +81,6 @@ const OrderScreen = () => {
     itemPrice = addDecimals(
       order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     );
-
-    totalPrice = order.totalPrice;
   }
 
   const deliverHandler = () => {
@@ -105,10 +94,10 @@ const OrderScreen = () => {
       dispatch(finalizeReset());
       if (finalizeSallGoodMan) {
         dispatch(clearCart());
-        if (payWith == "stripe") {
+        if (payWith === "stripe") {
           dispatch(clearCart());
           dispatch(stripePay(order._id));
-        } else if (payWith == "paypal") {
+        } else if (payWith === "paypal") {
           dispatch(clearCart());
         }
       } else {
@@ -116,7 +105,8 @@ const OrderScreen = () => {
         navigate("/cart");
       }
     }
-  }, [finalizeSuccess]);
+    // eslint-disable-next-line
+  }, [finalizeSuccess, dispatch]);
   //////////////////////////////   STRIPE PAYMENT ////////////////////////////////////
 
   const onPayClick = () => {
@@ -138,7 +128,6 @@ const OrderScreen = () => {
   //////////////////////////////////////   PAYPAL    ////////////////////////////////////
   const createOrderPaypal = async () => {
     dispatch(finalizeOrder(id));
-    console.log("executing paypal");
     const url = "/api/orders/paypal/";
     const config = {
       headers: {
@@ -151,28 +140,27 @@ const OrderScreen = () => {
     if (payload.data.id) {
       return payload.data.id;
     } else {
-      console.log(payload.data);
     }
   };
 
   const onApprove = async (data, actions) => {
-    const paypalID = data.orderID;
-    const url = "/api/orders/paypal/";
-    const config = {
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    const payload = await axios.post(url + id, { paypalID: paypalID }, config);
-    console.log(payload);
+    // const paypalID = data.orderID;
+    // const url = "/api/orders/paypal/";
+    // const config = {
+    //   headers: {
+    //     "content-Type": "application/json",
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
+    // const payload = await axios.post(url + id, { paypalID: paypalID }, config);
     dispatch(paymentComplete());
   };
 
   useEffect(() => {
     dispatch(getOrderDetails(id));
     dispatch(paymentCompleteReset());
-  }, [paypalPay]);
+    // eslint-disable-next-line
+  }, [paypalPay, dispatch]);
 
   /////////////////////////////////////    VISUAL    //////////////////////////////////////
 

@@ -6,7 +6,10 @@ import { userListReset } from "../features/user/userSlice";
 import SearchBox from "./SearchBox";
 import { useNavigate } from "react-router-dom";
 import { resetCartItems } from "../features/cart/cartSlice";
-import { setCurrentAddress } from "../features/shipping/shippingSlice";
+import {
+  setCurrentAddress,
+  defaultAddressReset,
+} from "../features/shipping/shippingSlice";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -20,6 +23,7 @@ const Header = () => {
     dispatch(resetUser());
     dispatch(ordersListReset());
     dispatch(userListReset());
+    dispatch(defaultAddressReset());
     dispatch(resetCartItems());
     dispatch(setCurrentAddress([]));
     window.localStorage.setItem("currentAddress", []);
@@ -52,9 +56,14 @@ const Header = () => {
     }
   }, [currentAddress, defaultAddress, user]);
 
-  const sum = cartItems.reduce((accumulator, object) => {
-    return accumulator + object.qty;
-  }, 0);
+  let sum = 0;
+  try {
+    sum = cartItems.reduce((accumulator, object) => {
+      return accumulator + object.qty;
+    }, 0);
+  } catch (error) {
+    console.log(error);
+  }
 
   return (
     <header>

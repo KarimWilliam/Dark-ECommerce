@@ -49,7 +49,7 @@ const ProfileScreen = () => {
       setDisplayOrders(orders);
     }
     dispatch(orderReset());
-  }, [dispatch, successOrders]);
+  }, [dispatch, successOrders, orders]);
 
   useEffect(() => {
     if (!loggedInUser) {

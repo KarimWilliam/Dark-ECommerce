@@ -46,6 +46,7 @@ function AboutScreen() {
           <li>Supports Paypal and Stripe payments</li>
           <li>SEO optimised for maximum google indexing goodness</li>
           <li>Clean and modern design</li>
+          <li>Infinite scroll main page</li>
           <li>
             Product list graciously provided by Target for testing purposes
           </li>

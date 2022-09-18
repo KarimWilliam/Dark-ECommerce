@@ -11,7 +11,6 @@ export const createAddress = asyncHandler(async (req, res) => {
   if (user.addressList.length === 0) {
     defaulty = true;
   }
-  console.log(req.body);
   const { name, address, city, postalCode, country, phoneNumber } = req.body;
 
   if (!name || !address || !city || !postalCode || !country || !phoneNumber) {
@@ -48,8 +47,6 @@ export const getAllAddress = asyncHandler(async (req, res) => {
 // @access private
 export const editAddress = asyncHandler(async (req, res) => {
   const { name, address, city, postalCode, country, phoneNumber } = req.body;
-  console.log("starting editing");
-  console.log(req.body);
   if (!name || !address || !city || !postalCode || !country || !phoneNumber) {
     res.status(400);
     throw new Error("Please fill out all of the fields");
@@ -77,7 +74,6 @@ export const editAddress = asyncHandler(async (req, res) => {
 // @route PUT /api/shipping/:id
 // @access private
 export const setDefaultAddress = asyncHandler(async (req, res) => {
-  console.log("setting default address");
   //can be better probably
   let address = "";
   const user = await User.findById(req.user.id);

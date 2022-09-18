@@ -26,7 +26,6 @@ const initialState = {
   paypalPay: false,
   cartSteal: "",
   finalizeSuccess: false,
-  finalizeSuccess: false,
   finalizeLoading: false,
   finalizeError: false,
   finalizeSallGoodMan: true,
@@ -303,7 +302,6 @@ export const orderSlice = createSlice({
       })
       .addCase(finalizeOrder.fulfilled, (state, action) => {
         state.cartSteal = action.payload;
-        console.log(action.payload);
         if (action.payload.length !== 0) {
           state.finalizeSallGoodMan = false;
         }

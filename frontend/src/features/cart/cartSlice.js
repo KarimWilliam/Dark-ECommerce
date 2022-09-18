@@ -94,7 +94,6 @@ export const editItem = createAsyncThunk(
   async (cartData, thunkAPI) => {
     const { id, qty } = cartData;
     try {
-      const token = thunkAPI.getState().auth.user.token;
       return await cartService.editItem(id, qty);
     } catch (error) {
       const message =
@@ -210,42 +209,6 @@ export const cartSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(addItem.pending, (state) => {
-        // state.isLoading = true;
-      })
-      .addCase(addItem.fulfilled, (state, action) => {
-        // state.isLoading = false;
-        state.isSuccess = true;
-
-        const item = action.payload;
-        const existItem = state.cartItems.find(
-          (x) => x.product === item.product
-        );
-
-        if (existItem) {
-          // adds onto the existing quantity
-          let existqty = existItem.qty;
-          existqty += item.qty;
-          state.cartItems.forEach((element, index) => {
-            if (element.product === item.product) {
-              state.cartItems[index].qty = existqty;
-            }
-          });
-        } else {
-          state.cartItems.push(item);
-        }
-
-        window.sessionStorage.setItem(
-          "cartItems",
-          JSON.stringify(state.cartItems)
-        );
-      })
-      .addCase(addItem.rejected, (state, action) => {
-        // state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-
       .addCase(editItem.rejected, (state, action) => {
         //  state.isLoading = false;
         state.isError = true;
@@ -281,34 +244,8 @@ export const cartSlice = createSlice({
         state.addToLoggedCartLoading = true;
       })
       .addCase(addToLoggedCart.fulfilled, (state, action) => {
-        // console.log(action.payload.temp);
-        // if (action.payload.temp) {
-        //   console.log("temp");
-        //   const item = action.payload;
-        //   const existItem = state.cartItems.find(
-        //     (x) => x.product._id === item.product._id
-        //   );
-
-        //   if (existItem) {
-        //     //does not add onto the existing quantity. instead it replaces the quantity with the new quantity
-        //     state.cartItems = state.cartItems.map((x) =>
-        //       x.product === existItem.product ? item : x
-        //     );
-        //   } else {
-        //     state.cartItems.push(item);
-        //   }
-
-        //   window.sessionStorage.setItem(
-        //     "cartItems",
-        //     JSON.stringify(state.cartItems)
-        //   );
-        // }
-        // state.addToLoggedCartLoading = false;
-        // state.addToLoggedCartSuccess = true;
-
         state.addToLoggedCartLoading = false;
         state.addToLoggedCartSuccess = true;
-        console.log(action.payload);
         if (action.payload) {
           state.cartItems = action.payload;
         } else {
@@ -325,6 +262,45 @@ export const cartSlice = createSlice({
         state.addToLoggedCartError = true;
         state.message = action.payload;
       })
+      .addCase(addItem.pending, (state) => {
+        state.addToLoggedCartLoading = true;
+      })
+      .addCase(addItem.fulfilled, (state, action) => {
+        state.addToLoggedCartLoading = false;
+        state.addToLoggedCartSuccess = true;
+
+        const item = action.payload;
+        const existItem = state.cartItems.find(
+          (x) => x.product === item.product
+        );
+
+        if (existItem) {
+          let existqty = item.qty;
+          // adds onto the existing quantity
+          //let existqty = existItem.qty;
+          // existqty += item.qty;
+
+          state.cartItems.forEach((element, index) => {
+            if (element.product === item.product) {
+              state.cartItems[index].qty = existqty;
+            }
+          });
+        } else {
+          state.cartItems.push(item);
+        }
+
+        window.sessionStorage.setItem(
+          "cartItems",
+          JSON.stringify(state.cartItems)
+        );
+      })
+      .addCase(addItem.rejected, (state, action) => {
+        state.addToLoggedCartLoading = false;
+        state.isError = true;
+        state.addToLoggedCartError = true;
+        state.message = action.payload;
+      })
+
       .addCase(deleteItem.pending, (state) => {
         state.deleteLoading = true;
       })
@@ -344,7 +320,6 @@ export const cartSlice = createSlice({
       .addCase(getItems.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        console.log(action.payload);
         if (action.payload) {
           state.cartItems = action.payload;
         } else {

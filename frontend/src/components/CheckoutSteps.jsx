@@ -16,7 +16,9 @@ const CheckoutSteps = ({ step1, step2, step4, high }) => {
             <div className="nav-link active">Sign In </div>
           </Link>
         ) : (
-          <a className="nav-link disabled">Sign In </a>
+          <a href="/" className="nav-link disabled">
+            Sign In
+          </a>
         )}
       </li>
 
@@ -26,7 +28,11 @@ const CheckoutSteps = ({ step1, step2, step4, high }) => {
             <div>Cart</div>
           </Link>
         ) : (
-          <a className="nav-link disabled">Cart</a>
+          <Link style={{ textDecoration: "none" }} to="/login">
+            <a href="/" className="nav-link disabled">
+              Cart
+            </a>
+          </Link>
         )}
       </li>
 
@@ -36,7 +42,11 @@ const CheckoutSteps = ({ step1, step2, step4, high }) => {
             <div>Ship to</div>
           </Link>
         ) : (
-          <a className="nav-link disabled">Ship to</a>
+          <Link style={{ textDecoration: "none" }} to="/login">
+            <a href="/" className="nav-link disabled">
+              Ship to
+            </a>
+          </Link>
         )}
       </li>
       <li className={y} style={{ listStyleType: "none", y }}>
@@ -45,7 +55,11 @@ const CheckoutSteps = ({ step1, step2, step4, high }) => {
             <div className="nav-link active">Place Order</div>
           </Link>
         ) : (
-          <a className="nav-link disabled">Place Order</a>
+          <Link style={{ textDecoration: "none" }} to="/login">
+            <a href="/" className="nav-link disabled">
+              Place Order
+            </a>
+          </Link>
         )}
       </li>
     </div>

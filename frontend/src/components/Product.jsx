@@ -48,7 +48,7 @@ function Product({ product }) {
           <Rating
             value={product.rating}
             text={`(${product.numReviews}) ${
-              product.numReviews != 1 ? "reviews" : "review"
+              product.numReviews !== 1 ? "reviews" : "review"
             }`}
           />
         </div>

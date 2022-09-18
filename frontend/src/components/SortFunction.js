@@ -5,7 +5,6 @@ export default function SortFunction(list, sortDirection, sortValue) {
   let y = structuredClone(list);
 
   y = y.sort(dynamicSort(sortValue, sortDirection));
-  console.log(y);
   return y;
 }
 
@@ -14,7 +13,6 @@ function dynamicSort(property, order) {
   // property is what value to sort by name,id ect
   //order  is asc or dec (1 or 0)
   var sortOrder = 1;
-  console.log(order);
   if (property[0] === "-") {
     sortOrder = -1;
     property = property.substr(1);
@@ -25,10 +23,12 @@ function dynamicSort(property, order) {
      */
 
     if (order) {
+      // eslint-disable-next-line
       var result =
         a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
     }
+    // eslint-disable-next-line
     var result =
       b[property] < a[property] ? -1 : b[property] > a[property] ? 1 : 0;
     return result * sortOrder;

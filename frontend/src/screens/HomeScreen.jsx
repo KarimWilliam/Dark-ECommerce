@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import { useSelector, useDispatch } from "react-redux";
 import { listProducts, resetPage } from "../features/products/productSlice"; //listproducts pagination
@@ -34,9 +33,7 @@ function HomeScreen() {
     }, [keyword]);
   };
 
-  useDidMountEffect(() => {
-    console.log("second render");
-  });
+  useDidMountEffect(() => {});
 
   useEffect(() => {
     setAlert(localStorage.getItem("alert"));

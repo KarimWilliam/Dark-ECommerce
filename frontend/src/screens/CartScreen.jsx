@@ -14,12 +14,14 @@ import {
   reset,
   deleteItem,
   resetCartAddError,
+  addItem,
 } from "../features/cart/cartSlice";
 import Message from "../components/Message";
 import Meta from "../components/Meta";
 
 function CartScreen() {
   const { currentAddress } = useSelector((state) => state.shipping);
+
   const { id } = useParams(); //get id from the paramaters of the url
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,7 +35,6 @@ function CartScreen() {
   const {
     deleteSuccess,
     cartItems,
-    isLoading,
     addToLoggedCartSuccess,
     addToLoggedCartLoading,
     addToLoggedCartError,
@@ -60,11 +61,16 @@ function CartScreen() {
 
   useEffect(() => {
     if (id) {
-      dispatch(addToLoggedCart({ id, qty }));
+      if (user) {
+        dispatch(addToLoggedCart({ id, qty }));
+      } else {
+        dispatch(addItem({ id, qty }));
+      }
+
       navigate("/cart");
       // dispatch(getItems());  DID THIS SO LOADING IS CONSISTANT REVERT IF THINGS BREAK
     }
-  }, [dispatch, qty, id, navigate]);
+  }, [dispatch, qty, id, navigate, user]);
 
   const removeFromCartHandler = (id) => {
     dispatch(removeItem(id));
@@ -73,12 +79,9 @@ function CartScreen() {
 
   const checkoutHandler = () => {
     if (user) {
-      console.log(currentAddress);
       if (!currentAddress) {
         navigate("/shipping", { state: { prevRoute } });
       } else if (!Object.keys(currentAddress).length > 0 || !currentAddress) {
-        // navigate("/shipping");
-        console.log(Object.keys(currentAddress).length);
         navigate("/shipping", { state: { prevRoute } });
       } else {
         navigate("/placeorder");
@@ -93,7 +96,11 @@ function CartScreen() {
     let id = item.product._id;
     let qty = Number(e.target.value);
     let z = { id, qty };
-    dispatch(addToLoggedCart(z));
+    if (user) {
+      dispatch(addToLoggedCart(z));
+    } else {
+      dispatch(addItem(z));
+    }
   };
 
   return (

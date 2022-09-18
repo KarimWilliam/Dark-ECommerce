@@ -75,7 +75,6 @@ const resetPassword = async (user) => {
       "Content-Type": "application/json",
     },
   };
-  console.log(user);
   const response = await axios.post(
     API_URL + "resetPassword/" + user.id + "/" + user.token,
     { password: user.password },

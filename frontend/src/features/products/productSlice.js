@@ -337,7 +337,6 @@ export const productSlice = createSlice({
       .addCase(getProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // console.log(action.payload)
         state.products = action.payload;
       })
       .addCase(getProducts.rejected, (state, action) => {
@@ -351,7 +350,6 @@ export const productSlice = createSlice({
       .addCase(getProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // console.log(action.payload)
         state.product = action.payload;
       })
       .addCase(getProduct.rejected, (state, action) => {
@@ -368,7 +366,6 @@ export const productSlice = createSlice({
         state.isSuccess = true;
         state.isLoading = false;
         state.productListMessage = "success";
-        // console.log(action.payload);
         state.products = action.payload.products;
         //////////////////////////////////////////////////////
         state.pages = action.payload.pages;
@@ -376,7 +373,6 @@ export const productSlice = createSlice({
         action.payload.pages > action.payload.page
           ? (state.hasMore = true)
           : (state.hasMore = false);
-        console.log(action.payload.products);
         state.homeProducts = [
           ...state.homeProducts,
           ...action.payload.products,

@@ -26,13 +26,10 @@ function AddressItem({ address }) {
     dispatch(setDefaultAddress(address._id));
   };
   const [greyOut, setGreyOut] = useState("  ");
-  const { defaultAddressSuccess, isSuccess } = useSelector(
-    (state) => state.shipping
-  );
+  const { isSuccess } = useSelector((state) => state.shipping);
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(isSuccess);
       setGreyOut(" ");
     }
     dispatch(defaultReset());

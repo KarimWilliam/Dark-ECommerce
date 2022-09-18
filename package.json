@@ -21,6 +21,7 @@
     "stripe": "^10.2.0"
   },
   "name": "darke-commerce",
+  "homepage": ".",
   "version": "1.0.0",
   "description": "E-commerce website basic",
   "main": "server.js",
@@ -43,7 +44,6 @@
   "bugs": {
     "url": "https://github.com/KarimWilliam/Dark-ECommerce/issues"
   },
-  "homepage": "https://github.com/KarimWilliam/Dark-ECommerce#readme",
   "devDependencies": {
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19"

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -41,57 +40,72 @@ const RegisterScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
+      <h1 className="main-color-in">Sign Up</h1>
       {Regmessage && <Message variant="danger">{Regmessage}</Message>}
       {isError && <Message variant="danger">{message}</Message>}
       {isLoading && <Loader />}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
+      <form onSubmit={submitHandler}>
+        <div className="form-floating mb-3">
+          <input
+            className="form-control"
             type="name"
+            id="nameInput"
             placeholder="Enter name"
             value={name}
-            onChange={(e) => setName(e.target.value)}></Form.Control>
-        </Form.Group>
+            onChange={(e) => setName(e.target.value)}></input>
+          <label style={{ opacity: "0.7" }} htmlfor="nameInput">
+            Name
+          </label>
+        </div>
 
-        <Form.Group controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
+        <div className="form-floating mb-3">
+          <input
+            className="form-control"
             type="email"
-            placeholder="Enter email"
+            id="nameInput"
+            placeholder="Enter name"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}></Form.Control>
-        </Form.Group>
+            onChange={(e) => setEmail(e.target.value)}></input>
+          <label style={{ opacity: "0.7" }} htmlfor="nameInput">
+            Email
+          </label>
+        </div>
 
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+        <div className="form-floating mb-3">
+          <input
+            className="form-control"
             type="password"
+            autoComplete="new-password"
             placeholder="Enter password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}></Form.Control>
-        </Form.Group>
+            onChange={(e) => setPassword(e.target.value)}></input>
+          <label style={{ opacity: "0.7" }}>Password</label>
+        </div>
 
-        <Form.Group controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
+        <div className="form-floating mb-3">
+          <input
+            className="form-control"
             type="password"
+            autoComplete="new-password"
             placeholder="Confirm password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
-        </Form.Group>
-
-        <Button type="submit" variant="primary">
+            onChange={(e) => setConfirmPassword(e.target.value)}></input>
+          <label style={{ opacity: 0.7 }}>Confirm Password</label>
+        </div>
+        <br></br>
+        <button type="submit" className="btn">
           Register
-        </Button>
-      </Form>
+        </button>
+      </form>
 
-      <Row className="py-3">
-        <Col>
-          Have an Account? <Link to={"/login"}>Login</Link>
-        </Col>
-      </Row>
+      <div className=" row py-3">
+        <div className="col">
+          Have an Account?{" "}
+          <Link className="main-color-in" to={"/login"}>
+            Login
+          </Link>
+        </div>
+      </div>
     </FormContainer>
   );
 };

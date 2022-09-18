@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Container } from "react-bootstrap";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -9,7 +8,6 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ShippingScreen from "./screens/ShippingScreen";
-import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -43,7 +41,6 @@ function App() {
               <Route path="/order/:id" element={<OrderScreen />}></Route>
               <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
               <Route path="/shipping" element={<ShippingScreen />}></Route>
-              <Route path="/payment" element={<PaymentScreen />}></Route>
               {/* <Route path="/search" element={<HomeScreen />} /> */}
               <Route path="/" element={<HomeScreen />} />
               <Route path="/Login" element={<LoginScreen />} />

@@ -1,16 +1,13 @@
-import { useDispatch } from "react-redux";
-import { setCurrentAddress } from "../features/shipping/shippingSlice";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 function AddressButton({ address }) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const onClick = (e) => {
-    e.preventDefault();
-    dispatch(setCurrentAddress(address));
-    navigate("/placeorder");
-  };
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const onClick = (e) => {
+  //   e.preventDefault();
+  //   dispatch(setCurrentAddress(address));
+  //   navigate("/placeorder");
+  // };
 
   return (
     <Link

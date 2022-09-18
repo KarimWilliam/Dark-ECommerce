@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
-import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { resetResetLink, forgotPassword } from "../features/auth/authSlice";
 function ForgotPassword() {
@@ -24,26 +21,27 @@ function ForgotPassword() {
     }
   }, [isResetSuccess, dispatch]);
   return (
-    <FormContainer>
+    <div className="form-container">
       {emailMessage && <Message variant="success">{emailMessage}</Message>}
       {isError && <Message variant="danger">{message}</Message>}
       <h4>Enter your email to recieve a password reset link</h4>
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
+      <form onSubmit={submitHandler}>
+        <section className="form-group">
+          <label>Email Address</label>
+          <input
+            className="form-control"
             type="email"
             placeholder="Enter email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}></Form.Control>
-        </Form.Group>
+            onChange={(e) => setEmail(e.target.value)}></input>
+        </section>
 
-        <Button type="submit" variant="primary">
+        <button className="btn" type="submit" variant="primary">
           Submit
-        </Button>
-      </Form>
+        </button>
+      </form>
       {resetLink && <Message variant="success">{resetLink}</Message>}
-    </FormContainer>
+    </div>
   );
 }
 

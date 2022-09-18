@@ -12,7 +12,6 @@ import {
   createReset,
   setCurrentAddress,
 } from "../features/shipping/shippingSlice";
-import Loader from "../components/Loader";
 
 function AddressScreen() {
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ function AddressScreen() {
   const dispatch = useDispatch();
   const {
     addresses,
-    isLoading,
     deleteAddressSuccess,
     editAddressSuccess,
     createAddressSuccess,

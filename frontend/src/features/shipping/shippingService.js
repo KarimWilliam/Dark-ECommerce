@@ -55,7 +55,6 @@ const getDefaultAddress = async (token) => {
       JSON.stringify(response.data)
     );
   }
-
   return response.data;
 };
 
@@ -67,11 +66,11 @@ const deleteAddress = async (token, id) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(id);
-  console.log(localStorage.getItem("currentAddress"));
+  // eslint-disable-next-line
   if (id == JSON.parse(localStorage.getItem("currentAddress"))._id) {
     localStorage.setItem("currentAddress", null);
   }
+  // eslint-disable-next-line
   if (id == JSON.parse(localStorage.getItem("defaultAddress"))._id) {
     localStorage.setItem("defaultAddress", null);
   }
@@ -82,7 +81,6 @@ const deleteAddress = async (token, id) => {
 
 // edits one of the addresses
 const editAddress = async (address, token, id) => {
-  console.log("Edit Address from shipping service");
   const config = {
     headers: {
       "Content-Type": "application/json",

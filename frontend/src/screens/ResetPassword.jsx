@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
@@ -35,30 +34,32 @@ function ResetPassword() {
     <FormContainer>
       {Regmessage && <Message variant="danger">{Regmessage}</Message>}
       {isError && <Message variant="danger">{message}</Message>}
-      <h3>Reset Password</h3>
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="password">
-          <Form.Label>New Password</Form.Label>
-          <Form.Control
+      <h3 className="main-color-in">Reset Password</h3>
+      <form onSubmit={submitHandler}>
+        <div className="form-floating mb-3">
+          <input
+            className="form-control"
             type="password"
             placeholder="Enter password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}></Form.Control>
-        </Form.Group>
+            onChange={(e) => setPassword(e.target.value)}></input>
+          <label style={{ opacity: 0.7 }}>New Password</label>
+        </div>
 
-        <Form.Group controlId="password2">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
+        <div className="form-floating mb-3">
+          <input
+            className="form-control"
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChange={(e) => setconfirmPassword(e.target.value)}></Form.Control>
-        </Form.Group>
+            onChange={(e) => setconfirmPassword(e.target.value)}></input>
+          <label style={{ opacity: 0.7 }}>Confirm Password</label>
+        </div>
 
-        <Button type="submit" variant="primary">
+        <button type="submit" className="btn">
           Submit
-        </Button>
-      </Form>
+        </button>
+      </form>
     </FormContainer>
   );
 }

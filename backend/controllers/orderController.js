@@ -9,7 +9,7 @@ dotenv.config();
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY);
 
 const Environment =
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV === "false" //IMPORTANT    THIS NEEDS TO BE SET TO LIVE ENVIORNMENT FOR REAL MONEY TRANSACTIONS
     ? paypal.core.LiveEnvironment
     : paypal.core.SandboxEnvironment;
 const paypalClient = new paypal.core.PayPalHttpClient(
@@ -260,7 +260,7 @@ const paypalPayOrder = asyncHandler(async (req, res) => {
     console.log("order");
     try {
       const paypalOrder = await paypalClient.execute(request);
-      console.log("paypal ID karim " + paypalOrder.result.id);
+
       res.json({ id: paypalOrder.result.id });
     } catch (error) {
       console.log(error);
