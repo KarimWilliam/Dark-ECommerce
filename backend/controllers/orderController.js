@@ -9,7 +9,7 @@ dotenv.config();
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY);
 
 const Environment =
-  process.env.NODE_ENV === "false" //IMPORTANT    THIS NEEDS TO BE SET TO LIVE ENVIORNMENT FOR REAL MONEY TRANSACTIONS
+  process.env.NODE_ENV === "development" //IMPORTANT    THIS NEEDS TO BE SET TO LIVE ENVIORNMENT FOR REAL MONEY TRANSACTIONS
     ? paypal.core.LiveEnvironment
     : paypal.core.SandboxEnvironment;
 const paypalClient = new paypal.core.PayPalHttpClient(
@@ -149,7 +149,7 @@ const updateOrderToPaidPaypal = asyncHandler(async (req, res) => {
   // Call API with your client and get a response for your call
   let response = await paypalClient.execute(request);
   // If call returns body in response, you can get the deserialized version from the result attribute of the response.
-  //console.log(`Capture: ${JSON.stringify(response.result)}`);
+  console.log(`Capture: ${JSON.stringify(response.result)}`);
   if (order) {
     order.paymentResult = {
       id: req.body.paypalID,

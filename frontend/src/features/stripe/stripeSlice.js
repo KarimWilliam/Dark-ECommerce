@@ -4,7 +4,7 @@ import stripeService from "./stripeService";
 const initialState = {
   isError: false,
   isSuccess: false,
-  isLoading: true,
+  isLoading: false,
   message: "",
   StripeURL: "",
 };

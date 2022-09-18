@@ -59,7 +59,7 @@ const Header = () => {
   let sum = 0;
   try {
     sum = cartItems.reduce((accumulator, object) => {
-      return accumulator + object.qty;
+      return Number(accumulator + Number(object.qty));
     }, 0);
   } catch (error) {
     console.log(error);

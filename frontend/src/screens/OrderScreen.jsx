@@ -47,7 +47,10 @@ const OrderScreen = () => {
     orderPaySuccess: successPay,
     orderDeliverSuccess,
     finalizeSallGoodMan,
+    finalizeLoading,
   } = orderDetails;
+
+  const { isLoading: stripeLoading } = useSelector((state) => state.stripe);
   let itemPrice = 0;
 
   const PayPalButton = window.paypal.Buttons.driver("react", {
@@ -95,10 +98,8 @@ const OrderScreen = () => {
       if (finalizeSallGoodMan) {
         dispatch(clearCart());
         if (payWith === "stripe") {
-          dispatch(clearCart());
           dispatch(stripePay(order._id));
         } else if (payWith === "paypal") {
-          dispatch(clearCart());
         }
       } else {
         dispatch(getItems());
@@ -140,19 +141,21 @@ const OrderScreen = () => {
     if (payload.data.id) {
       return payload.data.id;
     } else {
+      console.log("there has been a paypal related error");
     }
   };
 
   const onApprove = async (data, actions) => {
-    // const paypalID = data.orderID;
-    // const url = "/api/orders/paypal/";
-    // const config = {
-    //   headers: {
-    //     "content-Type": "application/json",
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
-    // const payload = await axios.post(url + id, { paypalID: paypalID }, config);
+    console.log("frontend payment init");
+    const paypalID = data.orderID;
+    const url = "/api/orders/paypal/";
+    const config = {
+      headers: {
+        "content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const payload = await axios.post(url + id, { paypalID: paypalID }, config);
     dispatch(paymentComplete());
   };
 
@@ -289,8 +292,15 @@ const OrderScreen = () => {
                 <div className="list-group-item">
                   {loadingPay && <Loader />}
                   <div className="d-grid gap-2">
-                    <button className=" btn pay-button" onClick={onPayClick}>
-                      Pay with Credit Card
+                    <button
+                      // disabled={stripeLoading || finalizeLoading}
+                      className=" btn pay-button"
+                      onClick={onPayClick}>
+                      {stripeLoading ? (
+                        <div className="spinner-border "></div>
+                      ) : (
+                        "Pay with Credit Card"
+                      )}
                     </button>
                     <PayPalButton
                       fundingSource={"paypal"}
@@ -299,6 +309,11 @@ const OrderScreen = () => {
                       }
                       onApprove={(data, actions) => onApprove(data, actions)}
                     />
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    {finalizeLoading && (
+                      <div className="spinner-border d-flex justify-content-center"></div>
+                    )}
                   </div>
                 </div>
               )}

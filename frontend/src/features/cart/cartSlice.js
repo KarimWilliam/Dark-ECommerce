@@ -271,17 +271,17 @@ export const cartSlice = createSlice({
 
         const item = action.payload;
         const existItem = state.cartItems.find(
-          (x) => x.product === item.product
+          (x) => x.product._id == item.product._id
         );
-
         if (existItem) {
-          let existqty = item.qty;
+          let existqty = Number(item.qty);
           // adds onto the existing quantity
           //let existqty = existItem.qty;
           // existqty += item.qty;
 
           state.cartItems.forEach((element, index) => {
-            if (element.product === item.product) {
+            console.log("items in cart: " + element.product._id);
+            if (element.product._id == item.product._id) {
               state.cartItems[index].qty = existqty;
             }
           });
