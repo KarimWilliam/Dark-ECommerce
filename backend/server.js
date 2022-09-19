@@ -14,6 +14,8 @@ import bodyParser from "body-parser";
 import Stripe from "stripe";
 import shippingRoutes from "./routes/shippingRoutes.js";
 import fileUpload from "express-fileupload";
+import compression from "compression";
+
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY);
 dotenv.config();
 connectDB();
@@ -26,7 +28,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(fileUpload());
 app.use(express.json());
-
+app.use(compression());
 app.use(
   bodyParser.urlencoded({
     extended: true,

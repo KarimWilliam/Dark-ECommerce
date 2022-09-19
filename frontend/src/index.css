@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap'); */
 
 html {font-size: 100% !important;
 } /*16px*/
@@ -152,14 +152,10 @@ text-decoration:underline !important ;
 
   border-color:  rgba(33, 82, 107, 1) !important;
 }
-
-
 input:focus {
   box-shadow: 0 0 0px  !important;
   border: 1px solid rgba(81, 204, 238, 0) !important;
 }
-
-
 /* fix the bootstrap container width being too small */
 @media only screen and (min-width: 1700px) {
   .container {
@@ -235,7 +231,6 @@ justify-content: flex-end;
 }
 
 
-
 @media only screen and (min-width: 1400px) {
   .cart-subtotal{
   position: fixed;
@@ -244,14 +239,11 @@ right:20px;
   }
 }
 
-
 .grey-out {
 opacity: 50%;
   filter: grayscale(40%);
   pointer-events: none;
 }
-
-
 
 .button-1 {
   
@@ -611,7 +603,6 @@ text-transform: lowercase !important;
 }
 
 
-
 @media only screen and (max-width: 767px) {
   .card{
     padding:0 !important;
@@ -619,13 +610,10 @@ text-transform: lowercase !important;
   }
 }
 
-
 .bottom-message{
 display: flex;
   bottom: 100px;
   justify-content: center;
   padding-top: 250px;
-
-
 
 }
