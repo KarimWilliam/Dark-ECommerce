@@ -19,7 +19,7 @@ dotenv.config();
 connectDB();
 const __dirname = path.resolve();
 const app = express();
-
+console.log("dirname: " + __dirname);
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
