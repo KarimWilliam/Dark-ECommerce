@@ -41,7 +41,6 @@ function App() {
               <Route path="/order/:id" element={<OrderScreen />}></Route>
               <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
               <Route path="/shipping" element={<ShippingScreen />}></Route>
-              {/* <Route path="/search" element={<HomeScreen />} /> */}
               <Route path="/" element={<HomeScreen />} />
               <Route path="/Login" element={<LoginScreen />} />
               <Route path="/Profile" element={<ProfileScreen />} />

@@ -78,6 +78,7 @@ const ProductCarousel = () => {
           <div className="carousel-item active" data-bs-interval="7000">
             <Link
               style={{ textDecoration: "none" }}
+              fetchpriority="high"
               to={`/product/${products[0]._id}`}>
               <div className="carousel-caption ">
                 <h5>
@@ -85,7 +86,9 @@ const ProductCarousel = () => {
                 </h5>
               </div>
               <img
+                rel="preload"
                 height="300px"
+                fetchpriority="high"
                 width="280"
                 src={products[0].image}
                 className="d-block"

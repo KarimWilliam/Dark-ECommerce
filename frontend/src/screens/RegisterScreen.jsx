@@ -5,6 +5,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { register, reset } from "../features/auth/authSlice";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -96,6 +97,8 @@ const RegisterScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}></input>
           <label style={{ opacity: 0.7 }}>Confirm Password</label>
         </div>
+        <br></br>
+        <PasswordStrengthBar password={password} />
         <br></br>
         <button type="submit" className="btn">
           Register

@@ -21,6 +21,7 @@ import { stripePay } from "../features/stripe/stripeSlice";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const OrderScreen = () => {
   const navigate = useNavigate();
