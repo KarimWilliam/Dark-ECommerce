@@ -47,6 +47,7 @@ const RegisterScreen = () => {
       <form onSubmit={submitHandler}>
         <div className="form-floating mb-3">
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="name"
             id="nameInput"
@@ -60,6 +61,7 @@ const RegisterScreen = () => {
 
         <div className="form-floating mb-3">
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="email"
             id="nameInput"
@@ -73,6 +75,7 @@ const RegisterScreen = () => {
 
         <div className="form-floating mb-3">
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="password"
             autoComplete="new-password"
@@ -84,6 +87,7 @@ const RegisterScreen = () => {
 
         <div className="form-floating mb-3">
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="password"
             autoComplete="new-password"

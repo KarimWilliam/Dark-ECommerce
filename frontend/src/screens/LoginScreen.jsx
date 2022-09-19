@@ -65,6 +65,7 @@ const LoginScreen = ({ prevPage }) => {
         <form onSubmit={submitHandler}>
           <div className="form-floating mb-3">
             <input
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
               className="form-control"
               type="email"
               placeholder="Enter email"
@@ -75,6 +76,7 @@ const LoginScreen = ({ prevPage }) => {
 
           <div className="form-floating mb-3">
             <input
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
               className="form-control"
               type="password"
               placeholder="Enter password"
@@ -87,7 +89,6 @@ const LoginScreen = ({ prevPage }) => {
             Sign In
           </button>
         </form>
-
         <div className="row py-3">
           <div className="col">
             New Customer?{" "}

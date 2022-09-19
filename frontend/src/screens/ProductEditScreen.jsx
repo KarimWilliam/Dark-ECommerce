@@ -154,6 +154,7 @@ const ProductEditScreen = () => {
           <form onSubmit={submitHandler}>
             <div className="form-floating mb-3">
               <input
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
                 id="nameInput"
                 className="form-control"
                 type="name"
@@ -164,6 +165,7 @@ const ProductEditScreen = () => {
             </div>
             <div className="form-floating mb-3">
               <input
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
                 id="price-input"
                 className="form-control"
                 type="number"
@@ -173,6 +175,7 @@ const ProductEditScreen = () => {
               <label htmlfor="priceInput">Price</label>
             </div>
             <label htmlFor="text">Image</label>
+
             <input
               className="form-control"
               type="file"
@@ -188,6 +191,7 @@ const ProductEditScreen = () => {
 
             <div className="form-floating mb-3">
               <input
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
                 id="brand-input"
                 className="form-control"
                 type="text"
@@ -198,6 +202,7 @@ const ProductEditScreen = () => {
             </div>
             <div className="form-floating mb-3">
               <input
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
                 id="stock-input"
                 className="form-control"
                 type="number"
@@ -208,6 +213,7 @@ const ProductEditScreen = () => {
             </div>
             <div className="form-floating mb-3">
               <input
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
                 id="category-input"
                 className="form-control"
                 type="text"
@@ -218,6 +224,7 @@ const ProductEditScreen = () => {
             </div>
             <div className="form-floating mb-3">
               <input
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
                 id="description-input"
                 className="form-control"
                 type="text"

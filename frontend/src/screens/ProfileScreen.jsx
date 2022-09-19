@@ -121,6 +121,7 @@ const ProfileScreen = () => {
         <form onSubmit={submitHandler}>
           <label>Name</label>
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="name"
             placeholder="Enter name"
@@ -129,6 +130,7 @@ const ProfileScreen = () => {
 
           <label>Email Address</label>
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="email"
             placeholder="Enter email"
@@ -137,6 +139,7 @@ const ProfileScreen = () => {
 
           <label>Password</label>
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="password"
             autoComplete="new-password"
@@ -146,6 +149,7 @@ const ProfileScreen = () => {
 
           <label>Confirm Password</label>
           <input
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
             className="form-control"
             type="password"
             autoComplete="new-password"
