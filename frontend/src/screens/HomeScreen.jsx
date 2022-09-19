@@ -68,7 +68,6 @@ function HomeScreen() {
 
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          //  setHasMore(page == pages ? false : true);
           let x = page + 1;
           dispatch(listProducts({ currentPage: x, keyword }));
           // dispatch(incPage());
