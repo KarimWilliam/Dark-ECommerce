@@ -31,7 +31,7 @@ const ProductCarousel = () => {
   ) : (
     <div
       id="MainCarousel"
-      className="carousel slide carousel-dark "
+      className="carousel slide carousel-dark MainCarousel"
       data-bs-ride="carousel">
       <div className="carousel-indicators">
         <button

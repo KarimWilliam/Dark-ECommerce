@@ -102,7 +102,13 @@ html {
   margin-left: -10px;
 }
 
+.MainCarousel {
+    border-bottom: 1px solid rgba(75, 148, 184, 1) !important;
+}
 
+.carousel-indicators {
+  margin-bottom: 30px !important;
+}
 
 .main-color  {
   background-color: rgba(75, 148, 184, 1) !important
