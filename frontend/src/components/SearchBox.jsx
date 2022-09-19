@@ -40,7 +40,10 @@ const SearchBox = () => {
           className="form-control"
           style={{ float: "right" }}
         />
-        <button className="btn p-2 secondary-color" type="submit">
+        <button
+          className="btn p-2 secondary-color"
+          type="submit"
+          name="seach button">
           <i className="fa-solid fa-magnifying-glass black-color-in"></i>
         </button>
       </div>

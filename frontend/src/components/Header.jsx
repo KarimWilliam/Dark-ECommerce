@@ -75,10 +75,12 @@ const Header = () => {
             }}
             to="/"
             className="navbar-brand secondary-color-in gap-5"
+            name="home page"
             style={{ fontFamily: "Quicksand" }}>
             Dark-Commerce
           </Link>
           <button
+            name="navbar burger collapse"
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -120,6 +122,7 @@ const Header = () => {
                     className="nav-link dropdown-toggle"
                     href="/"
                     role="button"
+                    name="dropdown for nav buttons"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
                     {user.name}

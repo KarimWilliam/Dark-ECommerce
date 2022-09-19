@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import Message from "./Message";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import {
   getTopProducts,
   topProductsReset,
@@ -35,7 +36,9 @@ const ProductCarousel = () => {
       data-bs-ride="carousel">
       <div className="carousel-indicators">
         <button
+          style={{ paddingRight: "40px" }}
           type="button"
+          name="iamge 1"
           data-bs-target="#MainCarousel"
           data-bs-slide-to="0"
           className="active"
@@ -43,21 +46,29 @@ const ProductCarousel = () => {
           aria-label="Slide 1"></button>
         <button
           type="button"
+          name="image 2"
+          style={{ paddingRight: "40px" }}
           data-bs-target="#MainCarousel"
           data-bs-slide-to="1"
           aria-label="Slide 2"></button>
         <button
           type="button"
+          name="image 3"
+          style={{ paddingRight: "40px" }}
           data-bs-target="#MainCarousel"
           data-bs-slide-to="2"
           aria-label="Slide 3"></button>
         <button
           type="button"
+          name="image 4"
+          style={{ paddingRight: "40px" }}
           data-bs-target="#MainCarousel"
           data-bs-slide-to="3"
           aria-label="Slide 4"></button>
         <button
           type="button"
+          name="image 5"
+          style={{ paddingRight: "40px" }}
           data-bs-target="#MainCarousel"
           data-bs-slide-to="4"
           aria-label="Slide 5"></button>
@@ -74,6 +85,8 @@ const ProductCarousel = () => {
                 </h5>
               </div>
               <img
+                height="300px"
+                width="280"
                 src={products[0].image}
                 className="d-block"
                 alt={products[0].name}
@@ -96,7 +109,9 @@ const ProductCarousel = () => {
                 </h5>
               </div>
 
-              <img
+              <LazyLoadImage
+                height="300px"
+                width="auto"
                 src={product.image}
                 alt={product.name}
                 className="d-block "

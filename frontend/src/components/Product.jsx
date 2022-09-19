@@ -26,6 +26,9 @@ function Product({ product }) {
         to={`/product/${product._id}`}>
         <div className="placeholder-glow" style={{ padding: "10px" }}>
           <LazyLoadImage
+            height="300px"
+            width="300px"
+            alt={product.name}
             style={{ height: imgStyle, padding: "0px" }}
             src={product.image}
             variant="top"

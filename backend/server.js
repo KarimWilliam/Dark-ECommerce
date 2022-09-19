@@ -15,6 +15,7 @@ import Stripe from "stripe";
 import shippingRoutes from "./routes/shippingRoutes.js";
 import fileUpload from "express-fileupload";
 import compression from "compression";
+import { cachey } from "./middleware/routeCache.js";
 
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY);
 dotenv.config();
