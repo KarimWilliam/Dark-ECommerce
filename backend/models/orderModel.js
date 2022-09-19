@@ -29,7 +29,6 @@ const orderSchema = mongoose.Schema(
     //comes from payment server IE:Paypal
     paymentMethod: {
       type: String,
-      required: true,
     },
     paymentResult: {
       id: { type: String },

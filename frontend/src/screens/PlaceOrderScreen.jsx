@@ -16,7 +16,6 @@ const PlaceOrderScreen = () => {
   if (!currentAddress) {
     navigate("/shipping", { state: { prevRoute } });
   } else if (!cart.paymentMethod) {
-    navigate("/payment");
   }
   //   Calculate prices
   const addDecimals = (num) => {
