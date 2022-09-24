@@ -87,57 +87,37 @@ const OrderListScreen = () => {
             <thead>
               <tr>
                 <th
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByID();
                   }}>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByID();
-                    }}>
-                    ID
-                  </button>
+                  ID
                 </th>
-                <th>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByDate();
-                    }}>
-                    DATE
-                  </button>
+                <th
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByDate();
+                  }}>
+                  DATE
                 </th>
-                <th>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByTotal();
-                    }}>
-                    TOTAL
-                  </button>
+                <th
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByTotal();
+                  }}>
+                  {" "}
+                  TOTAL
                 </th>
-                <th>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByPaid();
-                    }}>
-                    PAID
-                  </button>
-                </th>
-                <th style={{}}>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      sortByDelivered();
-                    }}>
-                    DELIVERED
-                  </button>
+                <th
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByDelivered();
+                  }}>
+                  DELIVERED
                 </th>
                 <th></th>
               </tr>
@@ -149,15 +129,6 @@ const OrderListScreen = () => {
                     <td>{order._id}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
                     <td>{order.totalPrice}</td>
-                    <td>
-                      {order.isPaid ? (
-                        order.paidAt.substring(0, 10)
-                      ) : (
-                        <i
-                          className="fas fa-times"
-                          style={{ color: "red" }}></i>
-                      )}
-                    </td>
                     <td>
                       {order.isDelivered ? (
                         order.deliveredAt.substring(0, 10)

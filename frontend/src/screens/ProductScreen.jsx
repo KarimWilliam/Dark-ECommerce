@@ -86,7 +86,7 @@ function ProductScreen() {
   };
 
   return (
-    <>
+    <div className="p-3">
       {sucMsg}
 
       <Link className="btn btn-light my-3" to="/">
@@ -98,7 +98,7 @@ function ProductScreen() {
       ) : isLoading ? (
         <Loader />
       ) : (
-        <>
+        <div style={{ paddingTop: "50px" }}>
           <Meta title={product.name} />
           <div title={product.name} />
           <div className="row">
@@ -139,7 +139,7 @@ function ProductScreen() {
                 marginLeft: "auto",
                 paddingBottom: "30px",
               }}>
-              <div className="card ">
+              <div className="card " style={{ maxWidth: "320px" }}>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
                     <div className="row">
@@ -242,7 +242,9 @@ function ProductScreen() {
                     <strong>{review.name}</strong>
                     <Rating value={review.rating} />
                     <p>{review.createdAt.substring(0, 10)}</p>
-                    <p style={{ textAlign: "justify" }}>{review.comment}</p>
+                    <p style={{ textAlign: "justify", whiteSpace: "pre-wrap" }}>
+                      {review.comment}
+                    </p>
                   </li>
                 ))}
                 <li className="list-group-item">
@@ -301,9 +303,9 @@ function ProductScreen() {
               </ul>
             </div>
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }
 

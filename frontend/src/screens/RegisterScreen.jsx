@@ -55,7 +55,7 @@ const RegisterScreen = () => {
             placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}></input>
-          <label style={{ opacity: "0.7" }} htmlfor="nameInput">
+          <label style={{ opacity: "0.7" }} htmlFor="nameInput">
             Name
           </label>
         </div>
@@ -69,7 +69,7 @@ const RegisterScreen = () => {
             placeholder="Enter name"
             value={email}
             onChange={(e) => setEmail(e.target.value)}></input>
-          <label style={{ opacity: "0.7" }} htmlfor="nameInput">
+          <label style={{ opacity: "0.7" }} htmlFor="nameInput">
             Email
           </label>
         </div>

@@ -21,7 +21,6 @@ import { stripePay } from "../features/stripe/stripeSlice";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const OrderScreen = () => {
   const navigate = useNavigate();
@@ -156,7 +155,7 @@ const OrderScreen = () => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const payload = await axios.post(url + id, { paypalID: paypalID }, config);
+    await axios.post(url + id, { paypalID: paypalID }, config);
     dispatch(paymentComplete());
   };
 
@@ -173,7 +172,7 @@ const OrderScreen = () => {
   ) : isError ? (
     <Message variant="danger">{message}</Message>
   ) : isSuccess ? (
-    <>
+    <div className="p-5">
       <ToastContainer
         theme="colored"
         position="top-right"
@@ -186,6 +185,13 @@ const OrderScreen = () => {
         draggable
         pauseOnHover
       />
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+        className="btn btn-light my-3 ">
+        Go Back
+      </button>
       <h1 className="main-color-in small-screen-small-font popping-font">
         Order ID: {order._id}
       </h1>
@@ -259,84 +265,82 @@ const OrderScreen = () => {
           </div>
         </div>
 
-        <div className="order-screen-right">
-          <div className="card d-flex">
-            <div className="list-group list-group-flush">
-              <div className="list-group-item">
-                <h2 className="main-color-in">Order Summary</h2>
+        <div className="order-screen-right ">
+          <div className="list-group list-group-flush basic-border">
+            <div className="list-group-item ">
+              <h2 className="main-color-in">Order Summary</h2>
+            </div>
+            <div className="list-group-item">
+              <div className="row">
+                <div className="col">Items</div>
+                <div className="col">${itemPrice}</div>
               </div>
-              <div className="list-group-item">
-                <div className="row">
-                  <div className="col">Items</div>
-                  <div className="col">${itemPrice}</div>
-                </div>
+            </div>
+            <div className="list-group-item">
+              <div className="row">
+                <div className="col">Shipping</div>
+                <div className="col">${order.shippingPrice}</div>
               </div>
-              <div className="list-group-item">
-                <div className="row">
-                  <div className="col">Shipping</div>
-                  <div className="col">${order.shippingPrice}</div>
-                </div>
+            </div>
+            <div className="list-group-item">
+              <div className="row">
+                <div className="col">Tax</div>
+                <div className="col">${order.taxPrice}</div>
               </div>
-              <div className="list-group-item">
-                <div className="row">
-                  <div className="col">Tax</div>
-                  <div className="col">${order.taxPrice}</div>
-                </div>
+            </div>
+            <div className="list-group-item">
+              <div className="row">
+                <div className="col">Total</div>
+                <div className="col">${order.totalPrice}</div>
               </div>
+            </div>
+            {!order.isPaid && (
               <div className="list-group-item">
-                <div className="row">
-                  <div className="col">Total</div>
-                  <div className="col">${order.totalPrice}</div>
-                </div>
-              </div>
-              {!order.isPaid && (
-                <div className="list-group-item">
-                  {loadingPay && <Loader />}
-                  <div className="d-grid gap-2">
-                    <button
-                      // disabled={stripeLoading || finalizeLoading}
-                      className=" btn pay-button"
-                      onClick={onPayClick}>
-                      {stripeLoading ? (
-                        <div className="spinner-border "></div>
-                      ) : (
-                        "Pay with Credit Card"
-                      )}
-                    </button>
-                    <PayPalButton
-                      fundingSource={"paypal"}
-                      createOrder={(data, actions) =>
-                        createOrderPaypal(data, actions)
-                      }
-                      onApprove={(data, actions) => onApprove(data, actions)}
-                    />
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    {finalizeLoading && (
-                      <div className="spinner-border d-flex justify-content-center"></div>
+                {loadingPay && <Loader />}
+                <div className="d-grid gap-2">
+                  <button
+                    // disabled={stripeLoading || finalizeLoading}
+                    className=" btn pay-button"
+                    onClick={onPayClick}>
+                    {stripeLoading ? (
+                      <div className="spinner-border "></div>
+                    ) : (
+                      "Pay with Credit Card"
                     )}
-                  </div>
+                  </button>
+                  <PayPalButton
+                    fundingSource={"paypal"}
+                    createOrder={(data, actions) =>
+                      createOrderPaypal(data, actions)
+                    }
+                    onApprove={(data, actions) => onApprove(data, actions)}
+                  />
+                </div>
+                <div className="d-flex justify-content-center">
+                  {finalizeLoading && (
+                    <div className="spinner-border d-flex justify-content-center"></div>
+                  )}
+                </div>
+              </div>
+            )}
+            {/* {orderDeliverLoading && <Loader />} */}
+            {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered && (
+                <div className="list-group-item">
+                  <button
+                    type="button"
+                    className="btn btn-block"
+                    onClick={deliverHandler}>
+                    Mark As Delivered
+                  </button>
                 </div>
               )}
-              {/* {orderDeliverLoading && <Loader />} */}
-              {userInfo &&
-                userInfo.isAdmin &&
-                order.isPaid &&
-                !order.isDelivered && (
-                  <div className="list-group-item">
-                    <button
-                      type="button"
-                      className="btn btn-block"
-                      onClick={deliverHandler}>
-                      Mark As Delivered
-                    </button>
-                  </div>
-                )}
-            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   ) : (
     <></>
   );

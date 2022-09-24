@@ -10,6 +10,7 @@ function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
   const [Regmessage, setRegMessage] = useState(null);
+  const [sucMessage, setSucMessage] = useState(null);
   const { id, token } = useParams(); //get id from the paramaters of the url
   const { message, isError, isResetSuccess } = useSelector(
     (state) => state.auth
@@ -25,42 +26,45 @@ function ResetPassword() {
 
   useEffect(() => {
     if (isResetSuccess) {
-      setRegMessage("Password changed Successfully");
+      setSucMessage("Password changed Successfully");
       dispatch(resetResetLink());
     }
   }, [isResetSuccess, dispatch]);
 
   return (
-    <FormContainer>
-      {Regmessage && <Message variant="danger">{Regmessage}</Message>}
-      {isError && <Message variant="danger">{message}</Message>}
-      <h3 className="main-color-in">Reset Password</h3>
-      <form onSubmit={submitHandler}>
-        <div className="form-floating mb-3">
-          <input
-            className="form-control"
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}></input>
-          <label style={{ opacity: 0.7 }}>New Password</label>
-        </div>
+    <div className="p-5">
+      <FormContainer>
+        {Regmessage && <Message variant="danger">{Regmessage}</Message>}
+        {sucMessage && <Message variant="success">{sucMessage}</Message>}
+        {isError && <Message variant="danger">{message}</Message>}
+        <h3 className="main-color-in">Reset Password</h3>
+        <form onSubmit={submitHandler}>
+          <div className="form-floating mb-3">
+            <input
+              className="form-control"
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}></input>
+            <label style={{ opacity: 0.7 }}>New Password</label>
+          </div>
 
-        <div className="form-floating mb-3">
-          <input
-            className="form-control"
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setconfirmPassword(e.target.value)}></input>
-          <label style={{ opacity: 0.7 }}>Confirm Password</label>
-        </div>
+          <div className="form-floating mb-3">
+            <input
+              className="form-control"
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setconfirmPassword(e.target.value)}></input>
+            <label style={{ opacity: 0.7 }}>Confirm Password</label>
+          </div>
 
-        <button type="submit" className="btn">
-          Submit
-        </button>
-      </form>
-    </FormContainer>
+          <button type="submit" className="btn">
+            Submit
+          </button>
+        </form>
+      </FormContainer>
+    </div>
   );
 }
 

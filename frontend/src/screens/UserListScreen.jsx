@@ -81,48 +81,36 @@ const UserListScreen = () => {
             <thead>
               <tr>
                 <th
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByID();
                   }}>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByID();
-                    }}>
-                    ID
-                  </button>
+                  ID
                 </th>
-                <th>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByName();
-                    }}>
-                    Name
-                  </button>
+                <th
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByName();
+                  }}>
+                  Name
                 </th>
-                <th>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByEmail();
-                    }}>
-                    Email
-                  </button>
+                <th
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByEmail();
+                  }}>
+                  Email
                 </th>
-                <th>
-                  <button
-                    className="btn"
-                    style={{ flex: 1 }}
-                    onClick={() => {
-                      sortByAdmin();
-                    }}>
-                    Admin
-                  </button>
+                <th
+                  style={{ textAlign: "center" }}
+                  className="address-hover-effect"
+                  onClick={() => {
+                    sortByAdmin();
+                  }}>
+                  Admin
                 </th>
                 <th></th>
               </tr>

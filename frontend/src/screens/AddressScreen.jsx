@@ -70,8 +70,8 @@ function AddressScreen() {
   // }
 
   return (
-    <div>
-      <h3>Your Addresses</h3>
+    <div style={{ padding: "20px" }}>
+      <h3 className="main-color-in">Your Addresses</h3>
       <Link to="/Address/add" state={{ prevRoute }}>
         <br></br>
         <button className="button-1">Create New Address</button>

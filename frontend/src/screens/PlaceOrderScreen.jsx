@@ -67,6 +67,7 @@ const PlaceOrderScreen = () => {
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
+      {isError && <Message variant="danger">{message}</Message>}
       <div className=" popping-font place-order-container">
         <div className=" place-order-left ">
           <ul className="list-group list-group-flush">
@@ -148,16 +149,13 @@ const PlaceOrderScreen = () => {
                   <div className="col">${cart.totalPrice}</div>
                 </div>
               </li>
-              <li className="list-group-item">
-                {isError && <Message variant="danger">{message}</Message>}
-              </li>
               <li className="list-group-item d-flex justify-content-center">
                 <button
                   type="button"
                   className="btn "
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}>
-                  Place Order
+                  Confirm Order
                 </button>
               </li>
             </ul>

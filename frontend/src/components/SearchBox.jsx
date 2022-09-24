@@ -12,7 +12,11 @@ const SearchBox = () => {
     e.preventDefault();
     if (keyword.trim()) {
       setSearchParams({ keyword: keyword });
-
+      console.log(location.pathname);
+      if (location.pathname !== "/admin/productlist" || "/") {
+        navigate({ pathname: "/", search: `?keyword=${keyword}` });
+        window.location.reload(false); //iffy
+      }
       //navigate("/search");
       //navigate(`/${keyword}`);
       // navigate({ pathname: "/", search: `?keyword=${keyword}` });

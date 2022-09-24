@@ -25,11 +25,9 @@ function ShippingScreen() {
   return (
     <>
       <CheckoutSteps step1 step2 step4 high />
-      <div>
-        <h2 className="main-color-in">Ship Items To:</h2>
+      <div className="p-5">
+        <h2 className="main-color-in ">Ship Items To:</h2>
         <Link to="/Address/add" state={{ prevRoute }}>
-          <br></br>
-          <br></br>
           <button className="button-1">Create New Address</button>
         </Link>
         {addresses.length > 0 ? (

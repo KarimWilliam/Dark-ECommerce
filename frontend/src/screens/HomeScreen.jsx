@@ -93,17 +93,18 @@ function HomeScreen() {
         </Link>
       )}
       {alert && <Message variant="danger">{alert}</Message>}
-      <h2 className="main-color-in">Prodcuts</h2>
+      <h2 className="main-color-in">Products</h2>
       {false ? (
         <Loader />
       ) : error ? (
         <Message varient="danger">{error}</Message>
       ) : (
-        <div className="container-fluid pt-3  ">
-          <div className="row  row-cols-sx-1 g-5 row-cols-xxl-4 row-cols-xl-3  row-cols-lg-2">
+        <div className="container-fluid  ">
+          <div className="row  row-cols-sx-1  row-cols-xxl-4 row-cols-xl-3  row-cols-lg-2">
             {homeProducts.map((product, index) =>
               homeProducts.length === index + 1 ? (
                 <div
+                  style={{ paddingBottom: "20px" }}
                   className="col"
                   key={product._id}
                   sm={12}
@@ -115,6 +116,7 @@ function HomeScreen() {
                 </div>
               ) : (
                 <div
+                  style={{ paddingBottom: "20px" }}
                   className="col"
                   key={product._id}
                   sm={12}

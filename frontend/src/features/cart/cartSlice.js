@@ -271,6 +271,7 @@ export const cartSlice = createSlice({
 
         const item = action.payload;
         const existItem = state.cartItems.find(
+          // eslint-disable-next-line
           (x) => x.product._id == item.product._id
         );
         if (existItem) {
@@ -281,6 +282,7 @@ export const cartSlice = createSlice({
 
           state.cartItems.forEach((element, index) => {
             console.log("items in cart: " + element.product._id);
+            // eslint-disable-next-line
             if (element.product._id == item.product._id) {
               state.cartItems[index].qty = existqty;
             }

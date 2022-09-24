@@ -111,9 +111,9 @@ const ProfileScreen = () => {
   };
 
   return (
-    <div className="row">
-      <div className="col col-md-3 profile-left">
-        <h2 className="main-color-in">Update User Profile</h2>
+    <div className="row p-5">
+      {/* <div className="col col-md-3 profile-left">
+        <h2 className="main-color-in">Update My Info</h2>
         {ProfMessage && <Message variant="danger">{ProfMessage}</Message>}
         {isError && <Message variant="danger">{message}</Message>}
         {isSuccess && <Message variant="success"> Profile Updated</Message>}
@@ -161,8 +161,8 @@ const ProfileScreen = () => {
             Update
           </button>
         </form>
-      </div>
-      <div className="col col-md-9">
+      </div> */}
+      <div className="col">
         <h2 className="main-color-in">My Orders</h2>
         {loadingOrders ? (
           <Loader />
@@ -174,58 +174,36 @@ const ProfileScreen = () => {
               <thead>
                 <tr>
                   <th
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByID();
                     }}>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByID();
-                      }}>
-                      ID
-                    </button>
+                    ID
                   </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByDate();
-                      }}>
-                      DATE
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByDate();
+                    }}>
+                    DATE
                   </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByTotal();
-                      }}>
-                      TOTAL
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByTotal();
+                    }}>
+                    TOTAL
                   </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByPaid();
-                      }}>
-                      PAID
-                    </button>
-                  </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByDelivered();
-                      }}>
-                      DELIVERED
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect th"
+                    onClick={() => {
+                      sortByDelivered();
+                    }}>
+                    DELIVERED
                   </th>
                   <th></th>
                 </tr>
@@ -238,27 +216,28 @@ const ProfileScreen = () => {
                       <td>{order.createdAt.substring(0, 10)}</td>
                       <td>{order.totalPrice}</td>
                       <td>
-                        {order.isPaid ? (
-                          order.paidAt.substring(0, 10)
-                        ) : (
-                          <i
-                            className="fas fa-times"
-                            style={{ color: "red" }}></i>
-                        )}
-                      </td>
-                      <td>
                         {order.isDelivered ? (
                           order.deliveredAt.substring(0, 10)
                         ) : (
-                          <i
-                            className="fas fa-times"
-                            style={{ color: "red" }}></i>
+                          // <i
+                          //   className="fas fa-times"
+                          //   style={{ color: "red" }}></i>
+                          <div className="main-color-in">In Progress...</div>
                         )}
                       </td>
-                      <td>
+                      <td style={{ textAlign: "center" }}>
                         <Link to={`/order/${order._id}`}>
-                          <button className="btn-sm  black-color">
-                            Details
+                          <button
+                            className="btn "
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              display: "block",
+                              padding: "10px",
+                              border: "none",
+                            }}>
+                            Details {"  "}
+                            <i className="fas fa-arrow-right"> </i>
                           </button>
                         </Link>
                       </td>

@@ -37,7 +37,9 @@ function AddressItem({ address }) {
   }, [isSuccess, dispatch]);
 
   return (
-    <ul className={greyOut + " popping-font address-item "}>
+    <ul
+      style={{ minWidth: "350px" }}
+      className={greyOut + " popping-font address-item "}>
       {address.default && (
         <p style={{ fontWeight: "600" }} className="secondary-color-in">
           Default Address

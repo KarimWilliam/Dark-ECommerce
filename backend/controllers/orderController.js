@@ -191,7 +191,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 // @route   GET /api/orders/myorders
 // @access  Private
 const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.user._id, isPaid: true });
   res.json(orders);
 });
 
@@ -199,7 +199,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate("user", "id name");
+  const orders = await Order.find({ isPaid: true }).populate("user", "id name");
   res.json(orders);
 });
 
@@ -320,7 +320,7 @@ const stripePayOrder = asyncHandler(async (req, res) => {
               product_data: {
                 name: item.name,
               },
-              unit_amount: Number(item.price) * 100,
+              unit_amount: Math.trunc(Number(item.price) * 100),
             },
             quantity: item.qty,
             tax_rates: [taxRate.id],

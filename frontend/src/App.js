@@ -34,8 +34,8 @@ function App() {
     <PayPalScriptProvider options={payPalOptions}>
       <Router>
         <Header />
-        <main className="py-3">
-          <div className="container">
+        <main className="py-3" style={{ backgroundColor: "#eaeded" }}>
+          <div className="container " style={{ backgroundColor: "white" }}>
             <Routes>
               <Route path="/about" element={<AboutScreen />}></Route>
               <Route path="/order/:id" element={<OrderScreen />}></Route>

@@ -7,11 +7,11 @@ function DoesNotExist() {
         <button
           className="btn "
           style={{ textAlight: "center", backgroundColor: "white" }}>
-          <h5>Back TO HOMEPAGE</h5>
+          <h5 className="btn">Back TO HOMEPAGE</h5>
         </button>
       </Link>
-      <div style={{ textAlign: "center" }}>
-        <h3 style={{ textTransform: "capitalize" }}>
+      <div className="p-5" style={{ textAlign: "center" }}>
+        <h3 className="main-color-in" style={{ textTransform: "capitalize" }}>
           Whatever You were looking for doesnt seem to exist
         </h3>
       </div>

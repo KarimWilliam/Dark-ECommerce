@@ -2,66 +2,63 @@ import React from "react";
 
 function AboutScreen() {
   return (
-    <section className="p-5 popping-font">
-      <div className="container">
-        <div className="row g-4">
+    <section className="p-5 popping-font ">
+      <div className="container ">
+        <div className="row g-4 ">
           <div className="col-md">
             <h2 className="text-center mb-4"> </h2>
-            <ul className="list-group list-group-flush lead">
+            <ul className="list-group list-group-flush lead about-borders">
               <li className="list-group-item">
-                <span className=" text-decoration-underline fst-italic main-color-in">
-                  Contact info{" "}
-                </span>
+                <h2 className="main-color-in">Contact info </h2>
+              </li>
+              <li className="list-group-item ">
+                <span className="fw-bold black-color-in">FreeLancer: </span>{" "}
+                Karim William
               </li>
               <li className="list-group-item">
-                <span className="fw-bold">FreeLancer: </span> darkarim
+                <span className="fw-bold black-color-in">Fiverr: </span>{" "}
+                darkarim
               </li>
               <li className="list-group-item">
-                <span className="fw-bold">Fiverr: </span> darkarim
-              </li>
-              <li className="list-group-item">
-                <span className="fw-bold">Email: </span>{" "}
+                <span className="fw-bold black-color-in">Email: </span>{" "}
                 karim.william7@gmail.com
               </li>
-              <li className="list-group-item bg-dark">
-                <span className="fw-bold main-color-in ">
-                  I can Build your dream website.
-                  <br /> Contact me NOW... Or later whenever is convenient.{" "}
-                </span>
+              <li className="list-group-item">
+                <span className="fw-bold black-color-in">Note: </span> I will
+                professionally build your desired website with up to date
+                technology and industry standard methodology.
               </li>
             </ul>
           </div>
           <div className="col-md text-center"></div>
         </div>
       </div>
-      <div className="p-5">
-        <h4 className="main-color-in">Quality Features</h4>
+      <div className="p-5 ">
+        <h4 className="main-color-in">Dark-Commerce Features</h4>
         <ul
-          className="list-group list-group-flush lead"
+          className="list-group list-group-flush lead "
           style={{ maxWidth: "550px", gap: "10px" }}>
-          <li>Fully responsive and friendly to users on all devices</li>
+          <li>Responsive and friendly to users on all devices</li>
           <li>Built with React From the grounds up</li>
-          <li>Fully functioning smart (fuzzy) searching and sorting</li>
-          <li>Fully modular code that can easily be edited or added onto</li>
+          <li>Smart searching and sorting</li>
+          <li>Modular code that can easily be edited or added onto</li>
           <li>Supports Paypal and Stripe payments</li>
           <li>SEO optimised for maximum google indexing goodness</li>
           <li>Clean and modern design</li>
-          <li>Infinite scroll main page</li>
+          <li>
+            Cloudinary Image hosting and dedicated database servers integrated
+            to minimizing load on main server
+          </li>
           <li>
             Product list graciously provided by Target for testing purposes
           </li>
-          <li>
-            Lazy loading images and content for{" "}
-            <span className="animate-charcter">fast</span> inital load time
-          </li>
+          <li>Lazy loading images and content for fast inital load time</li>
           <li>
             Single page Design insures faster loading times and responsive feel
           </li>
           <li>
-            Cloudinary Image hosting and dedicated database servers integrated
-            for minimizing load on main server
+            Is very <span className="animate-charcter"> wow </span>{" "}
           </li>
-          <li>is very wow...</li>
         </ul>
       </div>
     </section>

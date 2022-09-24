@@ -32,9 +32,9 @@ const ProductCarousel = () => {
   ) : (
     <div
       id="MainCarousel"
-      className="carousel slide carousel-dark MainCarousel"
+      className="carousel slide carousel-dark MainCarousel "
       data-bs-ride="carousel">
-      <div className="carousel-indicators">
+      <div className="carousel-indicators ">
         <button
           style={{ paddingRight: "40px" }}
           type="button"
@@ -73,7 +73,7 @@ const ProductCarousel = () => {
           data-bs-slide-to="4"
           aria-label="Slide 5"></button>
       </div>
-      <div style={{ minHeight: 520 }} className="carousel-inner">
+      <div style={{ minHeight: 520 }} className="carousel-inner ">
         {products[0] && (
           <div className="carousel-item active" data-bs-interval="7000">
             <Link
@@ -81,7 +81,7 @@ const ProductCarousel = () => {
               fetchpriority="high"
               to={`/product/${products[0]._id}`}>
               <div className="carousel-caption ">
-                <h5>
+                <h5 className="black-color-in">
                   {products[0].name} (${products[0].price})
                 </h5>
               </div>
@@ -107,7 +107,7 @@ const ProductCarousel = () => {
               style={{ textDecoration: "none" }}
               to={`/product/${product._id}`}>
               <div className="carousel-caption ">
-                <h5>
+                <h5 className="black-color-in">
                   {product.name} (${product.price})
                 </h5>
               </div>

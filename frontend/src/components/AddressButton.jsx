@@ -13,7 +13,7 @@ function AddressButton({ address }) {
     <Link
       to="/placeorder"
       className="address-item popping-font  address-hover-effect"
-      style={{ textDecoration: "none" }}>
+      style={{ textDecoration: "none", minWidth: "350px" }}>
       <p style={{ fontWeight: "bold" }}>{address.name}</p>
 
       <p>

@@ -4,12 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetResetLink, forgotPassword } from "../features/auth/authSlice";
 function ForgotPassword() {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
   const [emailMessage, setEmailMessage] = useState(null);
-  const { message, isError, resetLink, isResetSuccess } = useSelector(
+  const { message, isError, resetLink, isResetSuccess, user } = useSelector(
     (state) => state.auth
   );
-
+  const [email, setEmail] = useState(user.email);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(forgotPassword(email));
@@ -21,11 +20,13 @@ function ForgotPassword() {
     }
   }, [isResetSuccess, dispatch]);
   return (
-    <div className="form-container">
+    <div className=" p-5">
       {emailMessage && <Message variant="success">{emailMessage}</Message>}
       {isError && <Message variant="danger">{message}</Message>}
-      <h4>Enter your email to recieve a password reset link</h4>
-      <form onSubmit={submitHandler}>
+      <h3 className="main-color-in">
+        Enter your email to recieve a password reset link
+      </h3>
+      <form className="form-container" onSubmit={submitHandler}>
         <section className="form-group">
           <label>Email Address</label>
           <input

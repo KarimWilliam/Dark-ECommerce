@@ -1,45 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const CheckoutSteps = ({ step1, step2, step4, high }) => {
+const CheckoutSteps = ({ step1, step2, step4, high, low }) => {
   let y = "underline nav-item";
   let x = "nav-item";
+  let z = "nav-item";
   if (high) {
     x = "underline nav-item";
     y = "nav-item";
   }
+  if (low) {
+    z = "underline nav-item ";
+    y = "nav-item";
+    x = "nav-item";
+  }
   return (
-    <div className=" navbar-expand-lg navbar justify-content-center mb-4">
-      <li className="nav-item" style={{ listStyleType: "none" }}>
+    <div className=" navbar-expand-lg navbar justify-content-center mb-4 ">
+      <li className={z} style={{ listStyleType: "none" }}>
         {step1 ? (
-          <Link style={{ textDecoration: "none" }} to="/login">
-            <div className="nav-link active">Sign In </div>
+          <Link style={{ textDecoration: "none" }} to="/cart">
+            <h5 className="nav-link active main-color-in">Cart </h5>
           </Link>
         ) : (
           <a href="/" className="nav-link disabled">
-            Sign In
+            Cart
           </a>
-        )}
-      </li>
-
-      <li className="nav-item" style={{ listStyleType: "none" }}>
-        {true ? (
-          <Link style={{ textDecoration: "none" }} to="/cart">
-            <div>Cart</div>
-          </Link>
-        ) : (
-          <Link style={{ textDecoration: "none" }} to="/login">
-            <a href="/" className="nav-link disabled">
-              Cart
-            </a>
-          </Link>
         )}
       </li>
 
       <li className={x} style={{ listStyleType: "none" }}>
         {step2 ? (
           <Link style={{ textDecoration: "none" }} to="/shipping">
-            <div>Ship to</div>
+            <h5 className="main-color-in">Ship to</h5>
           </Link>
         ) : (
           <Link style={{ textDecoration: "none" }} to="/login">
@@ -52,12 +44,12 @@ const CheckoutSteps = ({ step1, step2, step4, high }) => {
       <li className={y} style={{ listStyleType: "none", y }}>
         {step4 ? (
           <Link style={{ textDecoration: "none" }} to="/placeorder">
-            <div className="nav-link active">Place Order</div>
+            <h5 className="nav-link active main-color-in">Place Order</h5>
           </Link>
         ) : (
           <Link style={{ textDecoration: "none" }} to="/login">
             <a href="/" className="nav-link disabled">
-              Place Order
+              <h5 className="main-color-in">Place Order</h5>
             </a>
           </Link>
         )}

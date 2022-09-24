@@ -130,12 +130,12 @@ const Header = () => {
                   <ul className="dropdown-menu">
                     <li>
                       <a className="dropdown-item" href="/Address">
-                        Address
+                        My Addresses
                       </a>
                     </li>
                     <li>
                       <a className="dropdown-item" href="/profile">
-                        Profile
+                        My Orders
                       </a>
                     </li>
                     <li>
@@ -208,7 +208,7 @@ const Header = () => {
         </div>
       </nav>
       {/* padding for the nav bar */}
-      <div style={{ paddingTop: "98px" }}></div>
+      <div style={{ paddingTop: "98px", backgroundColor: "#eaeded" }}></div>
     </header>
   );
 };

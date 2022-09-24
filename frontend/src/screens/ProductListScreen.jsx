@@ -167,7 +167,7 @@ const ProductListScreen = () => {
   };
 
   return (
-    <>
+    <div className="p-5">
       <h1 className="main-color-in"> Products</h1>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger">{messageDelete}</Message>}
@@ -192,66 +192,53 @@ const ProductListScreen = () => {
             <table className="table table-sm  table-hover table-bordered">
               <thead>
                 <tr>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByID();
-                      }}>
-                      ID
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByID();
+                    }}>
+                    ID
                   </th>
-                  <th>
-                    {" "}
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByName();
-                      }}>
-                      Name
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByName();
+                    }}>
+                    Name
                   </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByPrice();
-                      }}>
-                      Price
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByPrice();
+                    }}>
+                    Price
                   </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByCategory();
-                      }}>
-                      Category
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByCategory();
+                    }}>
+                    Category
                   </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByBrand();
-                      }}>
-                      Brand
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByBrand();
+                    }}>
+                    Brand
                   </th>
-                  <th>
-                    <button
-                      className="btn"
-                      style={{ flex: 1 }}
-                      onClick={() => {
-                        sortByVisibility();
-                      }}>
-                      Visibility
-                    </button>
+                  <th
+                    style={{ textAlign: "center" }}
+                    className="address-hover-effect"
+                    onClick={() => {
+                      sortByVisibility();
+                    }}>
+                    Visibility
                   </th>
                   <th></th>
                 </tr>
@@ -267,7 +254,7 @@ const ProductListScreen = () => {
                     <td style={{ maxWidth: "200px" }}>{product.category}</td>
                     <td style={{ maxWidth: "200px" }}>{product.brand}</td>
                     <td>{product.visibility ? "Visible" : "Hidden"}</td>
-                    <td>
+                    <td className="flex-no-wrap">
                       <button
                         className="btn"
                         disabled={!frontVis[index]}
@@ -300,7 +287,7 @@ const ProductListScreen = () => {
           {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
         </>
       )}
-    </>
+    </div>
   );
 };
 

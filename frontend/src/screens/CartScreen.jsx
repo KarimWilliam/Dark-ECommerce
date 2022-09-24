@@ -18,6 +18,7 @@ import {
 } from "../features/cart/cartSlice";
 import Message from "../components/Message";
 import Meta from "../components/Meta";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 function CartScreen() {
   const { currentAddress } = useSelector((state) => state.shipping);
@@ -106,6 +107,7 @@ function CartScreen() {
   return (
     <>
       <Meta title={"- Shopping Cart"} />
+      <CheckoutSteps step1 step2 step3 step4 low />
       {cartSteal &&
         cartSteal.map((item) => (
           <Message>
@@ -113,11 +115,11 @@ function CartScreen() {
             supply
           </Message>
         ))}
-      <h2 className="main-color-in" style={{ paddingTop: "20px" }}>
+      <h2 className="main-color-in p-4" style={{ paddingTop: "20px" }}>
         Shopping Cart
       </h2>
       <div className="row">
-        <div className="col col-md-8  cart-container ">
+        <div className="col col-md-8 p-4  cart-container ">
           {cartItems.length === 0 ? (
             <Message>
               Your cart is empty <Link to="/">Go Back</Link>
@@ -190,8 +192,8 @@ function CartScreen() {
           )}
         </div>
         <div
-          className="col col-md-4 cart-subtotal  "
-          style={{ minWidth: "320px" }}>
+          className="col col-md-4 cart-subtotal p-4 "
+          style={{ minWidth: "320px", padding: "20px" }}>
           <div className="card checkout-container ">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">

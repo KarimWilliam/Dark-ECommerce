@@ -11,8 +11,9 @@ function Product({ product }) {
   const [imgStyle, setImgStyle] = useState("300px");
   return (
     <div
-      className=" box-shadow-2 card h-100"
+      className=" box-shadow-2 card h-100  address-hover-effect"
       style={{
+        maxWidth: "400px",
         width: "300px",
         margin: "auto",
         borderColor: "rgba(33, 82, 107, 1)",
@@ -45,19 +46,20 @@ function Product({ product }) {
           <div className="card-title">
             <strong>{product.name}</strong>
           </div>
-        </Link>
 
-        <div className="card-text mt-3">
-          <Rating
-            value={product.rating}
-            text={`(${product.numReviews}) ${
-              product.numReviews !== 1 ? "reviews" : "review"
-            }`}
-          />
-        </div>
-        <h3 style={{ justifyContent: "end" }} className="card-text d-flex ">
-          ${product.price}
-        </h3>
+          <div className="card-text mt-3">
+            <Rating
+              value={product.rating}
+              text={`(${product.numReviews}) ${
+                product.numReviews !== 1 ? "reviews" : "review"
+              }`}
+            />
+          </div>
+
+          <h3 style={{ justifyContent: "end" }} className="card-text d-flex ">
+            ${product.price}
+          </h3>
+        </Link>
       </div>
     </div>
   );

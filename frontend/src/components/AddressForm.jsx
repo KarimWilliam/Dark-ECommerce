@@ -127,17 +127,19 @@ function AddressForm({ prevPage }) {
       )}
       <section className="form-group">
         <form onSubmit={onSubmit}>
-          <div className="">
-            <label htmlFor="text"> </label>
+          <div className="form-floating mb-3">
             <input
-              placeholder="name..."
+              className="form-control"
+              placeholder="Name..."
               type="name"
               name="name"
               id="name"
-              maxLength={50}
-              value={name || ""}
+              style={{ backgroundColor: "rgb(255, 255, 255)" }}
+              maxLength={20}
+              value={city || ""}
               onChange={(e) => setName(e.target.value)}
             />
+            <label> Full Name</label>
           </div>
 
           <div className="">
@@ -150,12 +152,17 @@ function AddressForm({ prevPage }) {
               id="country"
               value={country || ""}
               onChange={(e) => setCountry(e)}
-              style={{ textDecoration: "none", fontWeight: "normal" }}
+              style={{
+                textDecoration: "none",
+                fontWeight: "normal",
+                backgroundColor: "rgb(255, 255, 255)",
+              }}
             />
           </div>
-          <div className="">
-            <label htmlFor="text"> </label>
+          <div className="form-floating mb-3">
             <input
+              style={{ backgroundColor: "rgb(255, 255, 255)" }}
+              className="form-control"
               placeholder="city..."
               type="city"
               name="city"
@@ -164,20 +171,21 @@ function AddressForm({ prevPage }) {
               value={city || ""}
               onChange={(e) => setCity(e.target.value)}
             />
+            <label> City</label>
           </div>
 
-          <div className="">
-            <label htmlFor="text"> </label>
+          <div className="form-floating mb-3">
             <textarea
-              className=""
-              placeholder="street and apt..."
+              className="form-control"
               type="textarea"
               name="address"
               id="address"
+              style={{ minHeight: "100px", backgroundColor: "white" }}
               maxLength={300}
               value={address || ""}
               onChange={(e) => setAddress(e.target.value)}
             />
+            <label>Street &amp; Address</label>
           </div>
           <div className="">
             <label htmlFor="text"> </label>
@@ -192,9 +200,11 @@ function AddressForm({ prevPage }) {
               onChange={setPhone}
             />
           </div>
-          <div className="">
-            <label htmlFor="text"> </label>
+
+          <div className="form-floating mb-3">
             <input
+              style={{ backgroundColor: "white" }}
+              className="form-control"
               placeholder="postal/zip Code..."
               type="postal"
               name="postal"
@@ -203,6 +213,7 @@ function AddressForm({ prevPage }) {
               value={postal || ""}
               onChange={(e) => setPostal(e.target.value)}
             />
+            <label> Postal/Zip Code</label>
           </div>
 
           <div className="">
