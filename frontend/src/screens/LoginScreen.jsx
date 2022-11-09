@@ -57,7 +57,7 @@ const LoginScreen = ({ prevPage }) => {
   }
 
   return (
-    <>
+    <div className="p-5">
       <FormContainer>
         <h2 className="main-color-in">Sign In</h2>
         {isError && <Message variant="danger">{message}</Message>}
@@ -111,7 +111,7 @@ const LoginScreen = ({ prevPage }) => {
           the About page!
         </Message>
       </div>
-    </>
+    </div>
   );
 };
 

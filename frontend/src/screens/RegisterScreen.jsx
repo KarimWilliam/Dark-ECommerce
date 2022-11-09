@@ -40,80 +40,80 @@ const RegisterScreen = () => {
   };
 
   return (
-    <FormContainer>
-      <h1 className="main-color-in">Sign Up</h1>
-      {Regmessage && <Message variant="danger">{Regmessage}</Message>}
-      {isError && <Message variant="danger">{message}</Message>}
-      {isLoading && <Loader />}
-      <form onSubmit={submitHandler}>
-        <div className="form-floating mb-3">
-          <input
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-            className="form-control"
-            type="name"
-            id="nameInput"
-            placeholder="Enter name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}></input>
-          <label style={{ opacity: "0.7" }} htmlFor="nameInput">
-            Name
-          </label>
-        </div>
+    <div className="p-5">
+      <FormContainer>
+        <h1 className="main-color-in">Sign Up</h1>
+        {Regmessage && <Message variant="danger">{Regmessage}</Message>}
+        {isError && <Message variant="danger">{message}</Message>}
+        {isLoading && <Loader />}
+        <form onSubmit={submitHandler}>
+          <div className="form-floating mb-3">
+            <input
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+              className="form-control"
+              type="name"
+              id="nameInput"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}></input>
+            <label style={{ opacity: "0.7" }} htmlFor="nameInput">
+              Name
+            </label>
+          </div>
 
-        <div className="form-floating mb-3">
-          <input
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-            className="form-control"
-            type="email"
-            id="nameInput"
-            placeholder="Enter name"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}></input>
-          <label style={{ opacity: "0.7" }} htmlFor="nameInput">
-            Email
-          </label>
-        </div>
+          <div className="form-floating mb-3">
+            <input
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+              className="form-control"
+              type="email"
+              id="nameInput"
+              placeholder="Enter name"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}></input>
+            <label style={{ opacity: "0.7" }} htmlFor="nameInput">
+              Email
+            </label>
+          </div>
 
-        <div className="form-floating mb-3">
-          <input
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-            className="form-control"
-            type="password"
-            autoComplete="new-password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}></input>
-          <label style={{ opacity: "0.7" }}>Password</label>
-        </div>
+          <div className="form-floating mb-3">
+            <input
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+              className="form-control"
+              type="password"
+              autoComplete="new-password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}></input>
+            <label style={{ opacity: "0.7" }}>Password</label>
+          </div>
+          <PasswordStrengthBar password={password} />
+          <br></br>
+          <div className="form-floating mb-3">
+            <input
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+              className="form-control"
+              type="password"
+              autoComplete="new-password"
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}></input>
+            <label style={{ opacity: 0.7 }}>Confirm Password</label>
+          </div>
+          <button type="submit" className="btn">
+            Register
+          </button>
+        </form>
 
-        <div className="form-floating mb-3">
-          <input
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-            className="form-control"
-            type="password"
-            autoComplete="new-password"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}></input>
-          <label style={{ opacity: 0.7 }}>Confirm Password</label>
+        <div className=" row py-3">
+          <div className="col">
+            Have an Account?{" "}
+            <Link className="main-color-in" to={"/login"}>
+              Login
+            </Link>
+          </div>
         </div>
-        <br></br>
-        <PasswordStrengthBar password={password} />
-        <br></br>
-        <button type="submit" className="btn">
-          Register
-        </button>
-      </form>
-
-      <div className=" row py-3">
-        <div className="col">
-          Have an Account?{" "}
-          <Link className="main-color-in" to={"/login"}>
-            Login
-          </Link>
-        </div>
-      </div>
-    </FormContainer>
+      </FormContainer>
+    </div>
   );
 };
 
