@@ -10,7 +10,7 @@ const listProducts = async (pageNumber, keyword) => {
   //   headers: {},
   // };
   const currentDate = new Date();
-  console.log(currentDate);
+
   if (!keyword) {
     keyword = "";
   }

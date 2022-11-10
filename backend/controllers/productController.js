@@ -14,6 +14,7 @@ const getProductsPage = asyncHandler(async (req, res) => {
   const pageSize = 20;
   const page = Number(req.query.pageNumber) || 1;
   const currentDate = req.query.currentDate;
+  console.log(currentDate);
   const keyword = req.query.keyword
     ? {
         name: {
@@ -32,7 +33,7 @@ const getProductsPage = asyncHandler(async (req, res) => {
     // ...keyword,
     visibility: true,
     archived: false,
-    createdAt: { $lt: currentDate },
+    // createdAt: { $lt: currentDate },    IMPORTANT: Problem with server parsing this date for mongoose.
   }).lean();
   //  .limit(pageSize)
   //  .skip(pageSize * (page - 1));
