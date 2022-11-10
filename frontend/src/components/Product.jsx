@@ -13,6 +13,7 @@ function Product({ product }) {
     <div
       className=" box-shadow-2 card h-100  address-hover-effect"
       style={{
+        borderRadius: "5px",
         maxWidth: "400px",
         width: "300px",
         margin: "auto",
